@@ -1,0 +1,1 @@
+#Static Typoscript Code Setup
