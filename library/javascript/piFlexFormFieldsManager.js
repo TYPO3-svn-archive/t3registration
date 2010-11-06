@@ -1,31 +1,20 @@
-//Ext.extends(t3Field, Ext.fo)
+
 Ext.ns('T3Registration');
 translationArray = new array();
 
-T3Registration.CheckboxWithField = function(conf){
+/*T3Registration.CheckboxWithField = function(conf){
     var defaultValues = [false,''];
     Ext.apply(defaultValues,conf.defaultValues || []);
     var label = conf.label || '';
     var config = {
         layout: 'column',
         xtype: 'panel',
-        style: {
-            margin: '0px',
-            padding: '0',
-
-            background: 'green'
-        },
         anchor: '100%',
         border: false,
         defaults: {
-            layout:'container',
-            bodyStyle:'padding:0px',
             border: false,
-            //frame: false,
-            autoScroll:true
         },
         items:[{
-                //columnWidth:.2,
                 layout: 'form',
                 xtype: 'container',
                 style: {
@@ -33,8 +22,6 @@ T3Registration.CheckboxWithField = function(conf){
                     margin: '0'
                 },
                 defaults: {
-                    style: {padding: '10px'},
-                    //autoScroll:true,
                     border: false,
                     fieldLabel: '',
                     hideLabel: true,
@@ -48,8 +35,6 @@ T3Registration.CheckboxWithField = function(conf){
                            listeners:{
                                check: function(checkbox,checked){
                                     if (checked){
-                                        console.log(checkbox.ownerCt.ownerCt.items.items[1].items.items[0]);
-                                        //console.log(this);
                                         checkbox.ownerCt.ownerCt.ownerCt.ownerCt.ownerCt.values.fields[checkbox.boxLabel.toLowerCase()][0] = true;
                                         checkbox.ownerCt.ownerCt.items.items[1].items.items[0].enable();
                                     }
@@ -65,12 +50,8 @@ T3Registration.CheckboxWithField = function(conf){
                 //columnWidth:.5,
                 layout: 'form',
                 xtype: 'container',
-                style: {padding: '0 0 0 10px', margin:'0'},
-                hideLabel: true,
+                style: {padding: '0 0 0 10px'},
                 defaults: {
-                    bodyStyle:'padding:0px',
-                    autoScroll:true,
-                    labelStyle: 'width: 10px',
                     fieldLabel: '',
                     hideLabel: true
                 },
@@ -211,8 +192,9 @@ Ext.extend(T3Registration.Tab,Ext.Panel,{
     listeners: {
         beforeClose: function(p){
         Ext.Msg.show({
-            title:'Save Changes?',
-            msg: 'Your are closing a tab that has unsaved changes. Would you like to save your changes?',
+
+            title:p.ownerCt.closeTabTitle,
+            msg: p.ownerCt.closeTabText,
             buttons: Ext.Msg.YESNO,
             fn: function(btn){
             if (btn == 'yes')
@@ -224,7 +206,7 @@ Ext.extend(T3Registration.Tab,Ext.Panel,{
         }
     }
 });
-
+*/
 
 Ext.onReady(function() {
     Ext.QuickTips.init();
@@ -262,6 +244,8 @@ Ext.onReady(function() {
                 panelContainer = new Ext.TabPanel( {
                     title: 'FieldsList',
                     id: 'PanelContainer',
+                    closeTabTitle: 'Chiusura',
+                    closeTabText: 'Siete sicuri di voler elimanre il campo?',
                     resizeTabs:true, // turn on tab resizing
                     minTabWidth: 115,
                     tabWidth:135,
