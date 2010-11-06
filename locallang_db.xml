@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-	<meta type="array">
-		<type>database</type>
-		<description>Language labels for database tables/fields belonging to extension 't3registration'</description>
-	</meta>
-	<data type="array">
-		<languageKey index="default" type="array">
-			<label index="tt_content.list_type_pi1">T3 Registration</label>
-		</languageKey>
-		<languageKey index="it" type="array">
-			<label index="tt_content.list_type_pi1">T3 Registration</label>
-		</languageKey>
-	</data>
+  <meta type="array">
+    <type>database</type>
+    <description>Language labels for database tables/fields belonging to extension 't3registration'</description>
+  </meta>
+  <data type="array">
+    <languageKey index="default" type="array">
+      <label index="tt_content.list_type_pi1">T3 Registration</label>
+      <label index="pi_flexform.sheet_general">General</label>
+      <label index="pi_flexform.sheet_template">Template</label>
+      <label index="pi_flexform.sheet_fields">Fields</label>
+      <label index="pi_flexform.sheet_configuration">Configuration</label>
+
+
+      <label index="pi_flexform.displayMode">Display mode:</label>
+      <label index="pi_flexform.displayMode.default">Default</label>
+      <label index="pi_flexform.displayMode.subscription">Subscription</label>
+      <label index="pi_flexform.displayMode.update">Update</label>
+      <label index="pi_flexform.displayMode.confirmation">Confirmation</label>
+      <label index="pi_flexform.displayMode.delete">Delete</label>
+      <label index="pi_flexform.displayMode.login">Login</label>
+      <label index="pi_flexform.displayMode.forgetPassword">Forget password</label>
+
+      <label index="pi_flexform.template.templateFile">Template File:</label>
+    </languageKey>
+    <languageKey index="it" type="array">
+      <label index="tt_content.list_type_pi1">T3 Registration</label>
+      <label index="pi_flexform.sheet_general">Generale</label>
+      <label index="pi_flexform.sheet_template">Template</label>
+      <label index="pi_flexform.sheet_fields">Campi</label>
+      <label index="pi_flexform.sheet_configuration">Configurazione</label>
+
+
+      <label index="pi_flexform.displayMode">Tipo di visualizzazione:</label>
+      <label index="pi_flexform.displayMode.default">Default</label>
+      <label index="pi_flexform.displayMode.subscription">Iscrizione</label>
+      <label index="pi_flexform.displayMode.update">Aggiornamento</label>
+      <label index="pi_flexform.displayMode.confirmation">Conferma</label>
+      <label index="pi_flexform.displayMode.delete">Cancellazione</label>
+      <label index="pi_flexform.displayMode.login">Login</label>
+      <label index="pi_flexform.displayMode.forgetPassword">Password dimenticata</label>
+
+      <label index="pi_flexform.template.templateFile">File per il template:</label>
+    </languageKey>
+  </data>
 </T3locallang>

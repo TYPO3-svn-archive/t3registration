@@ -37,7 +37,7 @@
  * @author  Federico Bernardin <federico@bernardin.it>
  * @package TYPO3
  * @subpackage  tx_t3registration
- * @version $Id:$
+ * @version $Id$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class  tx_t3registration_ajax {
@@ -48,7 +48,14 @@ class  tx_t3registration_ajax {
             array('uid' => 2, 'username' => 'federico1', 'password' => 'test1'),
             array('uid' => 3, 'username' => 'federico2', 'password' => 'test2'),
         );
-        $ajaxObject->addContent('data',$test);
+        //debug($_GET);
+        $test = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,username,password','fe_users','pid=' . t3lib_div::_GP('folder') . ' AND disable = 0 AND deleted = 0');
+        //debug($GLOBALS['TYPO3_DB']->SELECTquery('uid,username,password','fe_users','pid=' . t3lib_div::_GP('id')));
+        while ($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($test)){
+            $list[] = $row;
+        }
+        //debug($test);
+        $ajaxObject->addContent('data',$list);
         $ajaxObject->setContentFormat('json');
     }
 

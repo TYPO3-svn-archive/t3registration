@@ -111,6 +111,12 @@ class  tx_t3registration_userManagement extends t3lib_SCbase {
               // Draw the form
             $this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
 
+            /*
+             * Variable JS definition
+             */
+            $folder = (intval(t3lib_div::_GP('id'))) ? 'var folder = ' . intval(t3lib_div::_GP('id')) : '';
+
+
               // JavaScript
             $this->doc->JScode = '
               <script language="javascript" type="text/javascript">
@@ -118,6 +124,8 @@ class  tx_t3registration_userManagement extends t3lib_SCbase {
                 function jumpToUrl(URL)	{
                   document.location = URL;
                 }
+
+                ' . $folder . '
               </script>';
             $this->doc->JScodeLibArray['test'] = '<script src="' .t3lib_extMgm::extRelPath('t3registration') . 'userManagement/Resources/javascripts/test.js" language="javascript" type="text/javascript"></script>';
             /*$this->doc->extJScode = '
