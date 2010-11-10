@@ -29,6 +29,7 @@ Ext.ns('T3Registration');
 
 T3Registration.CheckboxWithField = function(conf){
     var defaultValues = [false,''];
+    var vtype = conf.vtype;
     Ext.apply(defaultValues,conf.defaultValues || []);
     var label = conf.label || '';
     var config = {
@@ -79,6 +80,7 @@ T3Registration.CheckboxWithField = function(conf){
                         }
                      },
                     disabled: !defaultValues[0],
+                    vtype: vtype,
                     xtype: 'textfield',
                     width: 150,
                     value: defaultValues[1]
@@ -89,4 +91,8 @@ T3Registration.CheckboxWithField = function(conf){
     T3Registration.CheckboxWithField.superclass.constructor.call(this, config);
 }
 
-Ext.extend(T3Registration.CheckboxWithField,Ext.Panel,{});
+Ext.extend(T3Registration.CheckboxWithField,Ext.Panel,{
+    isValid: function(){
+        return this.items.items[1].items.items[0].isValid();
+    }
+});

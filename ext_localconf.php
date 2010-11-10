@@ -6,5 +6,7 @@ if (!defined ('TYPO3_MODE')) {
 
 t3lib_extMgm::addPItoST43($_EXTKEY, 'pi1/class.tx_t3registration_pi1.php', '_pi1', 'list_type', 0);
 
+$TYPO3_CONF_VARS['FE']['eID_include']['t3registration'] = 'EXT:' . $_EXTKEY . '/library/classes/eid/class.tx_t3registration_eid.php';
+
 $TYPO3_CONF_VARS['BE']['AJAX']['tx_t3registration::getuser'] = 'EXT:t3registration/userManagement/ajax.php:tx_t3registration_ajax->main';
 ?>

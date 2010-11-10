@@ -28,81 +28,115 @@
 Ext.ns('T3Registration');
 
 T3Registration.FieldsManager = function(conf){
+    //define the configuration data
     config = {
-        title: 'FieldsList',
-        id: 'PanelContainer',
-        closeTabTitle: 'Chiusura',
-        closeTabText: 'Siete sicuri di voler elimanre il campo?',
-        resizeTabs:true, // turn on tab resizing
+        resizeTabs:true,
         minTabWidth: 115,
         tabWidth:135,
         enableTabScroll:true,
         width:600,
         height:300,
         defaults: {autoScroll:true},
-        tbar: {
+        tbar: { //toolbar for adding a new tab
             items: [ {
-                text: 'Add',
-                iconCls: 't3-icon-actions t3-icon-actions-document t3-icon-document-new',
+                text: translateObject.addButtonTitle, //title for the tab
                 handler: function(button,event) {
-             // Prompt for user data:
-                Ext.Msg.prompt('Name', 'Please enter your name:', function(btn, text){
-                    if (btn == 'ok'){
-                        // process text value...
-                        button.ownerCt.ownerCt.add(new T3Registration.Tab({title: text})).show();
-                        Ext.getCmp('PanelContainer').doLayout();
-                    }
-                });
+                    Ext.Msg.prompt(translateObject.msgboxAddPanelTitle, translateObject.msgboxAddPanelTitle, function(btn, text){
+                        if (btn == 'ok'){
+                            var tabsList = button.ownerCt.ownerCt.items.items;
+                            var errorText = '';
+                            for(var i=0; i < tabsList.length; i++){
+                                if (tabsList[i].title == text){
+                                    errorText = translateObject.errorDuplicateTitle;
+                                    break;
+                                }
+                            }
+                            if (text.length == 0){
+                                errorText = translateObject.errorEmptyPanelTitle;
+                            }
+                            if (errorText.length > 0){
 
+                                Ext.Msg.show({title: translateObject.errorTitle,msg: errorText,buttons: Ext.MessageBox.OK,icon: Ext.MessageBox.ERROR});
+                            }
+                            else {
+                                //create a new tab
+                                button.ownerCt.ownerCt.add(new T3Registration.Tab({title: text})).show();
+                                button.ownerCt.ownerCt.doLayout();
+                            }
+                        }
+                    });
                 }
             } ]
         }
     };
 
-
+    //Merge the config and conf array
     Ext.apply(config, conf || {});
+    //call the superclass constructor
     T3Registration.FieldsManager.superclass.constructor.call(this, config);
 }
 
+
+//extend the tab panel
 Ext.extend(T3Registration.FieldsManager,Ext.TabPanel,{
+    //default values object containig values for create the initialization data
     defaultValues: {},
+
+    /**
+     * This function initializes the configuration data like checks and check with fields
+     *
+     */
     init: function(){
-        console.log(this);
+        var lastTab = {};
+        //if you create a default configuration tab, you can set some check and fields with predefined values
         if (this.initialConfiguration){
             var defaultValues = {};
             for(key in this.initialConfiguration){
                 defaultValues[key] = {
-                    checks:{},
-                    fields:{}
+                    checks:{}, //list of checks
+                    fields:{} //list of checks with fields
                 };
                 for(var i = 0; i < this.initialConfiguration[key].length; i++){
                     var elementArray = this.initialConfiguration[key][i].split(';');
-                    if (elementArray.length > 1){
-                        //console.log(elementArray);
+                    if (elementArray.length > 1){ //if saved object is separated by semicolon the first parameter is true and the second one is the value
                         defaultValues[key].fields[elementArray[0]] = [];
                         defaultValues[key].fields[elementArray[0]][0] = true;
                         defaultValues[key].fields[elementArray[0]][1] = elementArray[1];
                     }
-                    else{
+                    else{ //if array is length 1 the value is check
                         defaultValues[key].checks[elementArray[0]] = true;
                     }
                 }
-                console.log(defaultValues[key]);
+                //save the last tab is activated
                 lastTab = this.add(new T3Registration.Tab({title: key,defaultValues:defaultValues[key]}));
             }
-            this.activate(lastTab);
+           if (lastTab.id)
+                this.activate(lastTab);
             this.doLayout();
         }
     }
 });
 
+
 Ext.onReady(function() {
     Ext.QuickTips.init();
+
+    Ext.apply(Ext.form.VTypes,{
+        hook: function(value, field)
+        {
+            return value.match(/w*->w*/);
+        },
+        hookText: translateObject.hookValidationErrorTitle
+    });
     var fields = new array();
     Ext.get('T3RegistrationFieldsManagerHidden').up('form').on('submit',function(e){
-        for(var i=0; i < Ext.getCmp('PanelContainer').items.items.length; i++){
-            var name = Ext.getCmp('PanelContainer').items.items[i].title;
-            var tab = Ext.getCmp('PanelContainer').items.items[i];
+        var validate = true;
+        //console.log(panelContainer.items.items.length);
+        for(var i=0; i < panelContainer.items.items.length; i++){
+            //console.log(panelContainer.items.items[i].isValid());
+            //console.log('iiiii');
+            var name = panelContainer.items.items[i].title;
+            var tab = panelContainer.items.items[i];
             fields[name] = [];
             //console.log(field[name]);
             var j=0;
@@ -119,18 +153,26 @@ Ext.onReady(function() {
                     j++
                 }
             }
+
+            if (!panelContainer.items.items[i].isValid()){
+                 validate = false;
+             }
         }
-        console.log(fields);
-        Ext.get('T3RegistrationFieldsManagerHidden').dom.setValue(Ext.util.JSON.encode(fields));
-        console.log(Ext.util.JSON.decode(Ext.get('T3RegistrationFieldsManagerHidden').getValue()));
-        //e.stopEvent();
+        if(validate){
+            Ext.get('T3RegistrationFieldsManagerHidden').dom.setValue(Ext.util.JSON.encode(fields));
+        }
+        else {
+            console.log('blocco');
+            e.stopEvent();
+        }
+
+
     });
 
                 var fieldsValue = {};
                 if (Ext.get('T3RegistrationFieldsManagerHidden').getValue().length > 0){
                     fieldsValue = Ext.util.JSON.decode(Ext.get('T3RegistrationFieldsManagerHidden').getValue());
                 }
-                console.log(fieldsValue);
                 panelContainer = new T3Registration.FieldsManager({initialConfiguration: fieldsValue});
                 panelContainer.init();
                 panelContainer.render('T3RegistrationFieldsManagerPlaceHolder');

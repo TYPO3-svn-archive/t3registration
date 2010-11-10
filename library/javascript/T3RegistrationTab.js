@@ -68,25 +68,25 @@ T3Registration.Tab = function(conf){
                        },
                        items:[
                                 {
-                                    boxLabel: 'Required',
+                                    boxLabel: translateObject.requiredTitle,
                                     checked: defaultValues.checks.required
                                 },
                                 {
-                                    boxLabel: 'Int',
+                                    boxLabel: translateObject.intTitle,
                                     checked: defaultValues.checks.int
                                 },{
-                                    boxLabel: 'Alfa',
+                                    boxLabel: translateObject.alfaTitle,
                                     checked: defaultValues.checks.alfa
                                 },
                                 {
-                                    boxLabel: 'Alfanum',
+                                    boxLabel: translateObject.alfanumTitle,
                                     checked: defaultValues.checks.alfanum
                                 },{
-                                    boxLabel: 'Trim',
+                                    boxLabel: translateObject.trimTitle,
                                     checked: defaultValues.checks.trim
                                 },
                                 {
-                                    boxLabel: 'Decimal',
+                                    boxLabel: translateObject.decimalTitle,
                                     checked: defaultValues.checks.decimal
                                 }
                               ]
@@ -100,18 +100,16 @@ T3Registration.Tab = function(conf){
                 items:[{
                             columnWidth:.5,
                             items:[
-                               new T3Registration.CheckboxWithField({
-                                   label:'date',defaultValues: defaultValues.fields.date}),
-                               new T3Registration.CheckboxWithField({label:'regExp',defaultValues: defaultValues.fields.regexp}),
-                               new T3Registration.CheckboxWithField({label:'saveInFlex',defaultValues: defaultValues.fields.saveinflex})
+                               new T3Registration.CheckboxWithField({label:translateObject.dateTitle,defaultValues: defaultValues.fields.date,vtype:''}),
+                               new T3Registration.CheckboxWithField({label:translateObject.regularExpressionTitle,defaultValues: defaultValues.fields.regexp,vtype:''}),
+                               new T3Registration.CheckboxWithField({label:translateObject.saveInFlexTitle,defaultValues: defaultValues.fields.saveinflex,vtype:''})
                             ]
                         },{
                             columnWidth:.5,
                             items:[
-                               new T3Registration.CheckboxWithField({
-                                   label:'minimum',defaultValues: defaultValues.fields.minimum}),
-                               new T3Registration.CheckboxWithField({label:'maximum',defaultValues: defaultValues.fields.maximum}),
-                               new T3Registration.CheckboxWithField({label:'hook',defaultValues: defaultValues.fields.hook})
+                               new T3Registration.CheckboxWithField({label:translateObject.minimumTitle,defaultValues: defaultValues.fields.minimum,vtype:''}),
+                               new T3Registration.CheckboxWithField({label:translateObject.maximumTitle,defaultValues: defaultValues.fields.maximum,vtype:''}),
+                               new T3Registration.CheckboxWithField({label:translateObject.hookTitle,defaultValues: defaultValues.fields.hook,vtype:'hook'})
                             ]
                         }
                        ]
@@ -136,8 +134,8 @@ Ext.extend(T3Registration.Tab,Ext.Panel,{
     listeners: {
         beforeClose: function(p){
         Ext.Msg.show({
-            title:p.ownerCt.closeTabTitle,
-            msg: p.ownerCt.closeTabText,
+            title:translateObject.msgboxClosePanelTitle,
+            msg: translateObject.msgboxClosePanelText,
             buttons: Ext.Msg.YESNO,
             fn: function(btn){
             if (btn == 'yes')
@@ -147,5 +145,16 @@ Ext.extend(T3Registration.Tab,Ext.Panel,{
          });
         return false;
         }
+    },
+    isValid: function(){
+        var bool = true;
+        //console.log(this.items.items[1].items.items);
+        for(var i = 0; i < this.items.items[1].items.items.length; i++){ //column 1,2
+            for(var j=0; j< this.items.items[1].items.items[i].items.items.length; j++){
+                bool = bool && this.items.items[1].items.items[i].items.items[j].isValid();
+                //console.log(this.items.items[1].items.items[i].items[j]);
+            }
+        }
+        return bool;
     }
 });
