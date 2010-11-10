@@ -48,6 +48,7 @@ T3Registration.Tab = function(conf){
     };
     Ext.apply(defaultValues,conf.defaultValues || {});
     config = {
+        forceLayout: true, //permits to rearrange object inside
         values: defaultValues,
         items: [
                    {
@@ -58,34 +59,40 @@ T3Registration.Tab = function(conf){
                            listeners:{
                                check: function(checkbox,checked){
                                     if (checked){
-                                        checkbox.ownerCt.ownerCt.ownerCt.ownerCt.values.checks[checkbox.boxLabel.toLowerCase()] = true;
+                                        checkbox.ownerCt.ownerCt.ownerCt.ownerCt.values.checks[checkbox.name.toLowerCase()] = true;
                                     }
                                     else {
-                                        checkbox.ownerCt.ownerCt.ownerCt.ownerCt.values.checks[checkbox.boxLabel.toLowerCase()] = false;
+                                        checkbox.ownerCt.ownerCt.ownerCt.ownerCt.values.checks[checkbox.name.toLowerCase()] = false;
                                     }
                                }
                             }
                        },
                        items:[
                                 {
+                                    name: 'required',
                                     boxLabel: translateObject.requiredTitle,
                                     checked: defaultValues.checks.required
                                 },
                                 {
+                                    name: 'int',
                                     boxLabel: translateObject.intTitle,
                                     checked: defaultValues.checks.int
                                 },{
+                                    name: 'alfa',
                                     boxLabel: translateObject.alfaTitle,
                                     checked: defaultValues.checks.alfa
                                 },
                                 {
+                                    name: 'alfanum',
                                     boxLabel: translateObject.alfanumTitle,
                                     checked: defaultValues.checks.alfanum
                                 },{
+                                    name: 'trim',
                                     boxLabel: translateObject.trimTitle,
                                     checked: defaultValues.checks.trim
                                 },
                                 {
+                                    name: 'decimal',
                                     boxLabel: translateObject.decimalTitle,
                                     checked: defaultValues.checks.decimal
                                 }
@@ -100,16 +107,16 @@ T3Registration.Tab = function(conf){
                 items:[{
                             columnWidth:.5,
                             items:[
-                               new T3Registration.CheckboxWithField({label:translateObject.dateTitle,defaultValues: defaultValues.fields.date,vtype:''}),
-                               new T3Registration.CheckboxWithField({label:translateObject.regularExpressionTitle,defaultValues: defaultValues.fields.regexp,vtype:''}),
-                               new T3Registration.CheckboxWithField({label:translateObject.saveInFlexTitle,defaultValues: defaultValues.fields.saveinflex,vtype:''})
+                               new T3Registration.CheckboxWithField({name:'date', label:translateObject.dateTitle,defaultValues: defaultValues.fields.date,vtype:''}),
+                               new T3Registration.CheckboxWithField({name:'regexp', label:translateObject.regularExpressionTitle,defaultValues: defaultValues.fields.regexp,vtype:''}),
+                               new T3Registration.CheckboxWithField({name:'saveinflex', label:translateObject.saveInFlexTitle,defaultValues: defaultValues.fields.saveinflex,vtype:''})
                             ]
                         },{
                             columnWidth:.5,
                             items:[
-                               new T3Registration.CheckboxWithField({label:translateObject.minimumTitle,defaultValues: defaultValues.fields.minimum,vtype:''}),
-                               new T3Registration.CheckboxWithField({label:translateObject.maximumTitle,defaultValues: defaultValues.fields.maximum,vtype:''}),
-                               new T3Registration.CheckboxWithField({label:translateObject.hookTitle,defaultValues: defaultValues.fields.hook,vtype:'hook'})
+                               new T3Registration.CheckboxWithField({name:'minimum', label:translateObject.minimumTitle,defaultValues: defaultValues.fields.minimum,vtype:''}),
+                               new T3Registration.CheckboxWithField({name:'maximum', label:translateObject.maximumTitle,defaultValues: defaultValues.fields.maximum,vtype:''}),
+                               new T3Registration.CheckboxWithField({name:'hook', label:translateObject.hookTitle,defaultValues: defaultValues.fields.hook,vtype:'hook'})
                             ]
                         }
                        ]
@@ -118,6 +125,7 @@ T3Registration.Tab = function(conf){
     };
     Ext.apply(config, conf || {});
     T3Registration.Tab.superclass.constructor.call(this, config);
+    this.doLayout();
 }
 
 Ext.extend(T3Registration.Tab,Ext.Panel,{

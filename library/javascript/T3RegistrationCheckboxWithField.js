@@ -53,11 +53,11 @@ T3Registration.CheckboxWithField = function(conf){
                            listeners:{
                                check: function(checkbox,checked){
                                     if (checked){
-                                        checkbox.ownerCt.ownerCt.ownerCt.ownerCt.ownerCt.values.fields[checkbox.boxLabel.toLowerCase()][0] = true;
+                                        checkbox.ownerCt.ownerCt.ownerCt.ownerCt.ownerCt.values.fields[checkbox.ownerCt.ownerCt.name.toLowerCase()][0] = true;
                                         checkbox.ownerCt.ownerCt.items.items[1].items.items[0].enable();
                                     }
                                     else {
-                                        checkbox.ownerCt.ownerCt.ownerCt.ownerCt.ownerCt.values.fields[checkbox.boxLabel.toLowerCase()][0] = false;
+                                        checkbox.ownerCt.ownerCt.ownerCt.ownerCt.ownerCt.values.fields[checkbox.name.toLowerCase()][0] = false;
                                         checkbox.ownerCt.ownerCt.items.items[1].items.items[0].disable();
                                     }
                                }
@@ -76,7 +76,7 @@ T3Registration.CheckboxWithField = function(conf){
                 items:[{
                         listeners:{
                         change: function(object){
-                                 object.ownerCt.ownerCt.ownerCt.ownerCt.ownerCt.values.fields[label.toLowerCase()][1] = this.getValue();
+                                 object.ownerCt.ownerCt.ownerCt.ownerCt.ownerCt.values.fields[checkbox.ownerCt.ownerCt.name.toLowerCase()][1] = this.getValue();
                         }
                      },
                     disabled: !defaultValues[0],

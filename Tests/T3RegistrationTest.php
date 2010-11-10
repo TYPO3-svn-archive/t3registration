@@ -14,7 +14,7 @@ class T3RegistrationTest extends tx_phpunit_testcase {
         $fixture = array();
 
         // Assert that the size of the Array fixture is 0.
-        $this->assertEquals(4, sizeof($fixture));
+        $this->assertEquals(0, sizeof($fixture));
     }
 }
 ?>

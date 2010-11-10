@@ -23,6 +23,22 @@
       <label index="pi_flexform.displayMode.forgetPassword">Forget password</label>
 
       <label index="pi_flexform.template.templateFile">Template File:</label>
+
+      <label index="pi_flexform.fieldsManager">Fields list:</label>
+      <label index="pi_flexform.useEmailAsUsername">Use email field as username (unique)</label>
+
+      <label index="pi_flexform.confirmationPage">Confirmation page</label>
+      <label index="pi_flexform.groupAssociationMode">Field containing groups user belongs to</label>
+      <label index="pi_flexform.emailFormatInHTML">User communication email in HTML format</label>
+      <label index="pi_flexform.confirmationProcessMode">Confirmation process</label>
+      <label index="pi_flexform.confirmationProcessMode.none">No confirmation</label>
+      <label index="pi_flexform.confirmationProcessMode.user">User confirmation</label>
+      <label index="pi_flexform.confirmationProcessMode.admin">Administrator confirmation</label>
+      <label index="pi_flexform.senderEmail">Sender email address</label>
+      <label index="pi_flexform.senderName">Sender name</label>
+      <label index="pi_flexform.adminEmail">Administrator email address</label>
+      <label index="pi_flexform.groupOnConfirmation">Associated group after confirmation</label>
+    <label index="pi_flexform.groupOnRegistration">Associated group after registration</label>
     </languageKey>
     <languageKey index="it" type="array">
       <label index="tt_content.list_type_pi1">T3 Registration</label>
@@ -42,6 +58,22 @@
       <label index="pi_flexform.displayMode.forgetPassword">Password dimenticata</label>
 
       <label index="pi_flexform.template.templateFile">File per il template:</label>
+
+      <label index="pi_flexform.fieldsManager">Lista dei campi:</label>
+      <label index="pi_flexform.useEmailAsUsername">Usa l'email come username</label>
+
+      <label index="pi_flexform.confirmationPage">Pagina di conferma:</label>
+      <label index="pi_flexform.groupAssociationMode">Campo da cui recuperare la lista dei gruppi in cui salvare l'utente:</label>
+      <label index="pi_flexform.emailFormatInHTML">Mail per le comunicazioni con l'utente in HTML</label>
+    <label index="pi_flexform.confirmationProcessMode">Processo di conferma</label>
+      <label index="pi_flexform.confirmationProcessMode.none">Nessuna conferma</label>
+      <label index="pi_flexform.confirmationProcessMode.user">Conferma da parte dell'utente</label>
+      <label index="pi_flexform.confirmationProcessMode.admin">Conferma da parte dell'amministratore</label>
+      <label index="pi_flexform.senderEmail">Indirizzo del mittente</label>
+      <label index="pi_flexform.senderName">Nome del mittente</label>
+      <label index="pi_flexform.adminEmail">indirizzo dell'amministratore</label>
+      <label index="pi_flexform.groupOnConfirmation">Gruppo associato dopo la conferma</label>
+    <label index="pi_flexform.groupOnRegistration">Gruppo associato dopo la registrazione</label>
     </languageKey>
   </data>
 </T3locallang>

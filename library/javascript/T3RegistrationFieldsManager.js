@@ -62,6 +62,7 @@ T3Registration.FieldsManager = function(conf){
                                 //create a new tab
                                 button.ownerCt.ownerCt.add(new T3Registration.Tab({title: text})).show();
                                 button.ownerCt.ownerCt.doLayout();
+                                button.ownerCt.ownerCt.fireEvent('createField');
                             }
                         }
                     });
@@ -87,6 +88,7 @@ Ext.extend(T3Registration.FieldsManager,Ext.TabPanel,{
      *
      */
     init: function(){
+        this.addEvents('createField');
         var lastTab = {};
         //if you create a default configuration tab, you can set some check and fields with predefined values
         if (this.initialConfiguration){
@@ -112,10 +114,11 @@ Ext.extend(T3Registration.FieldsManager,Ext.TabPanel,{
             }
            if (lastTab.id)
                 this.activate(lastTab);
-            this.doLayout();
+           this.doLayout();
         }
     }
 });
+
 
 
 Ext.onReady(function() {
@@ -173,8 +176,9 @@ Ext.onReady(function() {
                 if (Ext.get('T3RegistrationFieldsManagerHidden').getValue().length > 0){
                     fieldsValue = Ext.util.JSON.decode(Ext.get('T3RegistrationFieldsManagerHidden').getValue());
                 }
-                panelContainer = new T3Registration.FieldsManager({initialConfiguration: fieldsValue});
+                var panelContainer = new T3Registration.FieldsManager({initialConfiguration: fieldsValue});
                 panelContainer.init();
                 panelContainer.render('T3RegistrationFieldsManagerPlaceHolder');
+
 
             });
