@@ -1,0 +1,8 @@
+plugin.tx_t3registration_pi1{
+    templateFile = EXT:t3registration/res/template/T3RegistrationTemplate.html
+    useEmailAsUsername = 0
+    confirmationProcessMode = 1
+    fields = username,password,email,name
+    groupAssociationMode = none
+    emailFormat = 1
+}

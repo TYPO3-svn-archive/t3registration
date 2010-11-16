@@ -136,7 +136,7 @@
     </el>
     </ROOT>
     </s_template>
-    <s_category>
+    <s_fields>
     <ROOT>
         <TCEforms>
             <sheetTitle>LLL:EXT:t3registration/locallang_db.xml:pi_flexform.sheet_fields</sheetTitle>
@@ -162,8 +162,8 @@
             </useEmailAsUsername>
         </el>
     </ROOT>
-    </s_category>
-    <s_misc>
+    </s_fields>
+    <s_configuration>
     <ROOT>
         <TCEforms>
             <sheetTitle>LLL:EXT:t3registration/locallang_db.xml:pi_flexform.sheet_configuration</sheetTitle>
@@ -283,6 +283,6 @@
         </groupOnRegistration>
         </el>
     </ROOT>
-    </s_misc>
+    </s_configuration>
 </sheets>
 </T3DataStructure>

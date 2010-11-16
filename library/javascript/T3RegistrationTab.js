@@ -46,7 +46,8 @@ T3Registration.Tab = function(conf){
             hook: [false,'']
         }
     };
-    Ext.apply(defaultValues,conf.defaultValues || {});
+    Ext.apply(defaultValues.checks,conf.defaultValues.checks || {});
+    Ext.apply(defaultValues.fields,conf.defaultValues.fields || {});
     config = {
         forceLayout: true, //permits to rearrange object inside
         values: defaultValues,

@@ -112,8 +112,6 @@ Ext.extend(T3Registration.FieldsManager,Ext.TabPanel,{
                 //save the last tab is activated
                 lastTab = this.add(new T3Registration.Tab({title: key,defaultValues:defaultValues[key]}));
             }
-           if (lastTab.id)
-                this.activate(lastTab);
            this.doLayout();
         }
     }
@@ -150,7 +148,7 @@ Ext.onReady(function() {
                 }
             }
             for(key in tab.values.fields){
-                //console.log(tab.values.fields[key]);
+                console.log(tab.values.fields[key]);
                 if (tab.values.fields[key][0]){
                     fields[name][j] = key + ';' + tab.values.fields[key][1];
                     j++

@@ -1,0 +1,8 @@
+plugin.tx_t3registration_pi1{
+    templateFile = {$plugin.tx_t3registration_pi1.templateFile}
+    useEmailAsUsername = {$plugin.tx_t3registration_pi1.useEmailAsUsername}
+    confirmationProcessMode = {$plugin.tx_t3registration_pi1.confirmationProcessMode}
+    fields = {$plugin.tx_t3registration_pi1.fields}
+    groupAssociationMode = {$plugin.tx_t3registration_pi1.groupAssociationMode}
+    emailFormat = {$plugin.tx_t3registration_pi1.emailFormat}
+}
