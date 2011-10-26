@@ -6,13 +6,13 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="title">T3 Registration</label>
+			<label index="title">T3Users</label>
 			<label index="function1">Function #1</label>
 			<label index="function2">Function #2</label>
 			<label index="function3">Function #3</label>
 		</languageKey>
 		<languageKey index="it" type="array">
-			<label index="title">T3 Registration</label>
+			<label index="title">T3Users</label>
 		</languageKey>
 	</data>
 </T3locallang>

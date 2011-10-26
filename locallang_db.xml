@@ -6,74 +6,65 @@
   </meta>
   <data type="array">
     <languageKey index="default" type="array">
-      <label index="tt_content.list_type_pi1">T3 Registration</label>
-      <label index="pi_flexform.sheet_general">General</label>
-      <label index="pi_flexform.sheet_template">Template</label>
-      <label index="pi_flexform.sheet_fields">Fields</label>
-      <label index="pi_flexform.sheet_configuration">Configuration</label>
+      <label index="fe_users.tx_t3registration_t3registration_privacy">Privacy</label>
+      <label index="fe_users.tx_t3registration_t3registration_marketing_permission">Marketing permission</label>
+      <label index="tt_content.list_type_pi1">Registration</label>
+
+      <label index="sheet.general">General</label>
+    <label index="sheet.fields">Fields</label>
+    <label index="sheet.template">Template</label>
 
 
-      <label index="pi_flexform.displayMode">Display mode:</label>
-      <label index="pi_flexform.displayMode.default">Default</label>
-      <label index="pi_flexform.displayMode.subscription">Subscription</label>
-      <label index="pi_flexform.displayMode.update">Update</label>
-      <label index="pi_flexform.displayMode.confirmation">Confirmation</label>
-      <label index="pi_flexform.displayMode.delete">Delete</label>
-      <label index="pi_flexform.displayMode.login">Login</label>
-      <label index="pi_flexform.displayMode.forgetPassword">Forget password</label>
+      <label index="action.title">View mode</label>
+      <label index="registration.userFolder">User folder</label>
+      <label index="registration.preUsergroup">Groups pre user registration</label>
+      <label index="registration.postUsergroup">Groups post user registration</label>
+      <label index="registration.passwordGeneration">Automatic password generation</label>
+      <label index="registration.autoLoginAfterConfirmation">Auto login after confirmation</label>
+      <label index="registration.approvalProcess">Approval process</label>
+      <label index="registration.adminApproval">Admin user approval</label>
+      <label index="registration.useAnotherTemplateInChangeProfileMode">Use a different template in change profile mode</label>
+      <label index="registration.doubleOptin">Double opt-in</label>
+      <label index="registration.contactEmailMode">Contact email mode (for confirmation, resend code, password forgotten, and so on)</label>
+      <label index="registration.contactEmailMode.mailtype.text">Text format</label>
+      <label index="registration.contactEmailMode.mailtype.html">HTML format</label>
+      <label index="registration.debuggingMode">Enable debugging/control mode</label>
+      <label index="action.registration">Registration</label>
+      <label index="action.confirmation">Confirmation</label>
+      <label index="action.delete">Delete</label>
+      <label index="action.edit">Edit</label>
+      <label index="action.auto">Automatic</label>
+<label index="field.database">Database field</label>
+<label index="field.free">Free field</label>
+      <label index="field.required">Required</label>
+      <label index="field.unique">Unique</label>
+      <label index="field.name">key</label><label index="field.fieldType">Field Type</label>
+      <label index="field.regexp">Regular expression</label>
+      <label index="field.hideInChangeProfileMode">Hide this field in change profile mode</label>
+      <label index="field.validator">Validation Types</label>
+      <label index="field.validator.string">String</label>
+      <label index="field.validator.int">Integer</label>
+      <label index="field.validator.alpha">Alpha</label>
+      <label index="field.validator.email">Email</label>
+      <label index="field.validator.password">Password</label>
+      <label index="field.validator.unique">Unique</label>
+      <label index="field.validator.uniqueInPid">Unique in Pid</label>
+      <label index="field.validator.required">Required</label>
+      <label index="field.validator.file">File</label>
+      <label index="field.validator.none">None</label>
 
-      <label index="pi_flexform.template.templateFile">Template File:</label>
+      <label index="sheet.email">Email</label>
+      <label index="emailFrom">Sender address</label>
+      <label index="emailFromName">Sender name</label>
+      <label index="emailAdmin">Administrators email (format: mail:name,mail2:name2)</label>
 
-      <label index="pi_flexform.fieldsManager">Fields list:</label>
-      <label index="pi_flexform.useEmailAsUsername">Use email field as username (unique)</label>
 
-      <label index="pi_flexform.confirmationPage">Confirmation page</label>
-      <label index="pi_flexform.groupAssociationMode">Field containing groups user belongs to</label>
-      <label index="pi_flexform.emailFormatInHTML">User communication email in HTML format</label>
-      <label index="pi_flexform.confirmationProcessMode">Confirmation process</label>
-      <label index="pi_flexform.confirmationProcessMode.none">No confirmation</label>
-      <label index="pi_flexform.confirmationProcessMode.user">User confirmation</label>
-      <label index="pi_flexform.confirmationProcessMode.admin">Administrator confirmation</label>
-      <label index="pi_flexform.senderEmail">Sender email address</label>
-      <label index="pi_flexform.senderName">Sender name</label>
-      <label index="pi_flexform.adminEmail">Administrator email address</label>
-      <label index="pi_flexform.groupOnConfirmation">Associated group after confirmation</label>
-    <label index="pi_flexform.groupOnRegistration">Associated group after registration</label>
+    <label index="mainTemplate">Template file</label>
     </languageKey>
     <languageKey index="it" type="array">
-      <label index="tt_content.list_type_pi1">T3 Registration</label>
-      <label index="pi_flexform.sheet_general">Generale</label>
-      <label index="pi_flexform.sheet_template">Template</label>
-      <label index="pi_flexform.sheet_fields">Campi</label>
-      <label index="pi_flexform.sheet_configuration">Configurazione</label>
-
-
-      <label index="pi_flexform.displayMode">Tipo di visualizzazione:</label>
-      <label index="pi_flexform.displayMode.default">Default</label>
-      <label index="pi_flexform.displayMode.subscription">Iscrizione</label>
-      <label index="pi_flexform.displayMode.update">Aggiornamento</label>
-      <label index="pi_flexform.displayMode.confirmation">Conferma</label>
-      <label index="pi_flexform.displayMode.delete">Cancellazione</label>
-      <label index="pi_flexform.displayMode.login">Login</label>
-      <label index="pi_flexform.displayMode.forgetPassword">Password dimenticata</label>
-
-      <label index="pi_flexform.template.templateFile">File per il template:</label>
-
-      <label index="pi_flexform.fieldsManager">Lista dei campi:</label>
-      <label index="pi_flexform.useEmailAsUsername">Usa l'email come username</label>
-
-      <label index="pi_flexform.confirmationPage">Pagina di conferma:</label>
-      <label index="pi_flexform.groupAssociationMode">Campo da cui recuperare la lista dei gruppi in cui salvare l'utente:</label>
-      <label index="pi_flexform.emailFormatInHTML">Mail per le comunicazioni con l'utente in HTML</label>
-    <label index="pi_flexform.confirmationProcessMode">Processo di conferma</label>
-      <label index="pi_flexform.confirmationProcessMode.none">Nessuna conferma</label>
-      <label index="pi_flexform.confirmationProcessMode.user">Conferma da parte dell'utente</label>
-      <label index="pi_flexform.confirmationProcessMode.admin">Conferma da parte dell'amministratore</label>
-      <label index="pi_flexform.senderEmail">Indirizzo del mittente</label>
-      <label index="pi_flexform.senderName">Nome del mittente</label>
-      <label index="pi_flexform.adminEmail">indirizzo dell'amministratore</label>
-      <label index="pi_flexform.groupOnConfirmation">Gruppo associato dopo la conferma</label>
-    <label index="pi_flexform.groupOnRegistration">Gruppo associato dopo la registrazione</label>
+      <label index="fe_users.tx_t3registration_t3registration_privacy">Privacy</label>
+      <label index="fe_users.tx_t3registration_t3registration_marketing_permission">Consenso marketing</label>
+      <label index="tt_content.list_type_pi1">Registrazione</label>
     </languageKey>
   </data>
 </T3locallang>

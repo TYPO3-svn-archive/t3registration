@@ -6,6 +6,6 @@ $MCONF['script'] = '_DISPATCH';
 
 $MCONF['access'] = 'user,group';
 
-$MLANG['default']['tabs_images']['tab'] = '../t3registration.png';
+$MLANG['default']['tabs_images']['tab'] = 'moduleicon.gif';
 $MLANG['default']['ll_ref'] = 'LLL:EXT:t3registration/userManagement/locallang_mod.xml';
 ?>

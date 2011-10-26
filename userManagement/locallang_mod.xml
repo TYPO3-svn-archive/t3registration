@@ -6,14 +6,14 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="mlang_tabs_tab">T3 Registration</label>
-			<label index="mlang_labels_tabdescr">User management</label>
-			<label index="mlang_labels_tablabel">T3 Registration</label>
+			<label index="mlang_tabs_tab">T3Users</label>
+			<label index="mlang_labels_tabdescr">User management module</label>
+			<label index="mlang_labels_tablabel">T3Users</label>
 		</languageKey>
 		<languageKey index="it" type="array">
-			<label index="mlang_tabs_tab">T3 Registration</label>
-			<label index="mlang_labels_tabdescr">Gestione utenti</label>
-			<label index="mlang_labels_tablabel">T3 Registration</label>
+			<label index="mlang_tabs_tab">T3Users</label>
+			<label index="mlang_labels_tabdescr">Modulo per la gestione degli utenti</label>
+			<label index="mlang_labels_tablabel">T3Users</label>
 		</languageKey>
 	</data>
 </T3locallang>

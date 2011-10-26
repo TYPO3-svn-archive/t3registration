@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Federico Bernardin <federico@bernardin.it>
+*  (c) 2011 Federico Bernardin <federico@bernardin.it>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -36,13 +36,13 @@ $BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users
 
 
 /**
- * Module 'T3 Registration' for the 't3registration' extension.
+ * Module 'T3Users' for the 't3registration' extension.
  *
  * @author	Federico Bernardin <federico@bernardin.it>
  * @package	TYPO3
  * @subpackage	tx_t3registration
  */
-class  tx_t3registration_userManagement extends t3lib_SCbase {
+class  tx_t3registration_module1 extends t3lib_SCbase {
         var $pageinfo;
 
         /**
@@ -92,30 +92,16 @@ class  tx_t3registration_userManagement extends t3lib_SCbase {
           $this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
           $access = is_array($this->pageinfo) ? 1 : 0;
 
-
-
-
-
-
-
             // initialize doc
           $this->doc = t3lib_div::makeInstance('template');
           $this->doc->setModuleTemplate(t3lib_extMgm::extPath('t3registration') . 'userManagement/mod_template.html');
           $this->doc->backPath = $BACK_PATH;
           $docHeaderButtons = $this->getButtons();
 
-          $this->doc->getPageRenderer()->loadExtJS($css = TRUE, $theme = true);
-
           if (($this->id && $access) || ($BE_USER->user['admin'] && !$this->id))	{
 
               // Draw the form
             $this->doc->form = '<form action="" method="post" enctype="multipart/form-data">';
-
-            /*
-             * Variable JS definition
-             */
-            $folder = (intval(t3lib_div::_GP('id'))) ? 'var folder = ' . intval(t3lib_div::_GP('id')) : '';
-
 
               // JavaScript
             $this->doc->JScode = '
@@ -124,14 +110,8 @@ class  tx_t3registration_userManagement extends t3lib_SCbase {
                 function jumpToUrl(URL)	{
                   document.location = URL;
                 }
-
-                ' . $folder . '
-              </script>';
-            $this->doc->JScodeLibArray['test'] = '<script src="' .t3lib_extMgm::extRelPath('t3registration') . 'userManagement/Resources/javascripts/test.js" language="javascript" type="text/javascript"></script>';
-            /*$this->doc->extJScode = '
-            panel.applyTo = "panel";
-            ';*/
-
+              </script>
+            ';
             $this->doc->postCode='
               <script language="javascript" type="text/javascript">
                 script_ended = 1;
@@ -183,7 +163,7 @@ class  tx_t3registration_userManagement extends t3lib_SCbase {
                 <br />This is the GET/POST vars sent to the script:<br />'.
                 'GET:'.t3lib_div::view_array($_GET).'<br />'.
                 'POST:'.t3lib_div::view_array($_POST).'<br />'.
-                '<div id="panel"></div>';
+                '';
               $this->content.=$this->doc->section('Message #1:',$content,0,1);
             break;
             case 2:
@@ -237,7 +217,7 @@ if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/t3regis
 
 
 // Make instance:
-$SOBE = t3lib_div::makeInstance('tx_t3registration_userManagement');
+$SOBE = t3lib_div::makeInstance('tx_t3registration_module1');
 $SOBE->init();
 
 // Include files?
