@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+  <meta type="array">
+    <type>database</type>
+    <description>Language labels for database tables/fields belonging to extension 't3registration'</description>
+  </meta>
+  <data type="array">
+    <languageKey index="default" type="array">
+      <label index="fe_users.tx_t3registration_t3registration_privacy">Privacy</label>
+      <label index="fe_users.tx_t3registration_t3registration_marketing_permission">Marketing permission</label>
+      <label index="tt_content.list_type_pi1">Registration</label>
+
+      <label index="sheet.general">General</label>
+    <label index="sheet.fields">Fields</label>
+    <label index="sheet.template">Template</label>
+
+
+      <label index="action.title">View mode</label>
+      <label index="registration.userFolder">User folder</label>
+      <label index="registration.preUsergroup">Groups pre user registration</label>
+      <label index="registration.postUsergroup">Groups post user registration</label>
+      <label index="registration.passwordGeneration">Automatic password generation</label>
+      <label index="registration.autoLoginAfterConfirmation">Auto login after confirmation</label>
+      <label index="registration.approvalProcess">Approval process</label>
+      <label index="registration.adminApproval">Admin user approval</label>
+      <label index="registration.useAnotherTemplateInChangeProfileMode">Use a different template in change profile mode</label>
+      <label index="registration.doubleOptin">Double opt-in</label>
+      <label index="registration.contactEmailMode">Contact email mode (for confirmation, resend code, password forgotten, and so on)</label>
+      <label index="registration.contactEmailMode.mailtype.text">Text format</label>
+      <label index="registration.contactEmailMode.mailtype.html">HTML format</label>
+      <label index="registration.debuggingMode">Enable debugging/control mode</label>
+      <label index="action.registration">Registration</label>
+      <label index="action.confirmation">Confirmation</label>
+      <label index="action.delete">Delete</label>
+      <label index="action.edit">Edit</label>
+      <label index="action.auto">Automatic</label>
+<label index="field.database">Database field</label>
+<label index="field.free">Free field</label>
+      <label index="field.required">Required</label>
+      <label index="field.unique">Unique</label>
+      <label index="field.name">key</label><label index="field.fieldType">Field Type</label>
+      <label index="field.regexp">Regular expression</label>
+      <label index="field.hideInChangeProfileMode">Hide this field in change profile mode</label>
+      <label index="field.validator">Validation Types</label>
+      <label index="field.validator.string">String</label>
+      <label index="field.validator.int">Integer</label>
+      <label index="field.validator.alpha">Alpha</label>
+      <label index="field.validator.email">Email</label>
+      <label index="field.validator.password">Password</label>
+      <label index="field.validator.unique">Unique</label>
+      <label index="field.validator.uniqueInPid">Unique in Pid</label>
+      <label index="field.validator.required">Required</label>
+      <label index="field.validator.file">File</label>
+      <label index="field.validator.none">None</label>
+
+      <label index="sheet.email">Email</label>
+      <label index="emailFrom">Sender address</label>
+      <label index="emailFromName">Sender name</label>
+      <label index="emailAdmin">Administrators email (format: mail:name,mail2:name2)</label>
+
+
+    <label index="mainTemplate">Template file</label>
+    </languageKey>
+    <languageKey index="it" type="array">
+      <label index="fe_users.tx_t3registration_t3registration_privacy">Privacy</label>
+      <label index="fe_users.tx_t3registration_t3registration_marketing_permission">Consenso marketing</label>
+      <label index="tt_content.list_type_pi1">Registrazione</label>
+    </languageKey>
+  </data>
+</T3locallang>
