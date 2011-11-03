@@ -12,10 +12,16 @@ plugin.tx_t3registration_pi1{
     autoLoginAfterConfirmation = 0
     sendUserEmailAfterAuthorization = 0
 
+    #resend auth code with result
+    sendConfirmationObject.showNotFoundText = 0
+
     delete.deleteRow = 0
 
 
     fieldConfiguration.password.noHTMLEntities = 0
+
+    #form
+    form.resendConfirmationCode = 0
 
 
     approvalProcess = 0
@@ -27,6 +33,10 @@ plugin.tx_t3registration_pi1{
 
     usernameField = {$plugin.tx_t3registration_pi1.usernameField}
     siteUrl = {$plugin.tx_t3registration_pi1.siteUrl}
+
+    #PASSWORD Control
+    fieldConfiguration.password.config.evalHook = EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->checkPasswordTwice
+    fieldConfiguration.password.config.eval.add=hook
 
     #password twice configuration
     extra.passwordTwice = 1

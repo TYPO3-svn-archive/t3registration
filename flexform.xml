@@ -24,20 +24,20 @@
                                         <numIndex index="1">auto</numIndex>
                                     </numIndex>
                                     <numIndex index="1" type="array">
-                                        <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.registration</numIndex>
-                                        <numIndex index="1">registration</numIndex>
-                                    </numIndex>
-                                    <numIndex index="2" type="array">
                                         <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.confirmation</numIndex>
                                         <numIndex index="1">confirmation</numIndex>
                                     </numIndex>
-                                    <numIndex index="3" type="array">
+                                    <numIndex index="2" type="array">
                                         <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.edit</numIndex>
                                         <numIndex index="1">edit</numIndex>
                                     </numIndex>
-                                    <numIndex index="4" type="array">
+                                    <numIndex index="3" type="array">
                                         <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.delete</numIndex>
                                         <numIndex index="1">delete</numIndex>
+                                    </numIndex>
+                                    <numIndex index="4" type="array">
+                                        <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.sendConfirmationEmail</numIndex>
+                                        <numIndex index="1">sendConfirmationEmail</numIndex>
                                     </numIndex>
                                 </items>
                                 <maxitems>1</maxitems>
@@ -58,6 +58,19 @@
                         </config>
                     </TCEforms>
                 </userFolder>
+          <confirmationPage>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.confirmationPage</label>
+                        <config>
+                            <type>group</type>
+                            <internal_type>db</internal_type>
+                            <allowed>pages</allowed>
+                            <size>1</size>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+                    </TCEforms>
+                </confirmationPage>
 
                 <preUsergroup>
                     <TCEforms>
@@ -386,8 +399,12 @@
                                     <type>popup</type>
                                     <title>LLL:EXT:t3registration/locallang_db.xml:mainTemplate</title>
                                     <icon>link_popup.gif</icon>
-                                    <script>browse_links.php?act=page&amp;mode=wizard</script>
+                                    <script>browse_links.php?act=file&amp;mode=wizard</script>
                                     <JSopenParams>height=600,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+                  <params type="array">
+                    <blindLinkOptions>mail,spec,url,folder,page</blindLinkOptions>
+                                        <allowedExtensions>htm,html,tmpl</allowedExtensions>
+                  </params>
                                 </link>
                             </wizards>
                         </config>

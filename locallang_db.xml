@@ -29,11 +29,13 @@
       <label index="registration.contactEmailMode.mailtype.text">Text format</label>
       <label index="registration.contactEmailMode.mailtype.html">HTML format</label>
       <label index="registration.debuggingMode">Enable debugging/control mode</label>
+    <label index="registration.confirmationPage">Confirmation page</label>
       <label index="action.registration">Registration</label>
       <label index="action.confirmation">Confirmation</label>
       <label index="action.delete">Delete</label>
       <label index="action.edit">Edit</label>
       <label index="action.auto">Automatic</label>
+    <label index="action.sendConfirmationEmail">Send confirmation Email</label>
 <label index="field.database">Database field</label>
 <label index="field.free">Free field</label>
       <label index="field.required">Required</label>
