@@ -95,6 +95,13 @@
   <label index="confirmationAuthorizationText"><![CDATA[Dear Administrator confirmation for user ###FIRST_NAME### is complete.]]></label>
   <label index="confirmationAuthorizationEmailText"><![CDATA[Dear Administrator please confirm user request.<br />Click this link: ]]></label>
     <label index="deletionConfirmedText">Gentile utente sei stato cancellato dai nostri archivi.</label>
+    <label index="confirmationTextHtml">Gentile utente questa mail le è stata inviata per confermare la sua registrazione.</label>
+    <label index="confirmationAfterAuthorizationTextHmtl">Gentile utente le inviamo questa mail per confermarle la sua definitiva iscrizione alla nostra area riservata.</label>
+    <label index="confirmationAuthorizationEmailTextHtml">Gentile Amministratore le è stata inviata questa mail per autorizzare il Sig. ###FIRST_NAME### ###LAST_NAME###.</label>
+
+  <label index="sendConfirmationCode">Reinvia il codice</label>
+  <label index="sendConfirmationCodeTextUserNotFound">L'utente indicato non esiste, procedete con la registrazione.</label>
+  <label index="sendConfirmationCodeTextUserFound">Le è stata inviata una mail alla sua casella, dovrà cliccare sul link presente e confermarsi.</label>
 
 
     <!--MAIL-->
@@ -106,6 +113,9 @@
     <label index="authorizationLinkConfirmationText">Conferma la registrazione</label>
     <label index="deleteLinkConfirmationText">Conferma la cancellazione</label>
 
+    <label index="userMustBeLogged">L'utente deve essere aver effettuato il login</label>
+    <label index="confirmationLinkNotFound">This link not work, you have already confirmed or you are not subscribed</label>
+
 
 
 
@@ -113,6 +123,8 @@
     <label index="usernameIsNotCorrect">Username is not correctly configured. You have to defined in eval field: required and unique</label>
     <label index="usernameConfigurationError">Username not properly configured</label>
   <label index="usernameIsNotDefined">Username is not defined or usernameField is empty</label>
+
+  <label index="toResendConfirmationEmailText">Clicca qui per reinviare il codice di conferma.</label>
 
 
 
