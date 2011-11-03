@@ -19,6 +19,7 @@ class tx_t3registration_checkstatus{
     }
 
     public function main(){
+        $emailFormat = $this->parentObject->getMailFormat();
         $this->getTemplate();
         $this->getSubpart('T3REGISTRATION_FORM');
         $this->getSubpart('T3REGISTRATION_PREVIEW');
@@ -28,11 +29,24 @@ class tx_t3registration_checkstatus{
         $this->getSubpart('T3REGISTRATION_DELETE_CONFIRMATION');
         $this->getSubpart('T3REGISTRATION_ENDREGISTRATION');
         $this->getSubpart('T3REGISTRATION_ENDUPDATEPROFILE');
-        $this->getSubpart('T3REGISTRATION_CONFIRMATION_EMAIL_HTML');
-        $this->getSubpart('T3REGISTRATION_DELETE_EMAIL_HTML');
         $this->getSubpart('T3REGISTRATION_CONFIRMEDUSER');
         $this->getSubpart('T3REGISTRATION_CONFIRMEDAUTHORIZEDUSER');
         $this->getSubpart('T3REGISTRATION_CONFIRMEDONREDIRECT');
+        if($emailFormat & HTML){
+            $this->getSubpart('T3REGISTRATION_CONFIRMATION_EMAIL_HTML');
+            $this->getSubpart('T3REGISTRATION_DELETE_EMAIL_HTML');
+            $this->getSubpart('T3REGISTRATION_CONFIRMEDONADMINAPPROVAL_EMAIL_HTML');
+            $this->getSubpart('T3REGISTRATION_AUTHORIZATION_EMAIL_HTML');
+        }
+        if($emailFormat & TEXT){
+            $this->getSubpart('T3REGISTRATION_CONFIRMATION_EMAIL_TEXT');
+            $this->getSubpart('T3REGISTRATION_DELETE_EMAIL_TEXT');
+            $this->getSubpart('T3REGISTRATION_AUTHORIZATION_EMAIL_TEXT');
+            $this->getSubpart('T3REGISTRATION_CONFIRMEDONADMINAPPROVAL_EMAIL_TEXT');
+        }
+        $this->getSubpart('T3REGISTRATION_SENDCONFIRMATIONEMAIL_FORM','warning');
+        $this->getSubpart('T3REGISTRATION_SENDCONFIRMATIONEMAIL_TEXT','warning');
+
         $this->getMarkerSubPart();
         $this->checkMail();
         $this->evaluationCheck();
@@ -72,38 +86,40 @@ class tx_t3registration_checkstatus{
     private function checkMail(){
         if(t3lib_div::inList($this->configurationArray['approvalProcess'],'adminApproval')){
             if($this->configurationArray['emailAdmin'] ){
-                $adminEmailList = explode(',',$this->configurationArray['emailAdmin']);
-                foreach($adminEmailList as $email){
-                    $emailAdminTemp = explode(':',$email);
-                    if(count($emailAdminTemp) == 2){
-                        $emailAdmin[$emailAdminTemp[0]] = $emailAdminTemp[1];
-                    }
+                if(strstr($this->configurationArray['emailAdmin'],',') !== false){
+                    $adminEmailList = explode(',',$this->configurationArray['emailAdmin']);
+                    foreach($adminEmailList as $email){
+                        $emailAdminTemp = explode(':',$email);
+                        if(count($emailAdminTemp) == 2){
+                            $emailAdmin[$emailAdminTemp[0]] = $emailAdminTemp[1];
+                        }
 
+                    }
                 }
+                else{
+                    $emailAdmin[0] = $this->configurationArray['emailAdmin'];
+                }
+            }
+            if(is_array($emailAdmin)){
+                $this->setMessage($this->parentObject->pi_getLL('emailAddressCheckTitle'),$this->parentObject->pi_getLL('emailAddressCheckBody'),'ok');
             }
             else{
-                if($this->configurationArray['email.']['admin.']['email']){
-                    $emailAdmin[] = $this->configurationArray['email.']['admin.']['email'];
-                }
+                $this->setMessage($this->parentObject->pi_getLL('emailAddressCheckTitle'),$this->parentObject->pi_getLL('emailAddressCheckErrorBody'),'error');
             }
         }
-        if(is_array($emailAdmin)){
-            $this->setMessage($this->parentObject->pi_getLL('emailAddressCheckTitle'),$this->parentObject->pi_getLL('emailAddressCheckBody'),'ok');
-        }
-        else{
-            $this->setMessage($this->parentObject->pi_getLL('emailAddressCheckTitle'),$this->parentObject->pi_getLL('emailAddressCheckErrorBody'),'error');
-        }
-        if($this->configurationArray['emailFrom'] || $this->configurationArray['email.']['From.']['email']){
-            $this->setMessage($this->parentObject->pi_getLL('emailFromPresentTitle'),$this->parentObject->pi_getLL('emailFromPresentBody'),'ok');
-        }
-        else{
-            $this->setMessage($this->parentObject->pi_getLL('emailFromPresentTitle'),$this->parentObject->pi_getLL('emailFromPresentErrorBody'),'error');
-        }
-        if($this->configurationArray['emailFromName'] || $this->configurationArray['email.']['From.']['name']){
-            $this->setMessage($this->parentObject->pi_getLL('emailFromNamePresentTitle'),$this->parentObject->pi_getLL('emailFromNamePresentBody'),'ok');
-        }
-        else{
-            $this->setMessage($this->parentObject->pi_getLL('emailFromNamePresentTitle'),$this->parentObject->pi_getLL('emailFromNamePresentErrorBody'),'error');
+        if(t3lib_div::inList($this->configurationArray['approvalProcess'],'doubleOptin')){
+            if($this->configurationArray['emailFrom'] || $this->configurationArray['email.']['From.']['email']){
+                $this->setMessage($this->parentObject->pi_getLL('emailFromPresentTitle'),$this->parentObject->pi_getLL('emailFromPresentBody'),'ok');
+            }
+            else{
+                $this->setMessage($this->parentObject->pi_getLL('emailFromPresentTitle'),$this->parentObject->pi_getLL('emailFromPresentErrorBody'),'error');
+            }
+            if($this->configurationArray['emailFromName'] || $this->configurationArray['email.']['From.']['name']){
+                $this->setMessage($this->parentObject->pi_getLL('emailFromNamePresentTitle'),$this->parentObject->pi_getLL('emailFromNamePresentBody'),'ok');
+            }
+            else{
+                $this->setMessage($this->parentObject->pi_getLL('emailFromNamePresentTitle'),$this->parentObject->pi_getLL('emailFromNamePresentErrorBody'),'error');
+            }
         }
     }
 
@@ -118,13 +134,13 @@ class tx_t3registration_checkstatus{
         }
     }
 
-    private function getSubpart($markers){
+    private function getSubpart($markers,$errorClass = 'error'){
         $subpart = $this->cObj->getSubpart($this->content,$markers);
         if($subpart){
             $this->setMessage(sprintf($this->parentObject->pi_getLL('templateSubpartFoundTitle'),$markers),$this->parentObject->pi_getLL('templateSubpartFound'),'ok');
         }
         else{
-            $this->setMessage(sprintf($this->parentObject->pi_getLL('templateSubpartFoundTitle'),$markers),$this->parentObject->pi_getLL('templateSubpartNotFound'),'error');
+            $this->setMessage(sprintf($this->parentObject->pi_getLL('templateSubpartFoundTitle'),$markers),$this->parentObject->pi_getLL('templateSubpartNotFound'),$errorClass);
         }
     }
 
