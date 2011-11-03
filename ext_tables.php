@@ -55,7 +55,7 @@ $TCA['tt_content']['types']['list']['subtypes_excludelist'][$_EXTKEY.'_pi1']='la
 t3lib_extMgm::addPlugin(array(
   'LLL:EXT:t3registration/locallang_db.xml:tt_content.list_type_pi1',
   $_EXTKEY . '_pi1',
-  t3lib_extMgm::extRelPath($_EXTKEY) . 'ext_icon.gif'
+  t3lib_extMgm::extRelPath($_EXTKEY) . 't3registration.gif'
 ),'list_type');
 
 
@@ -70,11 +70,11 @@ if (TYPO3_MODE == 'BE') {
 }
 
 
-if (TYPO3_MODE == 'BE') {
+/*if (TYPO3_MODE == 'BE') {
   t3lib_extMgm::addModulePath('web_txt3registrationM1', t3lib_extMgm::extPath($_EXTKEY) . 'userManagement/');
 
   t3lib_extMgm::addModule('web', 'txt3registrationM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'userManagement/');
-}
+}*/
 
 t3lib_extMgm::addStaticFile($_EXTKEY,'static/t3registration_settings/', 't3registration settings');
 ?>
