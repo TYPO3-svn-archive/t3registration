@@ -21,7 +21,7 @@ class tx_t3registration_hooks{
     }
 
     public function checkPasswordTwice($params,&$pObj){
-        if(!isset($pObj->piVars['extra.']['passwordtwice']) || !$pObj->conf['extra.']['passwordTwice']){
+        if(!isset($pObj->conf['extra.']['passwordTwice']) || !$pObj->conf['extra.']['passwordTwice']){
             $pObj->errorArray['error'][$pObj->conf['extra.']['passwordTwiceField']] = true;
             return true;
         }
