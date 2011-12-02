@@ -1,0 +1,465 @@
+<T3DataStructure>
+  <meta>
+    <langDisable>1</langDisable>
+    <!--  <langChildren>1</langChildren>!-->
+        </meta>
+    <sheets>
+
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:t3registration/locallang_db.xml:sheet.general</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+
+                    <showtype>
+                        <TCEforms>
+                            <label>LLL:EXT:t3registration/locallang_db.xml:action.title</label>
+                            <config>
+                                <type>select</type>
+                                <items type="array">
+                                    <numIndex index="0" type="array">
+                                        <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.auto</numIndex>
+                                        <numIndex index="1">auto</numIndex>
+                                    </numIndex>
+                                    <numIndex index="1" type="array">
+                                        <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.confirmation</numIndex>
+                                        <numIndex index="1">confirmation</numIndex>
+                                    </numIndex>
+                                    <numIndex index="2" type="array">
+                                        <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.edit</numIndex>
+                                        <numIndex index="1">edit</numIndex>
+                                    </numIndex>
+                                    <numIndex index="3" type="array">
+                                        <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.delete</numIndex>
+                                        <numIndex index="1">delete</numIndex>
+                                    </numIndex>
+                                    <numIndex index="4" type="array">
+                                        <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:action.sendConfirmationEmail</numIndex>
+                                        <numIndex index="1">sendConfirmationEmail</numIndex>
+                                    </numIndex>
+                                </items>
+                                <maxitems>1</maxitems>
+                                <size>1</size>
+                            </config>
+                        </TCEforms>
+                    </showtype>
+          <userFolder>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.userFolder</label>
+                        <config>
+                            <type>group</type>
+                            <internal_type>db</internal_type>
+                            <allowed>pages</allowed>
+                            <size>1</size>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+                    </TCEforms>
+                </userFolder>
+          <confirmationPage>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.confirmationPage</label>
+                        <config>
+                            <type>group</type>
+                            <internal_type>db</internal_type>
+                            <allowed>pages</allowed>
+                            <size>1</size>
+                            <maxitems>1</maxitems>
+                            <minitems>0</minitems>
+                        </config>
+                    </TCEforms>
+                </confirmationPage>
+
+                <preUsergroup>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.preUsergroup</label>
+                        <config>
+                            <type>select</type>
+                            <size>3</size>
+                            <autoSizeMax>5</autoSizeMax>
+                            <minitems>0</minitems>
+                            <maxitems>100</maxitems>
+                            <selectedListStyle>width:250px</selectedListStyle>
+                            <itemListStyle>width:250px</itemListStyle>
+                            <foreign_table>fe_groups</foreign_table>
+                            <allowNonIdValues>1</allowNonIdValues>
+                        </config>
+                    </TCEforms>
+                </preUsergroup>
+
+                <postUsergroup>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.postUsergroup</label>
+                        <config>
+                            <type>select</type>
+                            <size>3</size>
+                            <autoSizeMax>5</autoSizeMax>
+                            <minitems>0</minitems>
+                            <maxitems>100</maxitems>
+                            <selectedListStyle>width:250px</selectedListStyle>
+                            <itemListStyle>width:250px</itemListStyle>
+                            <foreign_table>fe_groups</foreign_table>
+                            <allowNonIdValues>1</allowNonIdValues>
+                        </config>
+                    </TCEforms>
+                </postUsergroup>
+
+                <passwordGeneration>
+                    <TCEforms>
+                        <label>
+                            LLL:EXT:t3registration/locallang_db.xml:registration.passwordGeneration
+                        </label>
+                        <config>
+                            <type>check</type>
+                        </config>
+                    </TCEforms>
+                </passwordGeneration>
+
+                <autoLoginAfterConfirmation>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.autoLoginAfterConfirmation</label>
+                        <config>
+                            <type>check</type>
+                        </config>
+                    </TCEforms>
+                </autoLoginAfterConfirmation>
+
+                <approvalProcess>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.approvalProcess</label>
+                        <config>
+                            <type>select</type>
+                            <size>3</size>
+                            <autoSizeMax>5</autoSizeMax>
+                            <minitems>0</minitems>
+                            <maxitems>3</maxitems>
+                            <selectedListStyle>width:250px</selectedListStyle>
+                            <itemListStyle>width:250px</itemListStyle>
+                            <allowNonIdValues>1</allowNonIdValues>
+                            <items type="array">
+                                <numIndex index="0" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:registration.adminApproval</numIndex>
+                                    <numIndex index="1">adminApproval</numIndex>
+                                </numIndex>
+                                <numIndex index="1" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:registration.doubleOptin</numIndex>
+                                    <numIndex index="1">doubleOptin</numIndex>
+                                </numIndex>
+                            </items>
+                        </config>
+                    </TCEforms>
+                </approvalProcess>
+
+                <contactEmailMode>
+                  <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.contactEmailMode</label>
+                        <config>
+                            <type>select</type>
+                            <size>3</size>
+                            <autoSizeMax>5</autoSizeMax>
+                            <minitems>0</minitems>
+                            <maxitems>2</maxitems>
+                            <selectedListStyle>width:250px</selectedListStyle>
+                            <itemListStyle>width:250px</itemListStyle>
+                            <allowNonIdValues>1</allowNonIdValues>
+                            <items type="array">
+                                <numIndex index="0" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:registration.contactEmailMode.mailtype.text</numIndex>
+                                    <numIndex index="1">text</numIndex>
+                                </numIndex>
+                                <numIndex index="1" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:registration.contactEmailMode.mailtype.html</numIndex>
+                                    <numIndex index="1">html</numIndex>
+                                </numIndex>
+                            </items>
+                        </config>
+                    </TCEforms>
+                </contactEmailMode>
+
+                    <debuggingMode>
+                        <TCEforms>
+                            <label>
+                                LLL:EXT:t3registration/locallang_db.xml:registration.debuggingMode
+                            </label>
+                            <config>
+                                <type>check</type>
+                            </config>
+                        </TCEforms>
+                    </debuggingMode>
+
+
+                </el>
+            </ROOT>
+        </sDEF>
+        <fieldsSheet>
+            <ROOT>
+              <TCEforms>
+                    <sheetTitle>LLL:EXT:t3registration/locallang_db.xml:sheet.fields</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                  <fields>
+                        <section>1</section>
+                        <type>array</type>
+                        <el>
+                            <databaseField>
+                                <tx_templavoila type="array">
+                                    <title>LLL:EXT:t3registration/locallang_db.xml:field.database</title>
+                                </tx_templavoila>
+                                <type>array</type>
+                                <el>
+                                    <field>
+                                        <TCEforms>
+                                            <label>LLL:EXT:t3registration/locallang_db.xml:field.fieldType</label>
+                                            <config>
+                                                <type>select</type>
+                                                <minitems>0</minitems>
+                                                <maxitems>1</maxitems>
+                                                <size>1</size>
+                                                <itemsProcFunc>tx_t3registration_getFeUsersColumnNames->getFeUsersColumnNames</itemsProcFunc>
+                                                <allowNonIdValues>1</allowNonIdValues>
+                                            </config>
+                                        </TCEforms>
+                                    </field>
+                                    <name>
+                                        <TCEforms>
+                                            <label>LLL:EXT:t3registration/locallang_db.xml:field.name</label>
+                                            <config>
+                                                <type>input</type>
+                                            </config>
+                                        </TCEforms>
+                                    </name>
+                            <evaluation>
+                              <TCEforms>
+                                <label>LLL:EXT:t3registration/locallang_db.xml:field.validator</label>
+                                <config>
+                                  <type>select</type>
+                                  <items type="array">
+                                           <numIndex index="0" type="array">
+                                             <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.int</numIndex>
+                                             <numIndex index="1">int</numIndex>
+                                            </numIndex>
+                                            <numIndex index="1" type="array">
+                                             <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.alpha</numIndex>
+                                             <numIndex index="1">alpha</numIndex>
+                                           </numIndex>
+                                            <numIndex index="2" type="array">
+                                             <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.string</numIndex>
+                                             <numIndex index="1">string</numIndex>
+                                            </numIndex>
+                                            <numIndex index="3" type="array">
+                                             <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.email</numIndex>
+                                             <numIndex index="1">email</numIndex>
+                                            </numIndex>
+                                            <numIndex index="5" type="array">
+                                             <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.unique</numIndex>
+                                             <numIndex index="1">unique</numIndex>
+                                            </numIndex>
+                                            <numIndex index="6" type="array">
+                                             <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.uniqueInPid</numIndex>
+                                             <numIndex index="1">uniqueInPid</numIndex>
+                                            </numIndex>
+                                            <numIndex index="7" type="array">
+                                             <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.required</numIndex>
+                                             <numIndex index="1">required</numIndex>
+                                            </numIndex>
+                                         </items>
+                                                <size>3</size>
+                                                <autoSizeMax>5</autoSizeMax>
+                                                <minitems>0</minitems>
+                                                <maxitems>100</maxitems>
+                                                <selectedListStyle>width:250px;height:100px;</selectedListStyle>
+                                                <itemListStyle>width:250px;height:100px;</itemListStyle>
+                                </config>
+                              </TCEforms>
+                            </evaluation>
+                                    <regexp>
+                                        <TCEforms>
+                                            <label>LLL:EXT:t3registration/locallang_db.xml:field.regexp</label>
+                                            <config>
+                                                <type>input</type>
+                                            </config>
+                                        </TCEforms>
+                                    </regexp>
+                  <hideInChangeProfile>
+                                        <TCEforms>
+                                            <label>LLL:EXT:t3registration/locallang_db.xml:field.hideInChangeProfileMode</label>
+                                            <config>
+                                                <type>check</type>
+                                            </config>
+                                        </TCEforms>
+                                    </hideInChangeProfile>
+                                </el>
+                            </databaseField>
+                            <freeField>
+                                <tx_templavoila type="array">
+                                    <title>LLL:EXT:t3registration/locallang_db.xml:field.free</title>
+                                </tx_templavoila>
+                                <type>array</type>
+                                <el>
+
+                                    <name>
+                                        <TCEforms>
+                                            <label>LLL:EXT:t3registration/locallang_db.xml:field.name</label>
+                                            <config>
+                                                <type>input</type>
+                                                <eval>required</eval>
+                                            </config>
+                                        </TCEforms>
+                                    </name>
+
+                                    <evaluation>
+                    <TCEforms>
+                      <label>LLL:EXT:t3registration/locallang_db.xml:field.validator</label>
+                      <config>
+                        <type>select</type>
+                        <items type="array">
+                                 <numIndex index="0" type="array">
+                                   <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.int</numIndex>
+                                   <numIndex index="1">int</numIndex>
+                                  </numIndex>
+                                  <numIndex index="1" type="array">
+                                   <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.alpha</numIndex>
+                                   <numIndex index="1">alpha</numIndex>
+                                 </numIndex>
+                                  <numIndex index="2" type="array">
+                                   <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.string</numIndex>
+                                   <numIndex index="1">string</numIndex>
+                                  </numIndex>
+                                  <numIndex index="3" type="array">
+                                   <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.email</numIndex>
+                                   <numIndex index="1">email</numIndex>
+                                  </numIndex>
+                                  <numIndex index="5" type="array">
+                                   <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.unique</numIndex>
+                                   <numIndex index="1">unique</numIndex>
+                                  </numIndex>
+                                  <numIndex index="6" type="array">
+                                   <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.uniqueInPid</numIndex>
+                                   <numIndex index="1">uniqueInPid</numIndex>
+                                  </numIndex>
+                                  <numIndex index="7" type="array">
+                                   <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:field.validator.required</numIndex>
+                                   <numIndex index="1">required</numIndex>
+                                  </numIndex>
+                               </items>
+                                      <size>3</size>
+                                      <autoSizeMax>5</autoSizeMax>
+                                      <minitems>0</minitems>
+                                      <maxitems>100</maxitems>
+                                      <selectedListStyle>width:250px;height:100px;</selectedListStyle>
+                                      <itemListStyle>width:250px;height:100px;</itemListStyle>
+                      </config>
+                    </TCEforms>
+                  </evaluation>
+                                    <regexp>
+                                        <TCEforms>
+                                            <label>LLL:EXT:t3registration/locallang_db.xml:field.regexp</label>
+                                            <config>
+                                                <type>input</type>
+                                            </config>
+                                        </TCEforms>
+                                    </regexp>
+                                    <hideInChangeProfile>
+                                        <TCEforms>
+                                            <label>LLL:EXT:t3registration/locallang_db.xml:field.hideInChangeProfileMode</label>
+                                            <config>
+                                                <type>check</type>
+                                            </config>
+                                        </TCEforms>
+                                    </hideInChangeProfile>
+
+                                </el>
+                            </freeField>
+
+                        </el>
+                    </fields>
+                  </el>
+            </ROOT>
+        </fieldsSheet>
+    <templateSheet>
+            <ROOT>
+              <TCEforms>
+                    <sheetTitle>LLL:EXT:t3registration/locallang_db.xml:sheet.template</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                  <templateFile>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:mainTemplate</label>
+                        <config>
+                            <type>input</type>
+                            <size>25</size>
+                            <max>100</max>
+                            <wizards type="array">
+                                <_PADDING type="integer">2</_PADDING>
+                                <link type="array">
+                                    <type>popup</type>
+                                    <title>LLL:EXT:t3registration/locallang_db.xml:mainTemplate</title>
+                                    <icon>link_popup.gif</icon>
+                                    <script>browse_links.php?act=file&amp;mode=wizard</script>
+                                    <JSopenParams>height=600,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+                  <params type="array">
+                    <blindLinkOptions>mail,spec,url,folder,page</blindLinkOptions>
+                                        <allowedExtensions>htm,html,tmpl</allowedExtensions>
+                  </params>
+                                </link>
+                            </wizards>
+                        </config>
+                    </TCEforms>
+                </templateFile>
+        <useAnotherTemplateInChangeProfileMode>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:registration.useAnotherTemplateInChangeProfileMode</label>
+                        <config>
+                            <type>check</type>
+                        </config>
+                    </TCEforms>
+                </useAnotherTemplateInChangeProfileMode>
+                  </el>
+          </ROOT>
+      </templateSheet>
+    <emailSheet>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>LLL:EXT:t3registration/locallang_db.xml:sheet.email</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                   <emailFrom>
+                      <TCEforms>
+                          <label>LLL:EXT:t3registration/locallang_db.xml:emailFrom</label>
+                          <config>
+                              <type>input</type>
+                              <size>25</size>
+                              <max>100</max>
+              </config>
+            </TCEforms>
+          </emailFrom>
+                     <emailFromName>
+                        <TCEforms>
+                            <label>LLL:EXT:t3registration/locallang_db.xml:emailFromName</label>
+                            <config>
+                                <type>input</type>
+                                <size>25</size>
+                                <max>100</max>
+                            </config>
+                        </TCEforms>
+                    </emailFromName>
+                     <emailAdmin>
+                        <TCEforms>
+                            <label>LLL:EXT:t3registration/locallang_db.xml:emailAdmin</label>
+                            <config>
+                                <type>input</type>
+                                <size>25</size>
+                                <max>100</max>
+                            </config>
+                        </TCEforms>
+                    </emailAdmin>
+                </el>
+      </ROOT>
+    </emailSheet>
+    </sheets>
+</T3DataStructure>

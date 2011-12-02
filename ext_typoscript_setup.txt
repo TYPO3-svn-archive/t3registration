@@ -1,0 +1,49 @@
+plugin.tx_t3registration_pi1{
+    #Template
+    templateFile = {$plugin.tx_t3registration_pi1.templateFile}
+    useAnotherTemplateInChangeProfileMode = 0
+
+    enablePreview = {$plugin.tx_t3registration_pi1.enablePreview}
+    passwordGeneration = 0
+    userFolder = 0
+
+    #save as disable the user before he confirm registration
+    disabledBeforeConfirmation = {$plugin.tx_t3registration_pi1.disabledBeforeConfirmation}
+    autoLoginAfterConfirmation = 0
+    sendUserEmailAfterAuthorization = 0
+
+    #resend auth code with result
+    sendConfirmationObject.showNotFoundText = 0
+
+    delete.deleteRow = 0
+
+
+    fieldConfiguration.password.noHTMLEntities = 0
+
+    #form
+    form.resendConfirmationCode = 0
+
+
+    approvalProcess = 0
+
+    #email
+    emailFormat = html
+    emailFrom = {$plugin.tx_t3registration_pi1.emailFrom}
+    emailFromName = {$plugin.tx_t3registration_pi1.emailFromName}
+
+    usernameField = {$plugin.tx_t3registration_pi1.usernameField}
+    siteUrl = {$plugin.tx_t3registration_pi1.siteUrl}
+
+    #PASSWORD Control
+    fieldConfiguration.password.config.evalHook = EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->checkPasswordTwice
+    fieldConfiguration.password.config.eval.add=hook
+
+    #password twice configuration
+    extra.passwordTwice = 1
+
+    #Password Twice field name
+    extra.passwordTwiceField = passwordTwice
+
+    #password twice label locallang name
+    extra.passwordTwiceFieldLabel = passwordtwiceLabel
+}
