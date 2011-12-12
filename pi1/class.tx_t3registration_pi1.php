@@ -1269,11 +1269,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
         }
         if (strlen($user['admin_auth_code']) == 0) {
-            debug('IN','row 1272');
-            $this->userIsRegistered('userAuth', $user);
             if ($this->conf['autoLoginAfterConfirmation'] == 1) {
                 $this->autoLogin($user['uid']);
             }
+            $this->userIsRegistered('userAuth', $user);
         }
         return $user;
 
@@ -1333,7 +1332,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     private function userIsRegistered($lastEvent, $user) {
         //TODO aggiungere in doc
-        debug('IN','row 1335');
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['confirmedProcessComplete'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['confirmedProcessComplete'] as $userFunction) {
                 $params = array('user' => $user, 'lastEvent' => $lastEvent);
@@ -1350,22 +1348,22 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     private function autoLogin($uid) {
         $resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'uid=' . $uid);
-        if (($feUser = $GLOBALS["TYPO3_DB"]->sql_fetch_assoc($resource)) !== FALSE) {
+        if (($feUser = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource)) !== FALSE) {
             $loginData = array(
                 'uname' => $feUser['username'], //username
                 'uident' => $feUser['password'], //password
                 'status' => 'login'
             );
             //do not use a particular pid
-            $GLOBALS['TSFE']->fe_user->checkPid = 0;
+            $GLOBALS['TSFE']->fe_user->checkPid = ($this->conf['userFolder']) ? 1 : 0;
+            $GLOBALS['TSFE']->fe_user->checkPid_value  = ($this->conf['userFolder']) ? $this->conf['userFolder'] : $GLOBALS['TSFE']->id;
             $info = $GLOBALS['TSFE']->fe_user->getAuthInfoArray();
-            $user = $GLOBALS['TSFE']->fe_user->fetchUserRecord(
-                $info['db_user'], $loginData['uname']);
+            $user = $GLOBALS['TSFE']->fe_user->fetchUserRecord($info['db_user'], $loginData['uname']);
             if ($GLOBALS['TSFE']->fe_user->compareUident($user, $loginData)) {
                 //login successfull
                 $GLOBALS['TSFE']->fe_user->createUserSession($user);
-                $GLOBALS["TSFE"]->fe_user->loginSessionStarted = TRUE;
-                $GLOBALS["TSFE"]->fe_user->user = $GLOBALS["TSFE"]->fe_user->fetchUserSession();
+                $GLOBALS['TSFE']->fe_user->loginSessionStarted = TRUE;
+                $GLOBALS['TSFE']->fe_user->user = $GLOBALS["TSFE"]->fe_user->fetchUserSession();
             }
         }
     }
