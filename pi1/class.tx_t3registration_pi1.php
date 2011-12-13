@@ -491,7 +491,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 }
                 break;
             case 'hook':
-                //todo modificare il doc
                 if (isset($field['config']['hook'])) {
                     $params['field'] = $field;
                     $params['row'] = $this->piVars;
