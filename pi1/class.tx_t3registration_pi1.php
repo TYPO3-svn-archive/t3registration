@@ -789,44 +789,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param $field the field to check
      * @return boolean false if the field contains errors
      */
-    //TODO usare la funzione getEvaluationRulesList
     private function checkField($field) {
-        $field['config']['eval'] = $field['config']['eval'] ? $field['config']['eval'] : '';
-        if (isset($field['regexp']) && strlen($field['regexp']) > 0) {
-            if (strlen($field['config']['eval']) > 0) {
-                $evalArray = explode(',', $field['config']['eval']);
-            }
-            else {
-                $evalArray = array();
-            }
-            $evalArray[] = 'regexp';
-            $field['config']['eval'] = implode(',', $evalArray);
-        }
-        if (isset($field['config']['internal_type']) && $field['config']['internal_type'] === 'file') {
-            if (strlen($field['config']['eval']) > 0) {
-                $evalArray = explode(',', $field['config']['eval']);
-            }
-            else {
-                $evalArray = array();
-            }
-            $evalArray[] = 'file';
-            $field['config']['eval'] = implode(',', $evalArray);
-        }
-        $evaluation = array();
-        if (isset($field['config']['eval'])) {
-            $evaluation = explode(',', $field['config']['eval']);
-        }
-        //evaluation from flexform
-        if (isset($field['evaluation']) && strlen(trim($field['evaluation']))) {
-            $additionalEvaluationArray = array_diff(explode(',', $field['evaluation']), $evaluation);
-            $evaluation = array_merge($evaluation, $additionalEvaluationArray);
-        }
-        //evaluation from typoscript add function
-        if (isset($field['config']['additionalEval'])) {
-            $additionalEvaluationArray = array_diff(explode(',', $field['config']['additionalEval']), $evaluation);
-            $evaluation = array_merge($evaluation, $additionalEvaluationArray);
-        }
-        $errorList = array();
+        $evaluation = $this->getEvaluationRulesList($field['name']);
         $error = true;
         foreach ($evaluation as $item) {
             //if error return false
