@@ -1065,7 +1065,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $markerArray['###DESCRIPTION_HTML_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationAfterAuthorizationTextHmtl'), $valueArray);
         $markerArray['###DESCRIPTION_TEXT_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationAfterAuthorizationTextText'), $valueArray);
         $markerArray['###SIGNATURE###'] = $this->pi_getLL('signature');
-        //TODO aggiungere in doc
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['sendAdviceAfterAuthorization'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['sendAdviceAfterAuthorization'] as $markerFunction) {
                 $params = array('markerArray' => $markerArray, 'user' => $user);
@@ -1108,7 +1107,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $markerArray['###DESCRIPTION_HTML_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationTextHtml'), $valueArray);
         $markerArray['###DESCRIPTION_TEXT_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationTextText'), $valueArray);
         $markerArray['###SIGNATURE###'] = $this->pi_getLL('signature');
-        //TODO aggiungere in doc
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['confirmationEmail'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['confirmationEmail'] as $markerFunction) {
                 $params = array('markerArray' => $markerArray, 'user' => $user);
@@ -1144,7 +1142,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $markerArray['###DESCRIPTION_HTML_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationAuthorizationEmailTextHtml'), $valueArray);
         $markerArray['###DESCRIPTION_TEXT_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationAuthorizationEmailTextText'), $valueArray);
         $markerArray['###SIGNATURE###'] = $this->pi_getLL('signature');
-        //TODO aggiungere in doc
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['authorizationEmail'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['authorizationEmail'] as $markerFunction) {
                 $params = array('markerArray' => $markerArray, 'user' => $user);
@@ -1543,7 +1540,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
     private function userIsRegistered($lastEvent, $user) {
-        //TODO aggiungere in doc
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['confirmedProcessComplete'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['confirmedProcessComplete'] as $userFunction) {
                 $params = array('user' => $user, 'lastEvent' => $lastEvent);
