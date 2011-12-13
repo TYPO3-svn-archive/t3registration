@@ -614,8 +614,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         if ($value) {
             $hiddenValue = 'value="' . $value . '"';
             $classRef = 'class="t3registration_pi1_ref_' . $field['name'] . '_' . $counter . '"';
-            //todo aggiornare il percorso
-            $GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = '<script type="text/javascript" src="typo3conf/ext/t3registration/res/javascript/registration.js"></script>';
+            $GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/registration.js"></script>';
             $fieldArray = (isset($this->conf[$field['name'] . '.']) && is_array($this->conf[$field['name'] . '.'])) ? $this->conf[$field['name'] . '.'] : array();
             $fieldArray['file'] = $field['config']['uploadfolder'] . '/' . $value;
             $fieldArray['params'] = $classRef;
@@ -744,6 +743,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
         return $error;
     }
 
+    /**
+     * This function fetches all evaluation from field
+     * @param string $name name of field to evaluate
+     * @return array evaluation array list
+     */
     public function getEvaluationRulesList($name) {
         $field = $this->fieldsData[$name];
         $evaluation = array();
@@ -1614,23 +1618,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
 
     /**
-     * TODO sistemare i controlli con l'evaluation
      * This function checks if username contains required and unique, looking for it into alternative username fields
      * @return string/boolean if true all ok, otherwise return error description
      */
     private function controlIfUsernameIsCorrect() {
         if (isset($this->conf['usernameField']) && strlen($this->conf['usernameField'])) {
             if (isset($this->fieldsData[$this->conf['usernameField']]) && is_array($this->fieldsData[$this->conf['usernameField']])) {
-                if ((t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['config']['eval'], 'required') &&
-                    (t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['config']['eval'], 'unique') ||
-                        t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['config']['eval'], 'uniqueInPid'))) ||
-                    (t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['config']['additionalEval'], 'required') &&
-                        (t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['config']['additionalEval'], 'unique') ||
-                            t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['config']['additionalEval'], 'uniqueInPid'))) ||
-                    (t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['evaluation'], 'required') &&
-                        (t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['evaluation'], 'unique') ||
-                            t3lib_div::inList($this->fieldsData[$this->conf['usernameField']]['evaluation'], 'uniqueInPid')))
-                ) {
+                $evaluation = $this->getEvaluationRulesList($this->conf['usernameField']);
+                if (in_array('required', $evaluation) && (in_array('unique', $evaluation) || in_array('uniqueInPid', $evaluation))) {
                     return true;
                 }
                 else {
@@ -1772,7 +1767,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             //send email
             $this->prepareAndSendEmailSubpart('authorizationRequest', $user);
         }
-        if(!$this->userAuth && !$this->adminAuth){
+        if (!$this->userAuth && !$this->adminAuth) {
             if ($this->conf['autoLoginAfterConfirmation'] == 1) {
                 $this->autoLogin($user['uid']);
             }
