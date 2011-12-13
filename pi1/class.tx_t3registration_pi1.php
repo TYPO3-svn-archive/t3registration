@@ -333,6 +333,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $hiddenArray = array();
         $markerArray = array();
 
+        $contentArray = array();
         foreach ($this->fieldsData as $field) {
             if ($preview) {
                 $contentArray = $this->getAndReplaceSubpartPreview($field, $content, $contentArray);
@@ -554,11 +555,20 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 break;
             case 'check':
                 if (isset($field['config']['items']) && is_array($field['config']['items'])) {
-                    if (!is_array($this->piVars[$field['name']])) {
+                    if (!isset($this->piVars[$field['name']])) {
                         if ($field['config']['default']) {
-                            for ($counter = 0; $counter < 32; $counter++) {
+                            for ($counter = 0; $counter < count($field['config']['items']); $counter++) {
                                 $this->piVars[$field['name']][$counter] = (($field['config']['default'] & pow(2, $counter)) > 0) ? 1 : 0;
                             }
+                        }
+                    }
+                    else {
+                        if (!is_array($this->piVars[$field['name']])) {
+                            $piVars = array();
+                            for ($counter = 0; $counter < count($field['config']['items']); $counter++) {
+                                $piVars[$counter] = (($this->piVars[$field['name']] & pow(2, $counter)) > 0) ? 1 : 0;
+                            }
+                            $this->piVars[$field['name']] = $piVars;
                         }
                     }
                     $options = array();
@@ -1797,6 +1807,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
         if ($this->adminAuth) {
             //send email
             $this->prepareAndSendEmailSubpart('authorizationRequest', $user);
+        }
+        if(!$this->userAuth && !$this->adminAuth){
+            if ($this->conf['autoLoginAfterConfirmation'] == 1) {
+                $this->autoLogin($user['uid']);
+            }
+            $this->userIsRegistered('noAuth', $user);
         }
 
     }
