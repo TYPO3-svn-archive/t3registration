@@ -6,8 +6,8 @@
   </meta>
   <data type="array">
     <languageKey index="default" type="array">
-      <label index="fe_users.tx_t3registration_t3registration_privacy">Privacy</label>
-      <label index="fe_users.tx_t3registration_t3registration_marketing_permission">Marketing permission</label>
+      <label index="fe_users.tx_t3registration_privacy">Privacy</label>
+      <label index="fe_users.tx_t3registration_marketing_permission">Marketing permission</label>
       <label index="tt_content.list_type_pi1">Registration</label>
 
       <label index="sheet.general">General</label>
@@ -62,11 +62,6 @@
 
 
     <label index="mainTemplate">Template file</label>
-    </languageKey>
-    <languageKey index="it" type="array">
-      <label index="fe_users.tx_t3registration_t3registration_privacy">Privacy</label>
-      <label index="fe_users.tx_t3registration_t3registration_marketing_permission">Consenso marketing</label>
-      <label index="tt_content.list_type_pi1">Registrazione</label>
     </languageKey>
   </data>
 </T3locallang>
