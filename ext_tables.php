@@ -3,16 +3,16 @@ if (!defined('TYPO3_MODE')) {
   die ('Access denied.');
 }
 $tempColumns = array (
-  'tx_t3registration_t3registration_privacy' => array (
+  'tx_t3registration_privacy' => array (
     'exclude' => 1,
-    'label' => 'LLL:EXT:t3registration/locallang_db.xml:fe_users.tx_t3registration_t3registration_privacy',
+    'label' => 'LLL:EXT:t3registration/locallang_db.xml:fe_users.tx_t3registration_privacy',
     'config' => array (
       'type' => 'check',
     )
   ),
-  'tx_t3registration_t3registration_marketing_permission' => array (
+  'tx_t3registration_marketing_permission' => array (
     'exclude' => 1,
-    'label' => 'LLL:EXT:t3registration/locallang_db.xml:fe_users.tx_t3registration_t3registration_marketing_permission',
+    'label' => 'LLL:EXT:t3registration/locallang_db.xml:fe_users.tx_t3registration_marketing_permission',
     'config' => array (
       'type' => 'check',
     )
