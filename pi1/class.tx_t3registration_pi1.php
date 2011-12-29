@@ -109,8 +109,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     private $emailFormat = 0;
 
+    /**
+     * @var array contains data relative to url parameters
+     */
     private $externalAction;
 
+    /**
+     * @var array contains errors data
+     */
     public $errorArray;
 
 
@@ -205,12 +211,20 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $content = $checkClass->main();
         }
         else {
+            $error = '';
+            $checkApprovalProcess = $this->controlEmailAndMethod();
+            if($checkApprovalProcess !== true){
+                $checkClass = t3lib_div::makeInstance('tx_t3registration_checkstatus');
+                $checkClass->initialize($this, $this->fieldsData);
+                $error .= $checkClass->getMessage($this->pi_getLL('approvalProcessConfigurationError'), $checkApprovalProcess, 'error');
+            }
             $checkUsername = $this->controlIfUsernameIsCorrect();
             if ($checkUsername !== true) {
                 $checkClass = t3lib_div::makeInstance('tx_t3registration_checkstatus');
                 $checkClass->initialize($this, $this->fieldsData);
-                $content = $checkClass->getMessage($this->pi_getLL('usernameConfigurationError'), $checkUsername, 'error');
+                $error .= $checkClass->getMessage($this->pi_getLL('usernameConfigurationError'), $checkUsername, 'error');
             }
+            $content = ($error) ? $error : $content;
         }
         return $this->pi_wrapInBaseClass($content);
     }
@@ -374,9 +388,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $contentArray['###DELETE_BLOCK###'] = '';
             $hiddenArray['action'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->prefixId . '[sendConfirmation]', '1');
             $content = $this->cObj->substituteMarkerArrayCached($content, $contentArray);
-            $submitButton = sprintf('<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />', $this->cObj->stdWrap($this->conf['form.']['submitConfirm.']['params'], $this->conf['form.']['submitConfirm.']['params.']), $this->pi_getLL($buttons['confirm']));
+            $confirmText = ($this->conf['form.']['submitConfirm.']['imageSubmit'])?'<input type="image" %s src="' . $this->conf['form.']['submitConfirm.']['imagesrc'] . '" name="' . $this->prefixId . '[confirmPreview]" value="%s" />':'<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />';
+            $submitButton = sprintf($confirmText, $this->cObj->stdWrap($this->conf['form.']['submitConfirm.']['params'], $this->conf['form.']['submitConfirm.']['params.']), $this->pi_getLL($buttons['confirm']));
             $submitButton = $this->cObj->stdWrap($submitButton, $this->conf['form.']['submitConfirm.']['stdWrap.']);
-            $backButton = sprintf('<input type="submit" %s name="' . $this->prefixId . '[editPreview]" value="%s" />', $this->cObj->stdWrap($this->conf['form.']['submitBack.']['params'], $this->conf['form.']['submitBack.']['params.']), $this->pi_getLL($buttons['back']));
+            $confirmText = ($this->conf['form.']['submitBack.']['imageSubmit'])?'<input type="image" %s src="' . $this->conf['form.']['submitBack.']['imagesrc'] . '" name="' . $this->prefixId . '[editPreview]" value="%s" />':'<input type="submit" %s name="' . $this->prefixId . '[editPreview]" value="%s" />';
+            $backButton = sprintf($confirmText, $this->cObj->stdWrap($this->conf['form.']['submitBack.']['params'], $this->conf['form.']['submitBack.']['params.']), $this->pi_getLL($buttons['back']));
             $backButton = $this->cObj->stdWrap($backButton, $this->conf['form.']['submitBack.']['stdWrap.']);
             if ($this->conf['form.']['markerButtons']) {
                 $markerArray['###FORM_BUTTONS###'] = sprintf('%s' . chr(10) . $backButton . chr(10) . $submitButton, implode(chr(10), $hiddenArray));
@@ -393,7 +409,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
             $markerArray['###DELETE_BLOCK###'] = ($GLOBALS['TSFE']->loginUser) ? $this->showDeleteLink() : '';
             $hiddenArray['action'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->prefixId . '[submitted]', '1');
-            $submitButton = sprintf('<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />', $this->cObj->stdWrap($this->conf['form.']['submitButton.']['params'], $this->conf['form.']['submitButton.']['params.']), $this->pi_getLL($buttons['insert']));
+            $confirmText = ($this->conf['form.']['submitButton.']['imageSubmit'])?'<input type="image" %s src="' . $this->conf['form.']['submitButton.']['imagesrc'] . '" name="' . $this->prefixId . '[confirmPreview]" value="%s" />':'<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />';
+            $submitButton = sprintf($confirmText, $this->cObj->stdWrap($this->conf['form.']['submitButton.']['params'], $this->conf['form.']['submitButton.']['params.']), $this->pi_getLL($buttons['insert']));
             $submitButton = $this->cObj->stdWrap($submitButton, $this->conf['form.']['submitButton.']['stdWrap.']);
             if ($this->conf['form.']['markerButtons']) {
                 $markerArray['###FORM_BUTTONS###'] = sprintf('%s' . chr(10) . $submitButton, implode(chr(10), $hiddenArray));
@@ -1637,6 +1654,17 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
         else {
             return $this->pi_getLL('usernameIsNotDefined');
+        }
+    }
+
+    private function controlEmailAndMethod(){
+        if($this->conf['approvalProcess']){
+            if(!isset($this->fieldsData['email'])){
+                return $this->pi_getLL('approvalProcessIsNotDefined');
+            }
+            else{
+                return true;
+            }
         }
     }
 
