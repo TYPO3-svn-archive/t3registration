@@ -124,6 +124,11 @@
     <label index="usernameConfigurationError">Username not properly configured</label>
   <label index="usernameIsNotDefined">Username is not defined or usernameField is empty</label>
 
+
+    <!-- username error -->
+    <label index="approvalProcessConfigurationError">Approval process  not properly configured</label>
+    <label index="approvalProcessIsNotDefined">Email is not defined</label>
+
   <label index="toResendConfirmationEmailText">Click here to send again to your email address the registration confirmation.</label>
 
 
