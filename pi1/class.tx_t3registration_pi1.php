@@ -1037,7 +1037,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $valueArray['###' . strtoupper($key) . '###'] = $value;
         }
         $valueArray['###DELETE_LINK###'] = $authLink;
-        $markerArray['###DESCRIPTION_HTML_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('deleteTextHmtl'), $valueArray);
+        $markerArray['###DESCRIPTION_HTML_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('deleteTextHtml'), $valueArray);
         $markerArray['###DESCRIPTION_TEXT_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('deleteTextText'), $valueArray);
         $markerArray['###SIGNATURE###'] = $this->pi_getLL('signature');
         $message = $this->prepareEmailContent('###T3REGISTRATION_DELETE_EMAIL_HTML###', '###T3REGISTRATION_DELETE_EMAIL_TEXT###', $markerArray);
@@ -1056,7 +1056,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $markerArray['###' . strtoupper($key) . '###'] = $value;
         }
         $valueArray = $markerArray;
-        $markerArray['###DESCRIPTION_HTML_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationAfterAuthorizationTextHmtl'), $valueArray);
+        $markerArray['###DESCRIPTION_HTML_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationAfterAuthorizationTextHtml'), $valueArray);
         $markerArray['###DESCRIPTION_TEXT_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationAfterAuthorizationTextText'), $valueArray);
         $markerArray['###SIGNATURE###'] = $this->pi_getLL('signature');
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['sendAdviceAfterAuthorization'])) {
