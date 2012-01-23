@@ -65,7 +65,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * contains fields will be override from ts
      * @var array
      */
-    private $flexformOverrideTs = array('contactEmailMode', 'approvalProcess', 'userFolder', 'templateFile', 'autoLoginAfterConfirmation', 'emailFrom', 'emailFromName', 'emailAdmin');
+    private $flexformOverrideTs = array('useAnotherTemplateInChangeProfileMode','contactEmailMode', 'approvalProcess', 'userFolder', 'templateFile', 'autoLoginAfterConfirmation', 'emailFrom', 'emailFromName', 'emailAdmin');
 
     /**
      * Contains fields with its configuration to rendering form fields
