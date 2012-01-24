@@ -65,7 +65,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * contains fields will be override from ts
      * @var array
      */
-    private $flexformOverrideTs = array('useAnotherTemplateInChangeProfileMode','contactEmailMode', 'approvalProcess', 'userFolder', 'templateFile', 'autoLoginAfterConfirmation', 'emailFrom', 'emailFromName', 'emailAdmin');
+    private $flexformOverrideTs = array('useAnotherTemplateInChangeProfileMode', 'contactEmailMode', 'approvalProcess', 'userFolder', 'templateFile', 'autoLoginAfterConfirmation', 'emailFrom', 'emailFromName', 'emailAdmin');
 
     /**
      * Contains fields with its configuration to rendering form fields
@@ -152,6 +152,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
         //debug($this->fieldsData);
         $this->setEmailFormat();
 
+        /*$message['type'] = 'user';
+        $message['contentHTML'] = '<b>works</b>';
+        $user['email'] = 'federico@bernardin.it';
+        $subject = 'questo è il soggetto';
+        $this->sendEmail($message, $user, $subject);
+        exit();*/
 
         //debug($this->piVars,'piVars');
         switch ($this->conf['showtype']) {
@@ -213,7 +219,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         else {
             $error = '';
             $checkApprovalProcess = $this->controlEmailAndMethod();
-            if($checkApprovalProcess !== true){
+            if ($checkApprovalProcess !== true) {
                 $checkClass = t3lib_div::makeInstance('tx_t3registration_checkstatus');
                 $checkClass->initialize($this, $this->fieldsData);
                 $error .= $checkClass->getMessage($this->pi_getLL('approvalProcessConfigurationError'), $checkApprovalProcess, 'error');
@@ -388,10 +394,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $contentArray['###DELETE_BLOCK###'] = '';
             $hiddenArray['action'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->prefixId . '[sendConfirmation]', '1');
             $content = $this->cObj->substituteMarkerArrayCached($content, $contentArray);
-            $confirmText = ($this->conf['form.']['submitConfirm.']['imageSubmit'])?'<input type="image" %s src="' . $this->conf['form.']['submitConfirm.']['imagesrc'] . '" name="' . $this->prefixId . '[confirmPreview]" value="%s" />':'<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />';
+            $confirmText = ($this->conf['form.']['submitConfirm.']['imageSubmit']) ? '<input type="image" %s src="' . $this->conf['form.']['submitConfirm.']['imagesrc'] . '" name="' . $this->prefixId . '[confirmPreview]" value="%s" />' : '<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />';
             $submitButton = sprintf($confirmText, $this->cObj->stdWrap($this->conf['form.']['submitConfirm.']['params'], $this->conf['form.']['submitConfirm.']['params.']), $this->pi_getLL($buttons['confirm']));
             $submitButton = $this->cObj->stdWrap($submitButton, $this->conf['form.']['submitConfirm.']['stdWrap.']);
-            $confirmText = ($this->conf['form.']['submitBack.']['imageSubmit'])?'<input type="image" %s src="' . $this->conf['form.']['submitBack.']['imagesrc'] . '" name="' . $this->prefixId . '[editPreview]" value="%s" />':'<input type="submit" %s name="' . $this->prefixId . '[editPreview]" value="%s" />';
+            $confirmText = ($this->conf['form.']['submitBack.']['imageSubmit']) ? '<input type="image" %s src="' . $this->conf['form.']['submitBack.']['imagesrc'] . '" name="' . $this->prefixId . '[editPreview]" value="%s" />' : '<input type="submit" %s name="' . $this->prefixId . '[editPreview]" value="%s" />';
             $backButton = sprintf($confirmText, $this->cObj->stdWrap($this->conf['form.']['submitBack.']['params'], $this->conf['form.']['submitBack.']['params.']), $this->pi_getLL($buttons['back']));
             $backButton = $this->cObj->stdWrap($backButton, $this->conf['form.']['submitBack.']['stdWrap.']);
             if ($this->conf['form.']['markerButtons']) {
@@ -409,7 +415,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
             $markerArray['###DELETE_BLOCK###'] = ($GLOBALS['TSFE']->loginUser) ? $this->showDeleteLink() : '';
             $hiddenArray['action'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->prefixId . '[submitted]', '1');
-            $confirmText = ($this->conf['form.']['submitButton.']['imageSubmit'])?'<input type="image" %s src="' . $this->conf['form.']['submitButton.']['imagesrc'] . '" name="' . $this->prefixId . '[confirmPreview]" value="%s" />':'<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />';
+            $confirmText = ($this->conf['form.']['submitButton.']['imageSubmit']) ? '<input type="image" %s src="' . $this->conf['form.']['submitButton.']['imagesrc'] . '" name="' . $this->prefixId . '[confirmPreview]" value="%s" />' : '<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />';
             $submitButton = sprintf($confirmText, $this->cObj->stdWrap($this->conf['form.']['submitButton.']['params'], $this->conf['form.']['submitButton.']['params.']), $this->pi_getLL($buttons['insert']));
             $submitButton = $this->cObj->stdWrap($submitButton, $this->conf['form.']['submitButton.']['stdWrap.']);
             if ($this->conf['form.']['markerButtons']) {
@@ -1175,50 +1181,97 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return void
      */
     private function sendEmail($message, $user, $subject) {
-        $mailObject = t3lib_div::makeInstance('t3lib_mail_Message');
-        if (isset($message['contentText'])) {
-            $mailObject->addPart($message['contentText'], 'text/plain');
-        }
-        if (isset($message['contentHTML'])) {
-            $mailObject->setBody($message['contentHTML'], 'text/html');
-        }
-        switch ($message['type']) {
-            case 'user':
-                $mailObject->setSubject($this->pi_getLL($subject));
-                $mailObject->setTo(array($user['email']));
-                break;
-            case 'admin':
-                if ($this->conf['emailAdmin']) {
-                    $adminEmailList = explode(',', $this->conf['emailAdmin']);
-                    foreach ($adminEmailList as $email) {
-                        $emailAdminTemp = explode(':', $email);
-                        if (count($emailAdminTemp) == 2) {
-                            $emailAdmin[$emailAdminTemp[0]] = $emailAdminTemp[1];
-                        }
-                        else {
+        if (t3lib_div::int_from_ver(TYPO3_version) < t3lib_div::int_from_ver('4.5.0')) {
+            $mailObject = t3lib_div::makeInstance('t3lib_htmlmail');
+            $mailObject->start();
+            $mailObject->mailer = 'TYPO3 HTMLMail';
+            if (isset($message['contentText'])) {
+                $mailObject->addPlain($message['contentText']);
+            }
+            if (isset($message['contentHTML'])) {
+                $mailObject->theParts['html']['content'] = $message['contentHTML'];
+                $mailObject->theParts['html']['path'] = '';
+                $mailObject->extractMediaLinks();
+                $mailObject->extractHyperLinks();
+                $mailObject->fetchHTMLMedia();
+                $mailObject->substMediaNamesInHTML(0); // 0 = relative
+                $mailObject->substHREFsInHTML();
+                $mailObject->setHTML($mailObject->encodeMsg($mailObject->theParts['html']['content']));
+            }
+            switch ($message['type']) {
+                case 'user':
+                    $mailObject->subject = $this->pi_getLL($subject);
+                    $mailObject->setRecipient($user['email']);
+                    break;
+                case 'admin':
+                    if ($this->conf['emailAdmin']) {
+                        $adminEmailList = explode(',', $this->conf['emailAdmin']);
+                        foreach ($adminEmailList as $email) {
+                            $emailAdminTemp = explode(':', $email);
                             $emailAdmin[] = $emailAdminTemp[0];
                         }
-
                     }
-                }
-                $mailObject->setSubject($this->pi_getLL($subject));
-                $mailObject->setTo($emailAdmin);
-                break;
-        }
-        $emailFrom = ($this->conf['emailFrom']) ? $this->conf['emailFrom'] : '';
-        $emailFromName = ($this->conf['emailFromName']) ? $this->conf['emailFromName'] : '';
-        if ($this->conf['emailFromName']) {
-            $fromArray = array($emailFrom => $emailFromName);
+                    $mailObject->subject = $this->pi_getLL($subject);
+                    $mailObject->setRecipient(implode(',',$emailAdmin));
+
+                    break;
+            }
+            $emailFrom = ($this->conf['emailFrom']) ? $this->conf['emailFrom'] : '';
+            $emailFromName = ($this->conf['emailFromName']) ? $this->conf['emailFromName'] : '';
+            if ($this->conf['emailFrom'] && ($message['type'] != 'admin' || ($this->conf['emailAdmin'] && $message['type'] == 'admin'))) {
+                $mailObject->from_email = $emailFrom;
+                $mailObject->from_name = $emailFromName;
+                $mailObject->setHeaders();
+                $mailObject->setContent();
+                $mailObject->returnPath = $emailFrom;
+                $mailObject->replyto_email = $emailFrom;
+                $mailObject->sendtheMail();
+            }
+            else {
+                throw new t3lib_exception();
+            }
         }
         else {
-            $fromArray = array($emailFrom);
+            $mailObject = t3lib_div::makeInstance('t3lib_mail_Message');
+            if (isset($message['contentText'])) {
+                $mailObject->addPart($message['contentText'], 'text/plain');
+            }
+            if (isset($message['contentHTML'])) {
+                $mailObject->setBody($message['contentHTML'], 'text/html');
+            }
+            switch ($message['type']) {
+                case 'user':
+                    $mailObject->setSubject($this->pi_getLL($subject));
+                    $mailObject->setTo(array($user['email']));
+                    break;
+                case 'admin':
+                    if ($this->conf['emailAdmin']) {
+                        $adminEmailList = explode(',', $this->conf['emailAdmin']);
+                        foreach ($adminEmailList as $email) {
+                            $emailAdminTemp = explode(':', $email);
+                            if (count($emailAdminTemp) == 2) {
+                                $emailAdmin[$emailAdminTemp[0]] = $emailAdminTemp[1];
+                            }
+                            else {
+                                $emailAdmin[] = $emailAdminTemp[0];
+                            }
+
+                        }
+                    }
+                    $mailObject->setSubject($this->pi_getLL($subject));
+                    $mailObject->setTo($emailAdmin);
+                    break;
+            }
+            $emailFrom = ($this->conf['emailFrom']) ? $this->conf['emailFrom'] : '';
+            $emailFromName = ($this->conf['emailFromName']) ? $this->conf['emailFromName'] : '';
+            if ($this->conf['emailFrom'] && ($message['type'] != 'admin' || ($this->conf['emailAdmin'] && $message['type'] == 'admin'))) {
+                $mailObject->setFrom(array($emailFrom => $emailFromName))->send();
+            }
+            else {
+                throw new t3lib_exception();
+            }
         }
-        if ($this->conf['emailFrom'] && ($message['type'] != 'admin' || ($this->conf['emailAdmin'] && $message['type'] == 'admin'))) {
-            $mailObject->setFrom(array($emailFrom => $emailFromName))->send();
-        }
-        else {
-            throw new t3lib_exception();
-        }
+
     }
 
     /**
@@ -1657,12 +1710,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
     }
 
-    private function controlEmailAndMethod(){
-        if($this->conf['approvalProcess']){
-            if(!isset($this->fieldsData['email'])){
+    private function controlEmailAndMethod() {
+        if ($this->conf['approvalProcess']) {
+            if (!isset($this->fieldsData['email'])) {
                 return $this->pi_getLL('approvalProcessIsNotDefined');
             }
-            else{
+            else {
                 return true;
             }
         }

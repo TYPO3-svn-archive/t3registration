@@ -197,7 +197,8 @@ class tx_t3registration_checkstatus {
         if ($this->configurationArray['useAnotherTemplateInChangeProfileMode']) {
             $text[] = $this->parentObject->pi_getLL('changeProfile');
         }
-        $text[] = sprintf($this->parentObject->pi_getLL('siteUrl'), $this->configurationArray['siteUrl']);
+        //@todo to be removed
+        //$text[] = sprintf($this->parentObject->pi_getLL('siteUrl'), $this->configurationArray['siteUrl']);
         $text[] = sprintf($this->parentObject->pi_getLL('userFolder'), $this->configurationArray['userFolder']);
         $this->setMessage($this->parentObject->pi_getLL('generalConfigurationTitle'), sprintf($this->parentObject->pi_getLL('generalConfigurationBody'), implode('<br />', $text)), 'info');
     }
