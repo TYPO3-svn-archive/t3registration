@@ -2036,8 +2036,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param $user
      * @return array user
      */
-    private
-    function setAuthCode($user) {
+    private function setAuthCode($user) {
         $authProcessList = explode(',', $this->conf['approvalProcess']);
         foreach ($authProcessList as $process) {
             switch ($process) {
@@ -2060,8 +2059,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * This function cheks if you're into change profile process
      * @return boolean true if user is in profile, false otherwise
      */
-    private
-    function changeProfileCheck() {
+    private function changeProfileCheck() {
         if ($GLOBALS['TSFE']->loginUser && !isset($this->piVars['submitted']) && !isset($this->piVars['sendConfirmation'])) {
             return true;
         }
@@ -2075,8 +2073,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      *
      * @return unknown_type
      */
-    private
-    function showOnAutoLogin() {
+    private function showOnAutoLogin() {
         $sessionData = $GLOBALS['TSFE']->fe_user->getSessionData('autoLogin');
         if (isset($sessionData)) {
             return $sessionData['text'];
@@ -2100,8 +2097,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param $sourceArray the array to be modified
      * @return array
      */
-    private
-    function removeDotFromArray($sourceArray) {
+    private function removeDotFromArray($sourceArray) {
         $finalArray = array();
         foreach ($sourceArray as $key => $item) {
             if (is_array($item)) {
@@ -2123,8 +2119,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param $string
      * @return unknown_type
      */
-    private
-    function htmlentities($string) {
+    private function htmlentities($string) {
         if ($GLOBALS['TSFE']->tmpl->setup['config.']['renderCharset']) {
             $encoding = $GLOBALS['TSFE']->tmpl->setup['config.']['renderCharset'];
         }
@@ -2139,8 +2134,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param string $content content to replace
      * @return string content cleared
      */
-    private
-    function removeAllMarkers($content) {
+    private function removeAllMarkers($content) {
         $markers = array();
         $subparts = array();
         preg_match_all('/<!--[\t]*###([A-Z_]*)_FIELD###/U', $content, $matches, PREG_PATTERN_ORDER);
