@@ -1855,7 +1855,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
         if ($this->conf['passwordGeneration'] || !isset($this->piVars['password']) || strlen($this->piVars['password']) == 0) {
             $this->piVars['password'] = substr(md5(time() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 8);
         }
-        $user = array();
+        //call function to verify the type of verification
+        $user = $this->setAuthCode();
         $user['usergroup'] = ($this->userAuth || $this->adminAuth) ? $this->conf['preUsergroup'] : $this->conf['postUsergroup'];
         foreach ($this->fieldsData as $field) {
             if ($field['type'] == 'databaseField' && (!isset($field['noHTMLEntities']) || (isset($field['noHTMLEntities']) && $field['noHTMLEntities'] == 1))) {
@@ -1874,7 +1875,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
 
         $user['pid'] = ($this->conf['userFolder']) ? $this->conf['userFolder'] : $GLOBALS['TSFE']->id;
-        $user = $this->setAuthCode($user);
         $user['disable'] = ($this->conf['disabledBeforeConfirmation'] && ($this->userAuth || $this->adminAuth)) ? 1 : 0;
         $user['crdate'] = time();
         $user['tstamp'] = $user['crdate'];
@@ -2036,7 +2036,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param $user
      * @return array user
      */
-    private function setAuthCode($user) {
+    private function setAuthCode() {
+        $user = array();
         $authProcessList = explode(',', $this->conf['approvalProcess']);
         foreach ($authProcessList as $process) {
             switch ($process) {

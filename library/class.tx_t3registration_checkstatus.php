@@ -130,7 +130,7 @@ class tx_t3registration_checkstatus {
             $this->setMessage($this->parentObject->pi_getLL('templateFoundTitle'), sprintf($this->parentObject->pi_getLL('templateFound'), $templateFile), 'ok');
         }
         else {
-            $this->setMessage($this->parentObject->pi_getLL('templateFoundTitle'), sprintf($this->parentObject->pi_getLL('templateFound'), $templateFile), 'error');
+            $this->setMessage($this->parentObject->pi_getLL('templateFoundTitle'), sprintf($this->parentObject->pi_getLL('templateNotFound'), $templateFile), 'error');
         }
     }
 
