@@ -67,7 +67,7 @@
             <label index="test_enableTemplateTest">Enable template test</label>
             <label index="test_stepToTest">Choose template step</label>
             <label index="test_registration">Registration</label>
-            <label index="test_registrationPostWithErrors">Registration with Error</label>
+            <label index="test_registrationPostWithErrors">Registration with errors</label>
             <label index="test_preview">Preview</label>
             <label index="test_userSaved">User created (end registration)</label>
             <label index="test_confirmationEmail">Send confirmation email</label>
@@ -80,8 +80,8 @@
             <label index="test_editWithErrors">Edit with errors</label>
             <label index="test_editOK">Edit success</label>
             <label index="test_delete">Delete</label>
-            <label index="test_deleteSentEmail">page after deleting email sent</label>
-            <label index="test_deleteConfirmationEmail">send deleting confirmation email</label>
+            <label index="test_deleteSentEmail">page after cancellation email sent</label>
+            <label index="test_deleteConfirmationEmail">send cancellation confirmation email</label>
             <label index="test_userConfirmationDeletePage">User confirmation deleting page</label>
             <label index="test_testXMLFile">Choose file with user data (xml format)</label>
         </languageKey>

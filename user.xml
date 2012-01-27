@@ -4,9 +4,7 @@
         <username>test</username>
         <password>12345</password>
         <passwordTwice>12345</passwordTwice>
-        <usergroup></usergroup>
-        <lockToDomain></lockToDomain>
-        <name></name>
+        <name>General name</name>
         <first_name>Firstname</first_name>
         <middle_name>MiddleName</middle_name>
         <last_name>Lastname</last_name>
@@ -21,15 +19,6 @@
         <www>www.test.it</www>
         <company>Test Srl</company>
         <image></image>
-        <tx_t3registration_privacy>1</tx_t3registration_privacy>
-        <tx_t3registration_marketing_permission>1</tx_t3registration_marketing_permission>
-        <user_auth_code></user_auth_code>
-        <admin_auth_code></admin_auth_code>
-        <admin_disable></admin_disable>
-        <tx_testt3registration_select>3</tx_testt3registration_select>
-        <tx_testt3registration_radio>4</tx_testt3registration_radio>
-        <tx_testt3registration_check>1</tx_testt3registration_check>
-        <tx_testt3registration_checkmultiple>16</tx_testt3registration_checkmultiple>
     </correctUser>
     <wrongUser>
         <username>test</username>
@@ -51,14 +40,5 @@
         <www>www.test.it</www>
         <company>Test Srl</company>
         <image></image>
-        <tx_t3registration_privacy>1</tx_t3registration_privacy>
-        <tx_t3registration_marketing_permission>1</tx_t3registration_marketing_permission>
-        <user_auth_code></user_auth_code>
-        <admin_auth_code></admin_auth_code>
-        <admin_disable></admin_disable>
-        <tx_testt3registration_select>3</tx_testt3registration_select>
-        <tx_testt3registration_radio>4</tx_testt3registration_radio>
-        <tx_testt3registration_check>1</tx_testt3registration_check>
-        <tx_testt3registration_checkmultiple>16</tx_testt3registration_checkmultiple>
     </wrongUser>
 </users>
