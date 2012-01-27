@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<users>
+    <correctUser>
+        <username>test</username>
+        <password>12345</password>
+        <passwordTwice>12345</passwordTwice>
+        <usergroup></usergroup>
+        <lockToDomain></lockToDomain>
+        <name></name>
+        <first_name>Firstname</first_name>
+        <middle_name>MiddleName</middle_name>
+        <last_name>Lastname</last_name>
+        <address>Moon street, 23</address>
+        <telephone>7366454</telephone>
+        <fax>0847463</fax>
+        <email>test@test.it</email>
+        <title>1</title>
+        <zip>55555</zip>
+        <city>Rome</city>
+        <country>Italy</country>
+        <www>www.test.it</www>
+        <company>Test Srl</company>
+        <image></image>
+        <tx_t3registration_privacy>1</tx_t3registration_privacy>
+        <tx_t3registration_marketing_permission>1</tx_t3registration_marketing_permission>
+        <user_auth_code></user_auth_code>
+        <admin_auth_code></admin_auth_code>
+        <admin_disable></admin_disable>
+        <tx_testt3registration_select>3</tx_testt3registration_select>
+        <tx_testt3registration_radio>4</tx_testt3registration_radio>
+        <tx_testt3registration_check>1</tx_testt3registration_check>
+        <tx_testt3registration_checkmultiple>16</tx_testt3registration_checkmultiple>
+    </correctUser>
+    <wrongUser>
+        <username>test</username>
+        <password>12345</password>
+        <usergroup></usergroup>
+        <lockToDomain></lockToDomain>
+        <name></name>
+        <first_name>Firstname</first_name>
+        <middle_name>MiddleName</middle_name>
+        <last_name>Lastname</last_name>
+        <address>Moon street, 23</address>
+        <telephone>7366454</telephone>
+        <fax>0847463</fax>
+        <email>testtest.it</email>
+        <title>1</title>
+        <zip>55555</zip>
+        <city>Rome</city>
+        <country>Italy</country>
+        <www>www.test.it</www>
+        <company>Test Srl</company>
+        <image></image>
+        <tx_t3registration_privacy>1</tx_t3registration_privacy>
+        <tx_t3registration_marketing_permission>1</tx_t3registration_marketing_permission>
+        <user_auth_code></user_auth_code>
+        <admin_auth_code></admin_auth_code>
+        <admin_disable></admin_disable>
+        <tx_testt3registration_select>3</tx_testt3registration_select>
+        <tx_testt3registration_radio>4</tx_testt3registration_radio>
+        <tx_testt3registration_check>1</tx_testt3registration_check>
+        <tx_testt3registration_checkmultiple>16</tx_testt3registration_checkmultiple>
+    </wrongUser>
+</users>

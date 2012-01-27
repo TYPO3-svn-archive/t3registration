@@ -461,5 +461,127 @@
                 </el>
       </ROOT>
     </emailSheet>
+        <testSheet>
+        <ROOT>
+            <TCEforms>
+                <sheetTitle>LLL:EXT:t3registration/locallang_db.xml:sheet_test</sheetTitle>
+            </TCEforms>
+            <type>array</type>
+            <el>
+                <enableTemplateTest>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:test_enableTemplateTest</label>
+                        <config>
+                            <type>check</type>
+                        </config>
+                    </TCEforms>
+                </enableTemplateTest>
+                <stepToTest>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:test_stepToTest</label>
+                        <config>
+                            <type>select</type>
+                            <items type="array">
+                                <numIndex index="0" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_registration</numIndex>
+                                    <numIndex index="1">registration</numIndex>
+                                </numIndex>
+                                <numIndex index="1" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_registrationPostWithErrors</numIndex>
+                                    <numIndex index="1">registrationPostWithErrors</numIndex>
+                                </numIndex>
+                                <numIndex index="2" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_preview</numIndex>
+                                    <numIndex index="1">preview</numIndex>
+                                </numIndex>
+                                <numIndex index="3" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_userSaved</numIndex>
+                                    <numIndex index="1">userSaved</numIndex>
+                                </numIndex>
+                                <numIndex index="4" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_confirmationEmail</numIndex>
+                                    <numIndex index="1">confirmationEmail</numIndex>
+                                </numIndex>
+                                <numIndex index="5" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_adminEmail</numIndex>
+                                    <numIndex index="1">adminEmail</numIndex>
+                                </numIndex>
+                                <numIndex index="6" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_adminConfirmationPage</numIndex>
+                                    <numIndex index="1">adminConfirmationPage</numIndex>
+                                </numIndex>
+                                <numIndex index="7" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_userConfirmationPageWithAdminConfirmed</numIndex>
+                                    <numIndex index="1">userConfirmationPageWithAdminConfirmed</numIndex>
+                                </numIndex>
+                                <numIndex index="8" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_userConfirmationPageWithoutAdminConfirmed</numIndex>
+                                    <numIndex index="1">userConfirmationPageWithoutAdminConfirmed</numIndex>
+                                </numIndex>
+                                <numIndex index="9" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_wrongLink</numIndex>
+                                    <numIndex index="1">wrongLink</numIndex>
+                                </numIndex>
+                                <numIndex index="10" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_edit</numIndex>
+                                    <numIndex index="1">edit</numIndex>
+                                </numIndex>
+                                <numIndex index="11" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_editWithErrors</numIndex>
+                                    <numIndex index="1">editWithErrors</numIndex>
+                                </numIndex>
+                                <numIndex index="12" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_editOK</numIndex>
+                                    <numIndex index="1">editOK</numIndex>
+                                </numIndex>
+                                <numIndex index="13" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_delete</numIndex>
+                                    <numIndex index="1">delete</numIndex>
+                                </numIndex>
+                                <numIndex index="14" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_deleteSentEmail</numIndex>
+                                    <numIndex index="1">deleteSentEmail</numIndex>
+                                </numIndex>
+                                <numIndex index="14" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_deleteConfirmationEmail</numIndex>
+                                    <numIndex index="1">deleteConfirmationEmail</numIndex>
+                                </numIndex>
+                                <numIndex index="15" type="array">
+                                    <numIndex index="0">LLL:EXT:t3registration/locallang_db.xml:test_userConfirmationDeletePage</numIndex>
+                                    <numIndex index="1">userConfirmationDeletePage</numIndex>
+                                </numIndex>
+                            </items>
+                            <maxitems>1</maxitems>
+                            <size>1</size>
+                        </config>
+                    </TCEforms>
+                </stepToTest>
+                <testXMLFile>
+                    <TCEforms>
+                        <label>LLL:EXT:t3registration/locallang_db.xml:test_testXMLFile</label>
+                        <config>
+                            <type>input</type>
+                            <size>25</size>
+                            <max>100</max>
+                            <wizards type="array">
+                                <_PADDING type="integer">2</_PADDING>
+                                <link type="array">
+                                    <type>popup</type>
+                                    <title>LLL:EXT:t3registration/locallang_db.xml:test_testXMLFile</title>
+                                    <icon>link_popup.gif</icon>
+                                    <script>browse_links.php?act=file&amp;mode=wizard</script>
+                                    <JSopenParams>height=600,width=500,status=0,menubar=0,scrollbars=1</JSopenParams>
+                                    <params type="array">
+                                        <blindLinkOptions>mail,spec,url,folder,page</blindLinkOptions>
+                                        <allowedExtensions>xml</allowedExtensions>
+                                    </params>
+                                </link>
+                            </wizards>
+                        </config>
+                    </TCEforms>
+                </testXMLFile>
+            </el>
+        </ROOT>
+    </testSheet>
     </sheets>
 </T3DataStructure>

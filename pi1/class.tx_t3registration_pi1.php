@@ -129,6 +129,18 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     public $markerTitle = '';
 
+    /**
+     * This constant contains the maximum code number of exception self managed by extension
+     */
+    const MAXIMUM_ERROR_NUMBER = 1000;
+
+    /**
+     * This constant contains the minimum code number of exception self managed by extension
+     */
+    const MINIMUM_ERROR_NUMBER = 100;
+
+    const XML_TEST_FILE_ERROR = 110;
+
 
     /*******************************MAIN AND INIT FUNCION******************/
 
@@ -140,109 +152,126 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return  string that is displayed on the website
      */
     public function main($content, $conf) {
-        $GLOBALS['TSFE']->additionalHeaderData['t3registrationJQuery'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/initialize.js"></script>';
-        $this->conf = $conf;
+        try {
+            $GLOBALS['TSFE']->additionalHeaderData['t3registrationJQuery'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/initialize.js"></script>';
+            $this->conf = $conf;
 
-        //set errorLevel
-        $this->debugLevel = (isset($this->conf['debugLevel'])) ? $this->conf['debugLevel'] : $this->debugLevel;
-        //debug($this->conf);
-        $this->pi_setPiVarDefaults();
-        $this->pi_loadLL();
-        //initialize language object used in label translation from TCA
-        $this->init();
-        //extract data from flexform
-        $this->initFlexform();
-        //extract TCA columns from fe_users table
-        $this->loadTCAField();
-        //adds evaluation additional data
-        $this->addFunctionReplace($this->conf['fieldConfiguration.'], $this->conf['fieldConfiguration.'], '');
-        //merges data from flexform with ones from ts (after removing dots)
-        $this->fieldsData = t3lib_div::array_merge_recursive_overrule($this->fieldsData, $this->removeDotFromArray($this->conf['fieldConfiguration.']));
-        //update TCA config fields with fieldsData
-        $this->mergeTCAFieldWithConfiguration();
-        //Test action from url
-        $this->argumentsFromUrlCheck();
-        //debug($this->fieldsData);
-        $this->setEmailFormat();
+            //set errorLevel
+            $this->debugLevel = (isset($this->conf['debugLevel'])) ? $this->conf['debugLevel'] : $this->debugLevel;
+            //debug($this->conf);
+            $this->pi_setPiVarDefaults();
+            $this->pi_loadLL();
+            //initialize language object used in label translation from TCA
+            $this->init();
+            //extract data from flexform
+            $this->initFlexform();
+            //extract TCA columns from fe_users table
+            $this->loadTCAField();
+            //adds evaluation additional data
+            $this->addFunctionReplace($this->conf['fieldConfiguration.'], $this->conf['fieldConfiguration.'], '');
+            //merges data from flexform with ones from ts (after removing dots)
+            $this->fieldsData = t3lib_div::array_merge_recursive_overrule($this->fieldsData, $this->removeDotFromArray($this->conf['fieldConfiguration.']));
+            //update TCA config fields with fieldsData
+            $this->mergeTCAFieldWithConfiguration();
+            //Test action from url
+            $this->argumentsFromUrlCheck();
+            //debug($this->fieldsData);
+            $this->setEmailFormat();
 
-        //debug($this->piVars,'piVars');
-        switch ($this->conf['showtype']) {
-            case 'sendConfirmationEmail':
-                $content = $this->sendAgainConfirmationEmail();
-                break;
-            case 'delete':
-                if ($GLOBALS['TSFE']->loginUser) {
-                    if ($this->externalAction['active']) {
-                        $content = $this->{$this->externalAction['type']}();
-                    }
-                    else {
-                        $content = $this->showDeleteLink();
-                    }
+            //call test environment if enabled
+            if ($this->conf['enableTemplateTest']) {
+                $content = $this->testTemplateProcess();
+            }
+            else {
+                //debug($this->piVars,'piVars');
+                switch ($this->conf['showtype']) {
+                    case 'sendConfirmationEmail':
+                        $content = $this->sendAgainConfirmationEmail();
+                        break;
+                    case 'delete':
+                        if ($GLOBALS['TSFE']->loginUser) {
+                            if ($this->externalAction['active']) {
+                                $content = $this->{$this->externalAction['type']}();
+                            }
+                            else {
+                                $content = $this->showDeleteLink();
+                            }
 
-                }
-                else {
-                    if ($this->debugLevel) {
-                        if (TYPO3_DLOG) {
-                            t3lib_div::devLog('showtype is delete, but user is not logged, nothing is shown.', $this->extKey, 2);
                         }
-                    }
-                }
-                break;
-            case 'edit':
-                if ($GLOBALS['TSFE']->loginUser) {
-                    if (!isset($this->piVars['submitted']) && !isset($this->piVars['sendConfirmation'])) {
-                        $content = $this->showProfile();
-                    }
-                    else {
-                        $content = $this->getForm();
-                    }
-                }
-                else {
-                    if ($this->debugLevel) {
-                        if (TYPO3_DLOG) {
-                            t3lib_div::devLog('showtype is edit, but user is not logged, nothing is shown.', $this->extKey, 2);
+                        else {
+                            if ($this->debugLevel) {
+                                if (TYPO3_DLOG) {
+                                    t3lib_div::devLog('showtype is delete, but user is not logged, nothing is shown.', $this->extKey, 2);
+                                }
+                            }
                         }
-                    }
+                        break;
+                    case 'edit':
+                        if ($GLOBALS['TSFE']->loginUser) {
+                            if (!isset($this->piVars['submitted']) && !isset($this->piVars['sendConfirmation'])) {
+                                $content = $this->showProfile();
+                            }
+                            else {
+                                $content = $this->getForm();
+                            }
+                        }
+                        else {
+                            if ($this->debugLevel) {
+                                if (TYPO3_DLOG) {
+                                    t3lib_div::devLog('showtype is edit, but user is not logged, nothing is shown.', $this->extKey, 2);
+                                }
+                            }
+                        }
+                        break;
+                    case 'auto':
+                    default:
+                        if ($this->externalAction['active']) {
+                            //operation from url
+                            $content = $this->{$this->externalAction['type']}();
+                        }
+                        elseif ($this->changeProfileCheck()) {
+                            $this->changeProfilePath = true;
+                            $content = $this->showProfile();
+                        }
+                        else {
+                            $content = $this->getForm();
+                        }
+                        break;
                 }
-                break;
-            case 'auto':
-            default:
-                if ($this->externalAction['active']) {
-                    //operation from url
-                    $content = $this->{$this->externalAction['type']}();
-                }
-                elseif ($this->changeProfileCheck()) {
-                    $this->changeProfilePath = true;
-                    $content = $this->showProfile();
-                }
-                else {
-                    $content = $this->getForm();
-                }
-                break;
-        }
-        $content = $this->removeAllMarkers($content);
-        if ($this->conf['debuggingMode'] && t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
-            $checkClass = t3lib_div::makeInstance('tx_t3registration_checkstatus');
-            $checkClass->initialize($this, $this->fieldsData);
-            $content = $checkClass->main();
-        }
-        else {
-            $error = '';
-            $checkApprovalProcess = $this->controlEmailAndMethod();
-            if ($checkApprovalProcess !== true) {
+            }
+            $content = $this->removeAllMarkers($content);
+            if ($this->conf['debuggingMode'] && t3lib_div::cmpIP(t3lib_div::getIndpEnv('REMOTE_ADDR'), $GLOBALS['TYPO3_CONF_VARS']['SYS']['devIPmask'])) {
                 $checkClass = t3lib_div::makeInstance('tx_t3registration_checkstatus');
                 $checkClass->initialize($this, $this->fieldsData);
-                $error .= $checkClass->getMessage($this->pi_getLL('approvalProcessConfigurationError'), $checkApprovalProcess, 'error');
+                $content = $checkClass->main();
             }
-            $checkUsername = $this->controlIfUsernameIsCorrect();
-            if ($checkUsername !== true) {
+            else {
+                $error = '';
+                $checkApprovalProcess = $this->controlEmailAndMethod();
+                if ($checkApprovalProcess !== true) {
+                    $checkClass = t3lib_div::makeInstance('tx_t3registration_checkstatus');
+                    $checkClass->initialize($this, $this->fieldsData);
+                    $error .= $checkClass->getMessage($this->pi_getLL('approvalProcessConfigurationError'), $checkApprovalProcess, 'error');
+                }
+                $checkUsername = $this->controlIfUsernameIsCorrect();
+                if ($checkUsername !== true) {
+                    $checkClass = t3lib_div::makeInstance('tx_t3registration_checkstatus');
+                    $checkClass->initialize($this, $this->fieldsData);
+                    $error .= $checkClass->getMessage($this->pi_getLL('usernameConfigurationError'), $checkUsername, 'error');
+                }
+                $content = ($error) ? $error : $content;
+            }
+            return $this->pi_wrapInBaseClass($content);
+        }
+        catch (t3lib_exception $exception) {
+            $code = $exception->getCode();
+            if ($code > self::MINIMUM_ERROR_NUMBER && $code < self::MAXIMUM_ERROR_NUMBER) {
                 $checkClass = t3lib_div::makeInstance('tx_t3registration_checkstatus');
                 $checkClass->initialize($this, $this->fieldsData);
-                $error .= $checkClass->getMessage($this->pi_getLL('usernameConfigurationError'), $checkUsername, 'error');
+                $content = $checkClass->getMessage($this->pi_getLL('exceptionalError'), $this->pi_getLL($exception->getMessage()), 'error');
+                return $this->pi_wrapInBaseClass($content);
             }
-            $content = ($error) ? $error : $content;
         }
-        return $this->pi_wrapInBaseClass($content);
     }
 
     /**
@@ -706,10 +735,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * This function is called before getForm if user is logged, so it merge data from database into piVars, only if form is not submitted
      * @return string the form HTML code
      */
-    private function showProfile() {
-        $uid = $GLOBALS['TSFE']->fe_user->user['uid'];
-        $resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'uid=' . $uid);
-        $user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource);
+    private function showProfile($user = array()) {
+        if (!is_array($user) || count($user) == 0) {
+            $uid = $GLOBALS['TSFE']->fe_user->user['uid'];
+            $resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'uid=' . $uid);
+            $user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource);
+        }
         foreach ($this->fieldsData as $field) {
             if (isset($user[$field['field']])) {
                 $this->piVars[$field['name']] = $user[$field['field']];
@@ -1007,22 +1038,31 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * Extract the "T3REGISTRATION_DELETE_SENTEMAIL" marker subpart and create the email body
      * @return string the registration final HTML template
      */
-    private function emailDeletionSent() {
+    private function emailDeletionSent($user = array()) {
         $content = $this->getTemplate();
         $content = $this->cObj->getSubpart($content, 'T3REGISTRATION_DELETE_SENTEMAIL');
         if (isset($GLOBALS['TSFE']->fe_user->user['uid'])) {
-            $resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'uid=' . $GLOBALS['TSFE']->fe_user->user['uid']);
-            if ($GLOBALS['TYPO3_DB']->sql_num_rows($resource) > 0) {
-                $user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource);
-                $user['user_auth_code'] = md5('delteAuth' . time() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-                $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $GLOBALS['TSFE']->fe_user->user['uid'], $user);
-
+            if (!is_array($user) || count($user) == 0) {
+                $resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'uid=' . $GLOBALS['TSFE']->fe_user->user['uid']);
+                $user = array();
+                if ($GLOBALS['TYPO3_DB']->sql_num_rows($resource) > 0) {
+                    $user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource);
+                    $user['user_auth_code'] = md5('deleteAuth' . time() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+                    $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $GLOBALS['TSFE']->fe_user->user['uid'], $user);
+                }
+            }
+            //$user could be empty if no user found
+            if (count($user)) {
                 foreach ($this->fieldsData as $field) {
                     $valueArray['###' . strtoupper($field['name']) . '###'] = $this->htmlentities($user[$field['field']]);
                 }
                 $contentArray['###DELETE_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('textAfterDeleteRequest'), $valueArray);
                 $contentArray['###SIGNATURE###'] = $this->pi_getLL('signature');
                 $this->prepareAndSendEmailSubpart('deleteRequest', $user);
+            }
+            else {
+                $contentArray['###DELETE_TEXT###'] = $this->pi_getLL('userNotFound');
+                $contentArray['###SIGNATURE###'] = '';
             }
         }
         else {
@@ -1397,14 +1437,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         if ($GLOBALS['TYPO3_DB']->sql_num_rows($resource) > 0) {
             $user = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource);
             $this->deleteUser($user);
-            $content = $this->getTemplate();
-            $content = $this->cObj->getSubpart($content, '###T3REGISTRATION_DELETE_CONFIRMATION###');
-            foreach ($user as $key => $value) {
-                $markerArray['###' . strtoupper($key) . '###'] = $value;
-            }
-            $contentArray['###DELETE_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('deletionConfirmedText'), $markerArray);
-            $contentArray['###SIGNATURE###'] = $this->pi_getLL('signature');
-            return $this->cObj->substituteMarkerArrayCached($content, $contentArray);
+            return $this->confirmUserDeletionTemplate($user);
         }
         else {
             return $this->cObj->stdWrap($this->pi_getLL('confirmationLinkNotFound'), $this->conf['error.']['confirmedErrorWrap.']);
@@ -1412,45 +1445,63 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
     /**
+     * This function creates the HTML code to show
+     * @param $user array user to delete
+     * @return string HTML content to show
+     */
+    protected function confirmUserDeletionTemplate($user){
+        $content = $this->getTemplate();
+        $content = $this->cObj->getSubpart($content, '###T3REGISTRATION_DELETE_CONFIRMATION###');
+        foreach ($user as $key => $value) {
+            $markerArray['###' . strtoupper($key) . '###'] = $value;
+        }
+        $contentArray['###DELETE_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('deletionConfirmedText'), $markerArray);
+        $contentArray['###SIGNATURE###'] = $this->pi_getLL('signature');
+        return $this->cObj->substituteMarkerArrayCached($content, $contentArray);
+    }
+
+    /**
      * This function delete user from database
      * @return boolean true if the user was been correctly confirmed, false otherwise
      */
     private function deleteUser($user) {
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeDeleteUser'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeDeleteUser'] as $userFunction) {
-                $params['user'] = $user;
-                t3lib_div::callUserFunction($userFunction, $params, $this);
-                $user = $params['user'];
+        if (!$this->conf['enableTemplateTest']) {
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeDeleteUser'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeDeleteUser'] as $userFunction) {
+                    $params['user'] = $user;
+                    t3lib_div::callUserFunction($userFunction, $params, $this);
+                    $user = $params['user'];
+                }
             }
-        }
-        if (isset($this->conf['delete.']['deleteRow']) && $this->conf['delete.']['deleteRow']) {
-            $GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_users', 'uid=' . $user['uid']);
-            //used for writing log
-            $query = $GLOBALS['TYPO3_DB']->DELETEquery('fe_users', 'uid=' . $user['uid']);
-        }
-        else {
-            $user['disable'] = 1;
-            $user['deleted'] = 1;
-            $user['tstamp'] = time();
-            $user['user_auth_code'] = '';
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], $user);
-            //used for writing log
-            $query = $GLOBALS['TYPO3_DB']->UPDATEquery('fe_users', 'uid=' . $user['uid'], $user);
-
-        }
-
-        if ($this->debugLevel && TYPO3_DLOG) {
-            t3lib_div::devLog('user ' . $user['username'] . ' was deleted', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
-            t3lib_div::sysLog('user ' . $user['username'] . ' was deleted', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
-            if ($this->debugLevel > 1) {
-                t3lib_div::devLog('user ' . $user['username'] . ' was deleted QUERY: <b>' . $query . '</b>', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+            if (isset($this->conf['delete.']['deleteRow']) && $this->conf['delete.']['deleteRow']) {
+                $GLOBALS['TYPO3_DB']->exec_DELETEquery('fe_users', 'uid=' . $user['uid']);
+                //used for writing log
+                $query = $GLOBALS['TYPO3_DB']->DELETEquery('fe_users', 'uid=' . $user['uid']);
             }
-        }
+            else {
+                $user['disable'] = 1;
+                $user['deleted'] = 1;
+                $user['tstamp'] = time();
+                $user['user_auth_code'] = '';
+                $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], $user);
+                //used for writing log
+                $query = $GLOBALS['TYPO3_DB']->UPDATEquery('fe_users', 'uid=' . $user['uid'], $user);
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterDeleteUser'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterDeleteUser'] as $userFunction) {
-                $params['user'] = $user;
-                t3lib_div::callUserFunction($userFunction, $params, $this);
+            }
+
+            if ($this->debugLevel && TYPO3_DLOG) {
+                t3lib_div::devLog('user ' . $user['username'] . ' was deleted', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+                t3lib_div::sysLog('user ' . $user['username'] . ' was deleted', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
+                if ($this->debugLevel > 1) {
+                    t3lib_div::devLog('user ' . $user['username'] . ' was deleted QUERY: <b>' . $query . '</b>', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+                }
+            }
+
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterDeleteUser'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterDeleteUser'] as $userFunction) {
+                    $params['user'] = $user;
+                    t3lib_div::callUserFunction($userFunction, $params, $this);
+                }
             }
         }
     }
@@ -1548,27 +1599,30 @@ class tx_t3registration_pi1 extends tslib_pibase {
         if (strlen($user['admin_auth_code']) == 0) {
             $user['disable'] = 0;
         }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateConfirmedUser'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateConfirmedUser'] as $userFunction) {
-                $params['user'] = $user;
-                t3lib_div::callUserFunction($userFunction, $params, $this);
-                $user = $params['user'];
-            }
-        }
-        $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], $user);
 
-        if ($this->debugLevel && TYPO3_DLOG) {
-            t3lib_div::devLog('user ' . $user['username'] . ' has just confirmed', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
-            t3lib_div::sysLog('user ' . $user['username'] . ' was just confirmed', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
-            if ($this->debugLevel > 1) {
-                t3lib_div::devLog('user ' . $user['username'] . ' has just confirmed QUERY: <b>' . $GLOBALS['TYPO3_DB']->UPDATEquery('fe_users', 'uid=' . $user['uid'], $user) . '</b>', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+        if (!$this->conf['enableTemplateTest']) {
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateConfirmedUser'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateConfirmedUser'] as $userFunction) {
+                    $params['user'] = $user;
+                    t3lib_div::callUserFunction($userFunction, $params, $this);
+                    $user = $params['user'];
+                }
             }
-        }
+            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $user['uid'], $user);
 
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterUpdateConfirmedUser'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterUpdateConfirmedUser'] as $userFunction) {
-                $params['user'] = $user;
-                t3lib_div::callUserFunction($userFunction, $params, $this);
+            if ($this->debugLevel && TYPO3_DLOG) {
+                t3lib_div::devLog('user ' . $user['username'] . ' has just confirmed', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+                t3lib_div::sysLog('user ' . $user['username'] . ' was just confirmed', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
+                if ($this->debugLevel > 1) {
+                    t3lib_div::devLog('user ' . $user['username'] . ' has just confirmed QUERY: <b>' . $GLOBALS['TYPO3_DB']->UPDATEquery('fe_users', 'uid=' . $user['uid'], $user) . '</b>', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+                }
+            }
+
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterUpdateConfirmedUser'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterUpdateConfirmedUser'] as $userFunction) {
+                    $params['user'] = $user;
+                    t3lib_div::callUserFunction($userFunction, $params, $this);
+                }
             }
         }
         if (strlen($user['admin_auth_code']) == 0) {
@@ -1775,6 +1829,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 return true;
             }
         }
+        else{
+            return true;
+        }
     }
 
     /**
@@ -1878,29 +1935,31 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $user['disable'] = ($this->conf['disabledBeforeConfirmation'] && ($this->userAuth || $this->adminAuth)) ? 1 : 0;
         $user['crdate'] = time();
         $user['tstamp'] = $user['crdate'];
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeInsertUser'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeInsertUser'] as $userFunction) {
-                $params['user'] = $user;
-                $params['piVars'] = $this->piVars;
-                t3lib_div::callUserFunction($userFunction, $params, $this);
-                $user = $params['user'];
+        if (!$this->conf['enableTemplateTest']) {
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeInsertUser'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeInsertUser'] as $userFunction) {
+                    $params['user'] = $user;
+                    $params['piVars'] = $this->piVars;
+                    t3lib_div::callUserFunction($userFunction, $params, $this);
+                    $user = $params['user'];
+                }
             }
-        }
-        $GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_users', $user);
-        if ($this->debugLevel && TYPO3_DLOG) {
-            t3lib_div::devLog('user ' . $user['username'] . ' was created', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
-            t3lib_div::sysLog('user ' . $user['username'] . ' was created', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
-            if ($this->debugLevel > 1) {
-                t3lib_div::devLog('user ' . $user['username'] . ' was created QUERY: <b>' . $GLOBALS['TYPO3_DB']->INSERTquery('fe_users', $user) . '</b>', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
+            $GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_users', $user);
+            if ($this->debugLevel && TYPO3_DLOG) {
+                t3lib_div::devLog('user ' . $user['username'] . ' was created', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+                t3lib_div::sysLog('user ' . $user['username'] . ' was created', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
+                if ($this->debugLevel > 1) {
+                    t3lib_div::devLog('user ' . $user['username'] . ' was created QUERY: <b>' . $GLOBALS['TYPO3_DB']->INSERTquery('fe_users', $user) . '</b>', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
+                }
             }
-        }
 
-        $user['uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterInsertUser'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterInsertUser'] as $userFunction) {
-                $params['user'] = $user;
-                $params['piVars'] = $this->piVars;
-                t3lib_div::callUserFunction($userFunction, $params, $this);
+            $user['uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterInsertUser'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterInsertUser'] as $userFunction) {
+                    $params['user'] = $user;
+                    $params['piVars'] = $this->piVars;
+                    t3lib_div::callUserFunction($userFunction, $params, $this);
+                }
             }
         }
         if ($this->userAuth) {
@@ -1994,26 +2053,29 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
             //Inserire hook per aggiornare i campi
             $user['tstamp'] = time();
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateUser'])) {
-                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateUser'] as $userFunction) {
+
+            if (!$this->conf['enableTemplateTest']) {
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateUser'])) {
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateUser'] as $userFunction) {
+                        $params['user'] = $user;
+                        t3lib_div::callUserFunction($userFunction, $params, $this);
+                        $user = $params['user'];
+                    }
+                }
+                $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $GLOBALS['TSFE']->fe_user->user['uid'], $user);
+                if ($this->debugLevel && TYPO3_DLOG) {
+                    t3lib_div::devLog('user ' . $user['email'] . ' updates his profile', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+                    t3lib_div::sysLog('user ' . $user['username'] . ' updates his profile', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
+                    if ($this->debugLevel > 1) {
+                        t3lib_div::devLog('user ' . $user['email'] . ' updates his profile QUERY: <b>' . $GLOBALS['TYPO3_DB']->UPDATEquery('fe_users', 'uid=' . $GLOBALS['TSFE']->fe_user->user['uid'], $user) . '</b>', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
+                    }
+                }
+            }
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterUpdateUser'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterUpdateUser'] as $userFunction) {
                     $params['user'] = $user;
                     t3lib_div::callUserFunction($userFunction, $params, $this);
-                    $user = $params['user'];
                 }
-            }
-            $GLOBALS['TYPO3_DB']->exec_UPDATEquery('fe_users', 'uid=' . $GLOBALS['TSFE']->fe_user->user['uid'], $user);
-            if ($this->debugLevel && TYPO3_DLOG) {
-                t3lib_div::devLog('user ' . $user['email'] . ' updates his profile', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
-                t3lib_div::sysLog('user ' . $user['username'] . ' updates his profile', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
-                if ($this->debugLevel > 1) {
-                    t3lib_div::devLog('user ' . $user['email'] . ' updates his profile QUERY: <b>' . $GLOBALS['TYPO3_DB']->UPDATEquery('fe_users', 'uid=' . $GLOBALS['TSFE']->fe_user->user['uid'], $user) . '</b>', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
-                }
-            }
-        }
-        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterUpdateUser'])) {
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterUpdateUser'] as $userFunction) {
-                $params['user'] = $user;
-                t3lib_div::callUserFunction($userFunction, $params, $this);
             }
         }
     }
@@ -2156,6 +2218,135 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $content = $this->cObj->substituteMarkerArrayCached($content, $markers, $subparts);
         return $content;
     }
+
+    /******************************************TEMPLATE TEST FUNCTIONS*****************/
+
+    protected function testTemplateProcess() {
+        $warning = tx_t3registration_checkstatus::getMessage($this->pi_getll('testWarningTitle'), $this->pi_getll('testWarningMessage'), 'warning');
+        switch ($this->conf['stepToTest']) {
+            case 'registration':
+                $this->piVars = array();
+                return $warning . $this->getForm();
+                break;
+            case 'registrationPostWithErrors':
+                $this->piVars = $this->testGetUser(false);
+                $this->piVars['submitted'] = 1;
+                return $warning . $this->getForm();
+                break;
+            case 'preview':
+                $this->piVars = $this->testGetUser();
+                $this->piVars['submitted'] = 1;
+                return $warning . $this->getForm();
+                break;
+            case 'userSaved':
+                $this->piVars = $this->testGetUser();
+                return $warning . $this->endRegistration();
+                break;
+            case 'confirmationEmail':
+                $user = $this->testGetUser();
+                $this->prepareAndSendEmailSubpart('confirmationRequest', $user);
+                return tx_t3registration_checkstatus::getMessage($this->pi_getll('testMailTitle'), sprintf($this->pi_getll('testConfirmationUserEmailSent'), $user['email']), 'info');
+                break;
+            case 'adminEmail':
+                $user = $this->testGetUser();
+                $this->prepareAndSendEmailSubpart('authorizationRequest', $user);
+                return tx_t3registration_checkstatus::getMessage($this->pi_getll('testMailTitle'), $this->pi_getll('testConfirmationAdminEmailSent'), 'info');
+                break;
+            case 'userConfirmationPageWithAdminConfirmed':
+                $user = $this->testGetUser();
+                $user['admin_auth_code'] = 0;
+                return $warning . $this->confirmUser($user);
+                break;
+            case 'adminConfirmationPage':
+                $user = $this->testGetUser();
+                return $warning . $this->authorizedUser($user);
+                break;
+            case 'userConfirmationPageWithoutAdminConfirmed':
+                $user = $this->testGetUser();
+                $user['admin_auth_code'] = 1;
+                return $warning . $this->confirmUser($user);
+                break;
+            case 'wrongLink':
+                $this->piVars['authcode'] = '';
+                $this->externalAction['parameter'] = 'userAuth';
+                return $warning . $this->confirmationProcessControl();
+                break;
+            case 'editOK':
+                $previousLoginUser = $GLOBALS['TSFE']->loginUser;
+                $previousLoggedUser = ($GLOBALS['TSFE']->loginUser) ? $GLOBALS['TSFE']->fe_user->user : array();
+                $GLOBALS['TSFE']->loginUser = 1;
+                $GLOBALS['TSFE']->fe_user->user = $this->testGetUser();
+                $this->piVars = $GLOBALS['TSFE']->fe_user->user;
+                $content = $warning . $this->endRegistration();
+                $GLOBALS['TSFE']->loginUser = $previousLoginUser;
+                $GLOBALS['TSFE']->fe_user->user = $previousLoggedUser;
+                return $content;
+            case 'delete':
+                $previousLoginUser = $GLOBALS['TSFE']->loginUser;
+                $previousLoggedUser = ($GLOBALS['TSFE']->loginUser) ? $GLOBALS['TSFE']->fe_user->user : array();
+                $GLOBALS['TSFE']->loginUser = 1;
+                $GLOBALS['TSFE']->fe_user->user = $this->testGetUser();
+                $this->piVars = $GLOBALS['TSFE']->fe_user->user;
+                $content = $warning . $this->showDeleteLink();
+                $GLOBALS['TSFE']->loginUser = $previousLoginUser;
+                $GLOBALS['TSFE']->fe_user->user = $previousLoggedUser;
+                return $content;
+                break;
+            case 'deleteSentEmail':
+                $user = $this->testGetUser();
+                return $warning . $this->emailDeletionSent($user);
+                break;
+            case 'deleteConfirmationEmail':
+                $user = $this->testGetUser();
+                $user['user_auth_code'] = md5('deleteAuth' . time() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
+                $this->prepareAndSendEmailSubpart('deleteRequest', $user);;
+                return tx_t3registration_checkstatus::getMessage($this->pi_getll('testMailTitle'), sprintf($this->pi_getll('testConfirmationUserDeleteSent'), $user['email']), 'info');
+                break;
+            case 'userConfirmationDeletePage':
+                $user = $this->testGetUser();
+                return $warning . $this->confirmUserDeletionTemplate($user);
+                break;
+
+            case 'edit':
+                $this->piVars = array();
+                $previousLoginUser = $GLOBALS['TSFE']->loginUser;
+                $previousLoggedUser = ($GLOBALS['TSFE']->loginUser) ? $GLOBALS['TSFE']->fe_user->user : array();
+                $GLOBALS['TSFE']->loginUser = 1;
+                $GLOBALS['TSFE']->fe_user->user = $this->testGetUser();
+                $user = $GLOBALS['TSFE']->fe_user->user;
+                $content = $warning . $this->showProfile($user);
+                $GLOBALS['TSFE']->loginUser = $previousLoginUser;
+                $GLOBALS['TSFE']->fe_user->user = $previousLoggedUser;
+                return $content;
+                break;
+            case 'editWithErrors':
+                $this->piVars = array();
+                $previousLoginUser = $GLOBALS['TSFE']->loginUser;
+                $previousLoggedUser = ($GLOBALS['TSFE']->loginUser) ? $GLOBALS['TSFE']->fe_user->user : array();
+                $GLOBALS['TSFE']->loginUser = 1;
+                $GLOBALS['TSFE']->fe_user->user = $this->testGetUser(true);
+                $this->piVars = $this->testGetUser(false);
+                $this->piVars['submitted'] = 1;
+                $content = $warning . $this->getForm();
+                $GLOBALS['TSFE']->loginUser = $previousLoginUser;
+                $GLOBALS['TSFE']->fe_user->user = $previousLoggedUser;
+                return $content;
+                break;
+        }
+    }
+
+    protected function testGetUser($correct = true) {
+        if (!is_array($this->xmlTestUser)) {
+            $xmlFile = (isset($this->conf['testXMLFile'])) ? $this->conf['testXMLFile'] : '';
+            $content = $this->cObj->fileResource($xmlFile);
+            $this->xmlTestUser = t3lib_div::xml2array($content);
+        }
+        if (!is_array($this->xmlTestUser) || !isset($this->xmlTestUser['correctUser']) || !isset($this->xmlTestUser['wrongUser'])) {
+            throw new t3lib_exception('testXMLFileNotFoundOrWrong', self::XML_TEST_FILE_ERROR);
+        }
+        return ($correct) ? $this->xmlTestUser['correctUser'] : $this->xmlTestUser['wrongUser'];
+    }
+
 
 }
 

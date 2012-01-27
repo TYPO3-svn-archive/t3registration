@@ -1,139 +1,175 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3locallang>
-  <meta type="array">
-    <type>module</type>
-    <description>Language labels for plugin &quot;tx_t3registration_pi1&quot;</description>
-  </meta>
-  <data type="array">
-    <languageKey index="default" type="array">
-      <label index="list_mode_1">Mode 1</label>
-      <label index="list_mode_2">Mode 2</label>
-      <label index="list_mode_3">Mode 3</label>
-      <label index="back">Back</label>
-      <label index="confirmRegistrationButton">Confirm</label>
-      <label index="modifyRegistrationButton">Back</label>
-      <label index="insertRegistrationButton">Send</label>
-      <label index="confirmModificationProfileButton">Confirm update</label>
-      <label index="modifyModificationProfileButton">Back</label>
-      <label index="insertModificationProfileButton">Send update</label>
+    <meta type="array">
+        <type>module</type>
+        <description>Language labels for plugin &quot;tx_t3registration_pi1&quot;</description>
+    </meta>
+    <data type="array">
+        <languageKey index="default" type="array">
+            <label index="list_mode_1">Mode 1</label>
+            <label index="list_mode_2">Mode 2</label>
+            <label index="list_mode_3">Mode 3</label>
+            <label index="back">Back</label>
+            <label index="confirmRegistrationButton">Confirm</label>
+            <label index="modifyRegistrationButton">Back</label>
+            <label index="insertRegistrationButton">Send</label>
+            <label index="confirmModificationProfileButton">Confirm update</label>
+            <label index="modifyModificationProfileButton">Back</label>
+            <label index="insertModificationProfileButton">Send update</label>
 
-      <label index="passwordtwiceLabel">Repeat password</label>
+            <label index="passwordtwiceLabel">Repeat password</label>
 
-      <label index="deleteLinkText">click here to begin deleting process</label>
-      <label index="deleteDescriptionText"><![CDATA[If you click in the above link, you can begin the deleting process for your account.<br />This operation is irreversible.]]></label>
-      <label index="confirmationText"><![CDATA[Dear ###NAME### your confirmation is complete, now you are a user.]]></label>
-      <label index="ConfirmedOnRedirectText"><![CDATA[Dear ###NAME### you're a memeber of our community.]]></label>
-      <label index="signature">Typo3 Dev Staff</label>
-      <label index="submit_button_label">Click here to submit value</label>
-      <label index="deleteImage">Click here to delete the image</label>
-      <label index="deleteImageConfirmation">Are you sure to delete the image?</label>
-
-
-      <label index="passwordError">Password is not correct</label>
-      <label index="passwordPasswordError">Password is not correct</label>
-      <label index="passwordRequiredError">Password is not correct</label>
-      <label index="usernameRequiredError">Unsername field is compulsory</label>
-      <label index="usernameUniqueError">Unsername is not unique</label>
-      <label index="emailEmailError">Email is not correct</label>
-      <label index="passwordtwiceError">Repeat password correctly</label>
-      <label index="first_nameRequiredError">First name is required</label>
+            <label index="deleteLinkText">click here to begin deleting process</label>
+            <label index="deleteDescriptionText">
+                <![CDATA[If you click in the above link, you can begin the deleting process for your account.<br />This operation is irreversible.]]></label>
+            <label index="confirmationText">
+                <![CDATA[Dear ###NAME### your confirmation is complete, now you are a user.]]></label>
+            <label index="ConfirmedOnRedirectText">
+                <![CDATA[Dear ###NAME### you're a memeber of our community.]]></label>
+            <label index="signature">Typo3 Dev Staff</label>
+            <label index="submit_button_label">Click here to submit value</label>
+            <label index="deleteImage">Click here to delete the image</label>
+            <label index="deleteImageConfirmation">Are you sure to delete the image?</label>
 
 
-      <label index="templateFoundTitle">Template verifications</label>
-      <label index="templateSubpartFoundTitle"><![CDATA[Searching for subpart <i>%s</i> of the template]]></label>
-      <label index="templateFound"><![CDATA[The template <i>%s</i> was found]]></label>
-      <label index="templateNotFound"><![CDATA[The template <i>%s</i> was not found]]></label>
-      <label index="templateSubpartFound">Subpart was found</label>
-      <label index="templateSubpartNotFound">Subpart was not found</label>
+            <label index="passwordError">Password is not correct</label>
+            <label index="passwordPasswordError">Password is not correct</label>
+            <label index="passwordRequiredError">Password is not correct</label>
+            <label index="usernameRequiredError">Unsername field is compulsory</label>
+            <label index="usernameUniqueError">Unsername is not unique</label>
+            <label index="emailEmailError">Email is not correct</label>
+            <label index="passwordtwiceError">Repeat password correctly</label>
+            <label index="first_nameRequiredError">First name is required</label>
 
 
-      <label index="fieldsTitle">Backend fields</label>
-      <label index="fieldsBody">%s</label>
-      <label index="markersTitle">Markers in the template</label>
-      <label index="markersBody">%s</label>
-      <label index="markersDiffTitle">These fields are found in the template but miss in the configuration</label>
-      <label index="markersDiffBody">%s</label>
-      <label index="fieldsDiffTitle">These fields are found in the configuration (typoscript) but they aren't in the template</label>
-      <label index="fieldsDiffBody">%s</label>
-      <label index="noDiff">no difference.</label>
-
-      <label index="fieldsEvaluationTitle">Field evaluation rules</label>
-      <label index="fieldsEvaluation">%s: %s.</label>
-      <label index="fieldsEvaluationBody">%s</label>
+            <label index="templateFoundTitle">Template verifications</label>
+            <label index="templateSubpartFoundTitle"><![CDATA[Searching for subpart <i>%s</i> of the template]]></label>
+            <label index="templateFound"><![CDATA[The template <i>%s</i> was found]]></label>
+            <label index="templateNotFound"><![CDATA[The template <i>%s</i> was not found]]></label>
+            <label index="templateSubpartFound">Subpart was found</label>
+            <label index="templateSubpartNotFound">Subpart was not found</label>
 
 
-      <label index="preUserGroup">Groups assigned before confirmation: %s.</label>
-      <label index="postUserGroup">Groups assigned after confirmatio: %s.</label>
-      <label index="autoLoginAfterConfirmation">User will be redirected and logged automatically after confirmation</label>
-      <label index="authMethod">Confirmation methods: %s</label>
-      <label index="adminApproval">Moderator authorization method</label>
-      <label index="doubleOptin">User have to confirm his registration (double opt-in).</label>
-      <label index="changeProfile">User profile update is in a specific template (different from registration)</label>
-      <label index="siteUrl">Site url: %s</label>
-      <label index="userFolder">Users will be saved in folder: %s</label>
-      <label index="generalConfigurationTitle">General configurations</label>
-      <label index="generalConfigurationBody">%s</label>
-      <label index="noGroup">No group</label>
-    <label index="emailAddressCheckTitle">Moderator address</label>
-    <label index="emailAddressCheckBody">The moderator addresses seem to be correct</label>
-    <label index="emailAddressCheckErrorBody">The moderator addresses are wrong</label>
-    <label index="emailFromPresentTitle">Sender address</label>
-    <label index="emailFromPresentBody">Sender address was found</label>
-    <label index="emailFromPresentErrorBody">Sender address was not found</label>
-    <label index="emailFromNamePresentTitle">Sender name</label>
-    <label index="emailFromNamePresentBody">Sender name was found</label>
-    <label index="emailFromNamePresentErrorBody">Sender name was not found</label>
+            <label index="fieldsTitle">Backend fields</label>
+            <label index="fieldsBody">%s</label>
+            <label index="markersTitle">Markers in the template</label>
+            <label index="markersBody">%s</label>
+            <label index="markersDiffTitle">These fields are found in the template but miss in the configuration</label>
+            <label index="markersDiffBody">%s</label>
+            <label index="fieldsDiffTitle">These fields are found in the configuration (typoscript) but they aren't in
+                the template
+            </label>
+            <label index="fieldsDiffBody">%s</label>
+            <label index="noDiff">no difference.</label>
 
-    <label index="textAfterDeleteRequest">Dear user this email has been sent to your address ###EMAIL### to confirm your request of cancellation.</label>
+            <label index="fieldsEvaluationTitle">Field evaluation rules</label>
+            <label index="fieldsEvaluation">%s: %s.</label>
+            <label index="fieldsEvaluationBody">%s</label>
 
 
-    <label index="finalRegistrationSignature">T3Registration Staff</label>
-    <label index="finalRegistrationText"> Dear ###NAME### in a short time you will receive at your email address: ###EMAIL###  a request to confirm your subscription.</label>
+            <label index="preUserGroup">Groups assigned before confirmation: %s.</label>
+            <label index="postUserGroup">Groups assigned after confirmatio: %s.</label>
+            <label index="autoLoginAfterConfirmation">User will be redirected and logged automatically after
+                confirmation
+            </label>
+            <label index="authMethod">Confirmation methods: %s</label>
+            <label index="adminApproval">Moderator authorization method</label>
+            <label index="doubleOptin">User have to confirm his registration (double opt-in).</label>
+            <label index="changeProfile">User profile update is in a specific template (different from registration)
+            </label>
+            <label index="siteUrl">Site url: %s</label>
+            <label index="userFolder">Users will be saved in folder: %s</label>
+            <label index="generalConfigurationTitle">General configurations</label>
+            <label index="generalConfigurationBody">%s</label>
+            <label index="noGroup">No group</label>
+            <label index="emailAddressCheckTitle">Moderator address</label>
+            <label index="emailAddressCheckBody">The moderator addresses seem to be correct</label>
+            <label index="emailAddressCheckErrorBody">The moderator addresses are wrong</label>
+            <label index="emailFromPresentTitle">Sender address</label>
+            <label index="emailFromPresentBody">Sender address was found</label>
+            <label index="emailFromPresentErrorBody">Sender address was not found</label>
+            <label index="emailFromNamePresentTitle">Sender name</label>
+            <label index="emailFromNamePresentBody">Sender name was found</label>
+            <label index="emailFromNamePresentErrorBody">Sender name was not found</label>
 
-    <label index="confirmationWaitingAuthText">Dear user, thanks for your confirmation, to complete your registration process you await confirmation of the administrator.</label>
-  <label index="confirmationFinalText"><![CDATA[Dear ###NAME### your confirmation is complete, now you are a user.]]></label>
-  <label index="confirmationAuthorizationText"><![CDATA[Dear Administrator confirmation for user ###FIRST_NAME### is complete.]]></label>
-  <label index="confirmationAuthorizationEmailText"><![CDATA[Dear Administrator please confirm user request.<br />Click this link: ]]></label>
-    <label index="deletionConfirmedText">Dear user you have been deleted from our site.</label>
-    <label index="confirmationTextHtml">Dear user, this email was sent to confirm your registration.</label>
-    <label index="confirmationAfterAuthorizationTextHmtl">Dear user we send this email to confirm your subscription.</label>
-    <label index="confirmationAuthorizationEmailTextHtml">Dear administrator this email has been sent to you to allow the registration of Mr. ###FIRST_NAME### ###LAST_NAME###.</label>
-
-  <label index="sendConfirmationCode">Resend the confirmation email</label>
-  <label index="sendConfirmationCodeTextUserNotFound">Your request wasn't found, please fill a new registration.</label>
-  <label index="sendConfirmationCodeTextUserFound">We have sent again the confirmation email, click into the email link and confirm yuor registration.</label>
-
-
-    <!--MAIL-->
-      <label index="mailToUserSubject">Club subscription</label>
-      <label index="mailToAdminSubject">Authorization request from site.</label>
-      <label index="mailToUserAfterAuthorizationSubject">Registration confirmation</label>
-      <label index="mailToUserDeleteSubject">Request for cancellation</label>
-    <label index="confirmLinkConfirmationText">Confirm your registration</label>
-    <label index="authorizationLinkConfirmationText">Confirm your registration</label>
-    <label index="deleteLinkConfirmationText">Confirm your cancellation</label>
-
-    <label index="userMustBeLogged">User must to be logged</label>
-    <label index="confirmationLinkNotFound">This link not work, you have already confirmed or you are not subscribed</label>
-
-
+            <label index="textAfterDeleteRequest">Dear user this email has been sent to your address ###EMAIL### to
+                confirm your request of cancellation.
+            </label>
 
 
-    <!-- username error -->
-    <label index="usernameIsNotCorrect">Username is not correctly configured. You have to defined in eval field: required and unique</label>
-    <label index="usernameConfigurationError">Username not properly configured</label>
-  <label index="usernameIsNotDefined">Username is not defined or usernameField is empty</label>
+            <label index="finalRegistrationSignature">T3Registration Staff</label>
+            <label index="finalRegistrationText">Dear ###NAME### in a short time you will receive at your email address:
+                ###EMAIL### a request to confirm your subscription.
+            </label>
+
+            <label index="confirmationWaitingAuthText">Dear user, thanks for your confirmation, to complete your
+                registration process you await confirmation of the administrator.
+            </label>
+            <label index="confirmationFinalText">
+                <![CDATA[Dear ###NAME### your confirmation is complete, now you are a user.]]></label>
+            <label index="confirmationAuthorizationText">
+                <![CDATA[Dear Administrator confirmation for user ###FIRST_NAME### is complete.]]></label>
+            <label index="confirmationAuthorizationEmailText">
+                <![CDATA[Dear Administrator please confirm user request.<br />Click this link: ]]></label>
+            <label index="deletionConfirmedText">Dear user you have been deleted from our site.</label>
+            <label index="confirmationTextHtml">Dear user, this email was sent to confirm your registration.</label>
+            <label index="confirmationAfterAuthorizationTextHmtl">Dear user we send this email to confirm your
+                subscription.
+            </label>
+            <label index="confirmationAuthorizationEmailTextHtml">Dear administrator this email has been sent to you to
+                allow the registration of Mr. ###FIRST_NAME### ###LAST_NAME###.
+            </label>
+
+            <label index="sendConfirmationCode">Resend the confirmation email</label>
+            <label index="sendConfirmationCodeTextUserNotFound">Your request wasn't found, please fill a new
+                registration.
+            </label>
+            <label index="sendConfirmationCodeTextUserFound">We have sent again the confirmation email, click into the
+                email link and confirm yuor registration.
+            </label>
 
 
-    <!-- username error -->
-    <label index="approvalProcessConfigurationError">Approval process  not properly configured</label>
-    <label index="approvalProcessIsNotDefined">Email is not defined</label>
+            <!--MAIL-->
+            <label index="mailToUserSubject">Club subscription</label>
+            <label index="mailToAdminSubject">Authorization request from site.</label>
+            <label index="mailToUserAfterAuthorizationSubject">Registration confirmation</label>
+            <label index="mailToUserDeleteSubject">Request for cancellation</label>
+            <label index="confirmLinkConfirmationText">Confirm your registration</label>
+            <label index="authorizationLinkConfirmationText">Confirm your registration</label>
+            <label index="deleteLinkConfirmationText">Confirm your cancellation</label>
 
-  <label index="toResendConfirmationEmailText">Click here to send again to your email address the registration confirmation.</label>
+            <label index="userMustBeLogged">User must to be logged</label>
+            <label index="userNotFound">User not found</label>
+            <label index="confirmationLinkNotFound">This link not work, you have already confirmed or you are not
+                subscribed
+            </label>
 
 
+            <!-- username error -->
+            <label index="usernameIsNotCorrect">Username is not correctly configured. You have to defined in eval field:
+                required and unique
+            </label>
+            <label index="usernameConfigurationError">Username not properly configured</label>
+            <label index="usernameIsNotDefined">Username is not defined or usernameField is empty</label>
 
 
-    </languageKey>
-  </data>
+            <!-- username error -->
+            <label index="approvalProcessConfigurationError">Approval process not properly configured</label>
+            <label index="approvalProcessIsNotDefined">Email is not defined</label>
+
+            <label index="toResendConfirmationEmailText">Click here to send again to your email address the registration
+                confirmation.
+            </label>
+
+            <label index="testXMLFileNotFoundOrWrong">XML user file was not found or its content isn't in xml format</label>
+            <label index="exceptionalError">T3Registration Exception Error</label>
+            <label index="testConfirmationUserEmailSent">Test user confirmation email was sent to %s</label>
+            <label index="testConfirmationAdminEmailSent">Test email for admin confirmation was sent</label>
+            <label index="testConfirmationUserDeleteSent">Test email for user to validate in case of cancellation to %s</label>
+            <label index="testWarningTitle">Template test design</label>
+            <label index="testWarningMessage">Warning: the part below is only for design purpose (it doesn't work!)</label>
+            <label index="testMailTitle">Test Email Sent</label>
+
+        </languageKey>
+    </data>
 </T3locallang>

@@ -224,7 +224,10 @@ class tx_t3registration_checkstatus {
         $this->messages[] = '<div class="typo3-message ' . $class . '"><div class="message-header">' . $title . '</div><div class="message-body">' . $message . '</div></div>';
     }
 
-    public function getMessage($title, $message, $status) {
+    public static function getMessage($title, $message, $status) {
+        if(!isset($GLOBALS['TSFE']->additionalHeaderData['t3registrationMessage'])){
+            $GLOBALS['TSFE']->additionalHeaderData['t3registrationMessage'] = '<link href="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/message.css" rel="stylesheet" type="text/css"/>';
+        }
         switch ($status) {
             case 'info':
                 $class = 'message-information';
