@@ -45,7 +45,7 @@ class tx_t3registration_hooks {
             }
             else {
                 $paramsWhitelist = (isset($pObj->conf['extra.']['saveParamsFromUrl.']['list']) || isset($pObj->conf['extra.']['saveParamsFromUrl.']['list.'])) ? $pObj->cObj->stdWrap($pObj->conf['extra.']['saveParamsFromUrl.']['list'], $pObj->conf['extra.']['saveParamsFromUrl.']['list.']) : '';
-                $paramsList = explode('&', t3lib_div::getIndpEnv('QUERY_STRING'));
+                $paramsList = explode('&', urldecode(t3lib_div::getIndpEnv('QUERY_STRING')));
                 $paramToSave = array();
                 if (is_array($paramsList) && count($paramsList)) {
                     foreach ($paramsList as $item) {
