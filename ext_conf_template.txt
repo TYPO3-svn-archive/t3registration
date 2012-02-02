@@ -1,0 +1,2 @@
+	# cat=basic; type=boolean; label=LLL:EXT:t3registration/locallang_db.xml:disabledTranslation
+disabledTranslation = 0

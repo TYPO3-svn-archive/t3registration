@@ -26,7 +26,7 @@
 class tx_t3registration_getFeUsersColumnNames {
 
 	/**
-	 * The getFields method is used to get the "fe_users" field names into the flexform of the plugin.
+	 * This function is used to get the "fe_users" field names into the flexform of the plugin.
 	 *
 	 * @param	array		$config: the fields selected
 	 * @return	array		$config
@@ -39,8 +39,7 @@ class tx_t3registration_getFeUsersColumnNames {
 
 		t3lib_div::loadTCA('fe_users');
 
-		$fieldList = array();
-		if($extConf['enableTranslation'] == 0){
+		if($extConf['disabledTranslation'] == 1){
 			foreach ($TCA['fe_users']['columns'] as $key => $item){
 				$config['items'][] = array( $key, $key);
 			}

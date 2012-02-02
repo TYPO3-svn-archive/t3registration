@@ -84,6 +84,8 @@
             <label index="test_deleteConfirmationEmail">send cancellation confirmation email</label>
             <label index="test_userConfirmationDeletePage">User confirmation deleting page</label>
             <label index="test_testXMLFile">Choose file with user data (xml format)</label>
+
+            <label index="disabledTranslation">Translation disabled: if you check this box the translation of fields in flexform will be only in english, otherwise it will be showed in backend language</label>
         </languageKey>
     </data>
 </T3locallang>

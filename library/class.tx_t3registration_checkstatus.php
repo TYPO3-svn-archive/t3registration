@@ -1,15 +1,79 @@
 <?php
+/***************************************************************
+ *  Copyright notice
+ *
+ *  (c) 2011 Federico Bernardin <federico@bernardin.it>
+ *  All rights reserved
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
+/**
+ * [CLASS/FUNCTION INDEX of SCRIPT]
+ *
+ *
+ *
+ *   50: class tx_t3registration_checkstatus
+ *   77:     public function initialize($parentObject, $fields)
+ *   90:     public function main()
+ *  131:     private function getMarkerSubPart()
+ *  165:     private function checkMail()
+ *  210:     private function getTemplate()
+ *  228:     private function getSubpart($markers, $errorClass = 'error')
+ *  243:     private function evaluationCheck()
+ *  289:     private function getHTMLData()
+ *  313:     private function setMessage($title, $message, $status)
+ *  343:     public static function getMessage($title, $message, $status)
+ *
+ * TOTAL FUNCTIONS: 10
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
+ */
 
+/**
+ * This class checks all configuration of T3Registration
+ *
+ */
 class tx_t3registration_checkstatus {
 
+    /**
+     * @var object tslib_content class
+     */
     private $cObj;
 
+    /**
+     * @var array conf array of pibase class
+     */
     private $configurationArray;
 
+    /**
+     * @var array list of fields
+     */
     private $fieldsData;
 
+    /**
+     * @var object reference to tslib parent object
+     */
     private $parentObject;
 
+    /**
+ * @param	$parentObject		object reference to tslib parent object
+ * @param	$fields		array fields list
+ * @return	[type]		...
+ */
     public function initialize($parentObject, $fields) {
         $this->fieldsData = $fields;
         $this->cObj = $parentObject->cObj;
@@ -18,6 +82,11 @@ class tx_t3registration_checkstatus {
         $GLOBALS['TSFE']->additionalHeaderData['t3registrationMessage'] = '<link href="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/message.css" rel="stylesheet" type="text/css"/>';
     }
 
+    /**
+ * Function called by reference
+ *
+ * @return	string		content to show
+ */
     public function main() {
         $emailFormat = $this->parentObject->getMailFormat();
         $this->getTemplate();
@@ -54,13 +123,18 @@ class tx_t3registration_checkstatus {
         return implode('', $this->messages);
     }
 
+    /**
+ * Fetches subpart from template
+ *
+ * @return	[type]		...
+ */
     private function getMarkerSubPart() {
         $markers = array();
         $fields = array_keys($this->fieldsData);
         $subpart = $this->cObj->getSubpart($this->content, 'T3REGISTRATION_FORM');
         if ($subpart) {
             preg_match_all('/<!--[\t]*###([A-Z_]*)_FIELD###/U', $subpart, $matches, PREG_PATTERN_ORDER);
-            foreach ($matches[1] as $key => $item) {
+            foreach ($matches[1] as $item) {
                 if (strpos($item, 'ERROR') === false) {
                     if (!in_array($item, $markers)) {
                         $markers[] = $item;
@@ -83,6 +157,11 @@ class tx_t3registration_checkstatus {
         }
     }
 
+    /**
+ * Checks email features
+ *
+ * @return	[type]		...
+ */
     private function checkMail() {
         if (t3lib_div::inList($this->configurationArray['approvalProcess'], 'adminApproval')) {
             if ($this->configurationArray['emailAdmin']) {
@@ -123,6 +202,11 @@ class tx_t3registration_checkstatus {
         }
     }
 
+    /**
+ * Retrieves template
+ *
+ * @return	[type]		...
+ */
     private function getTemplate() {
         $templateFile = $this->cObj->stdWrap($this->configurationArray['templateFile'], $this->configurationArray['templateFile.']);
         $this->content = $this->cObj->fileResource($templateFile);
@@ -134,6 +218,13 @@ class tx_t3registration_checkstatus {
         }
     }
 
+    /**
+ * Fetches subparts inside template
+ *
+ * @param	$markers		string subpart marker
+ * @param	string		$errorClass string class name to use
+ * @return	[type]		...
+ */
     private function getSubpart($markers, $errorClass = 'error') {
         $subpart = $this->cObj->getSubpart($this->content, $markers);
         if ($subpart) {
@@ -144,10 +235,15 @@ class tx_t3registration_checkstatus {
         }
     }
 
+    /**
+ * Checks the evaluations of the fields
+ *
+ * @return	[type]		...
+ */
     private function evaluationCheck() {
         foreach ($this->fieldsData as $key => $item) {
             if (isset($item['regexp']) && strlen($item['regexp']) > 0) {
-                if (strlen($field['config']['eval']) > 0) {
+                if (strlen($item['config']['eval']) > 0) {
                     $evalArray = explode(',', $item['config']['eval']);
                 }
                 else {
@@ -185,6 +281,11 @@ class tx_t3registration_checkstatus {
         $this->setMessage($this->parentObject->pi_getLL('fieldsEvaluationTitle'), sprintf($this->parentObject->pi_getLL('fieldsEvaluationBody'), implode('<br />', $text)), 'info');
     }
 
+    /**
+ * Tests features of plugin interface
+ *
+ * @return	[type]		...
+ */
     private function getHTMLData() {
         $text[] = sprintf($this->parentObject->pi_getLL('preUserGroup'), ($this->configurationArray['preUsergroup']) ? $this->configurationArray['preUsergroup'] : $this->parentObject->pi_getLL('noGroup'));
         $text[] = sprintf($this->parentObject->pi_getLL('postUserGroup'), ($this->configurationArray['postUsergroup']) ? $this->configurationArray['postUsergroup'] : $this->parentObject->pi_getLL('noGroup'));
@@ -197,12 +298,18 @@ class tx_t3registration_checkstatus {
         if ($this->configurationArray['useAnotherTemplateInChangeProfileMode']) {
             $text[] = $this->parentObject->pi_getLL('changeProfile');
         }
-        //@todo to be removed
-        //$text[] = sprintf($this->parentObject->pi_getLL('siteUrl'), $this->configurationArray['siteUrl']);
         $text[] = sprintf($this->parentObject->pi_getLL('userFolder'), $this->configurationArray['userFolder']);
         $this->setMessage($this->parentObject->pi_getLL('generalConfigurationTitle'), sprintf($this->parentObject->pi_getLL('generalConfigurationBody'), implode('<br />', $text)), 'info');
     }
 
+    /**
+ * Function to create the eroor/notice/warning box
+ *
+ * @param	$title		string title of box
+ * @param	$message		string test to show inside of box
+ * @param	$status		string possible values are: info, warning, error, notice
+ * @return	[type]		...
+ */
     private function setMessage($title, $message, $status) {
         switch ($status) {
             case 'info':
@@ -224,6 +331,15 @@ class tx_t3registration_checkstatus {
         $this->messages[] = '<div class="typo3-message ' . $class . '"><div class="message-header">' . $title . '</div><div class="message-body">' . $message . '</div></div>';
     }
 
+    /**
+ * Function to create the HTML code to show on page (it could be called without initialize class).
+ *
+ * @param	$title		string title of box
+ * @param	$message		string test to show inside of box
+ * @param	$status		string possible values are: info, warning, error, notice
+ * @return	string		HTML code
+ * @static
+ */
     public static function getMessage($title, $message, $status) {
         if(!isset($GLOBALS['TSFE']->additionalHeaderData['t3registrationMessage'])){
             $GLOBALS['TSFE']->additionalHeaderData['t3registrationMessage'] = '<link href="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/message.css" rel="stylesheet" type="text/css"/>';
@@ -247,8 +363,6 @@ class tx_t3registration_checkstatus {
         }
         return '<div class="typo3-message ' . $class . '"><div class="message-header">' . $title . '</div><div class="message-body">' . $message . '</div></div>';
     }
-
-    //
 
 }
 

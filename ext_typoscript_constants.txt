@@ -2,7 +2,7 @@ plugin.tx_t3registration_pi1{
     templateFile = EXT:t3registration/pi1/template.html
     usernameField = username
     disabledBeforeConfirmation = 1
-    siteUrl = http://www.typo3dev.it/
+    siteUrl = http://www.testsite.it/
     enablePreview = 1
     emailFrom = noreply@t3registration.it
     emailFromName = T3Registration Extension

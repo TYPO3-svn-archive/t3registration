@@ -24,7 +24,75 @@
 /**
  * [CLASS/FUNCTION INDEX of SCRIPT]
  *
- * Hint: use extdeveval to insert/update function index above.
+ *
+ *
+ *  138: class tx_t3registration_pi1 extends tslib_pibase
+ *  234:     public function main($content, $conf)
+ *  362:     private function init()
+ *  374:     private function initFlexform()
+ *  428:     private function getForm()
+ *  565:     public function getAndReplaceSubpart($field, $content)
+ *  595:     public function getAndReplaceSubpartPreview($field, $content, $contentArray)
+ *  665:     private function getAutoField($field)
+ *  763:     private function getUploadField($field, $value = '', $counter = '')
+ *  798:     private function endRegistration()
+ *  834:     private function showProfile($user = array())
+ *  868:     private function getErrorSubpart($field, $content)
+ *  897:     private function checkErrors()
+ *  914:     public function getEvaluationRulesList($name)
+ *  960:     private function checkField($field)
+ *  985:     protected function evaluateField($value, $evaluationRule, $field = array())
+ * 1067:     private function checkUniqueField($value, $field, $folder = 0)
+ * 1100:     private function checkLength($value, $field)
+ * 1122:     private function checkFileUploaded($name, $size, $tmpFile, $field)
+ * 1148:     private function emailDeletionSent($user = array())
+ * 1188:     private function deleteEmail($user)
+ * 1218:     private function sendAdviceAfterAuthorization($user)
+ * 1244:     private function confirmationEmail($user)
+ * 1287:     private function authorizationEmail($user)
+ * 1325:     private function prepareEmailContent($subpartHTMLMarker, $subpartTextMarker, $markers)
+ * 1347:     private function sendEmail($message, $user, $subject)
+ * 1460:     public function getMailFormat()
+ * 1470:     private function setEmailFormat()
+ * 1492:     private function argumentsFromUrlCheck()
+ * 1532:     private function prepareAndSendEmailSubpart($action, $user)
+ * 1552:     private function confirmUserDeletion()
+ * 1572:     protected function confirmUserDeletionTemplate($user)
+ * 1589:     private function deleteUser($user)
+ * 1636:     private function confirmationProcessControl()
+ * 1686:     private function confirmUser($user)
+ * 1706:     private function updateConfirmedUser($user)
+ * 1771:     private function authorizedUser($user)
+ * 1789:     private function updateAdminAuthorizedUser($user)
+ * 1835:     private function userIsRegistered($lastEvent, $user)
+ * 1851:     private function autoLogin($uid)
+ * 1879:     private function showDeleteLink()
+ * 1908:     private function addFunctionReplace($arrayToTraverse, &$parentArray, $parentKey = '')
+ * 1934:     public function getField($name)
+ * 1944:     private function controlIfUsernameIsCorrect()
+ * 1969:     private function controlEmailAndMethod()
+ * 1988:     private function loadTCAField()
+ * 2000:     private function mergeTCAFieldWithConfiguration()
+ * 2017:     private function testUploadFolderField($field)
+ * 2031:     private function getTextToResendConfirmationEmail()
+ * 2042:     private function getTemplate()
+ * 2057:     private function fileFieldTransform2Array($fieldName)
+ * 2068:     private function insertUser()
+ * 2145:     private function sendAgainConfirmationEmail()
+ * 2206:     private function updateUserProfile()
+ * 2247:     private function getUsername()
+ * 2262:     private function setAuthCode()
+ * 2287:     private function changeProfileCheck()
+ * 2300:     private function showOnAutoLogin()
+ * 2325:     private function removeDotFromArray($sourceArray)
+ * 2348:     private function htmlentities($string)
+ * 2364:     private function removeAllMarkers($content)
+ * 2391:     protected function testTemplateProcess()
+ * 2512:     protected function testGetUser($correct = true)
+ *
+ * TOTAL FUNCTIONS: 62
+ * (This index is automatically created/updated by the extension "extdeveval")
+ *
  */
 
 /**
@@ -147,9 +215,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
     /**
      * The main method of the PlugIn
      *
-     * @param   string      $content: The PlugIn content
-     * @param   array       $conf: The PlugIn configuration
-     * @return  string that is displayed on the website
+     * @param    string        $content: The PlugIn content
+     * @param    array        $conf: The PlugIn configuration
+     * @return    string        that is displayed on the website
      */
     public function main($content, $conf) {
         try {
@@ -276,7 +344,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function initializes the system
-     * @return void
+     *
+     * @return    void
      */
     private function init() {
         //initialize the language class to extract translation for label outside the actual plugin (example cms fe_users label)
@@ -287,7 +356,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function fetches flex data from flex form plugin and merge data into $this conf array.
-     * @return void
+     *
+     * @return    void
      */
     private function initFlexform() {
         $fieldsList = array();
@@ -340,7 +410,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function manages the render of form or preview infos
-     * @return string the form HTML
+     *
+     * @return    string        the form HTML
      */
     private function getForm() {
         $content = $this->getTemplate();
@@ -474,9 +545,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function get and replace the subparts with the corresponding fields.
-     * @param $field the field configuration
-     * @param $content the html string that contains the markers
-     * @return string the html code
+     *
+     * @param    $field        the field configuration
+     * @param    $content        the html string that contains the markers
+     * @return    string        the html code
      */
     public function getAndReplaceSubpart($field, $content) {
         $fieldMarkerArray = array();
@@ -502,10 +574,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function replaces the subparts in preview mode.
-     * @param array $field the field configuration
-     * @param string $content the html string that contains the markers
-     * @param string $contentArray
-     * @return string the field preview HTML code
+     *
+     * @param    array        $field the field configuration
+     * @param    string        $content the html string that contains the markers
+     * @param    string        $contentArray
+     * @return    string        the field preview HTML code
      */
     public function getAndReplaceSubpartPreview($field, $content, $contentArray) {
         if ($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) {
@@ -573,8 +646,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function return the html code for every field passed according to the specified configuration.
-     * @param $field the field configuration
-     * @return string the html field code
+     *
+     * @param    $field        the field configuration
+     * @return    string        the html field code
      */
     private function getAutoField($field) {
         $htmlBlock = '';
@@ -667,11 +741,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
     /**
-     *This function manages the render process of single field
-     * @param $field
-     * @param $value
-     * @param $counter
-     * @return string the field HTML code
+     * This function manages the render process of single field
+     *
+     * @param    $field array field data
+     * @param    $value string
+     * @param    $counter string
+     * @return    string        the field HTML code
      */
     private function getUploadField($field, $value = '', $counter = '') {
         $htmlBlock = '';
@@ -705,7 +780,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function call the insertUser method.
-     * @return string the registration final HTML template
+     *
+     * @return    string        the registration final HTML template
      */
     private function endRegistration() {
         $content = $this->getTemplate();
@@ -739,7 +815,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function is called before getForm if user is logged, so it merge data from database into piVars, only if form is not submitted
-     * @return string the form HTML code
+     *
+     * @param    array        value to overwrite standard data (used in template test)
+     * @return    string        the form HTML code
      */
     private function showProfile($user = array()) {
         if (!is_array($user) || count($user) == 0) {
@@ -769,9 +847,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function gets the error subpart for the passed field and then it replaces the error marker with the error description.
-     * @param $field the field configuration
-     * @param $content the html string that contains the markers
-     * @return string the HTML code with the error description
+     *
+     * @param    $field        the field configuration
+     * @param    $content        the html string that contains the markers
+     * @return    string        the HTML code with the error description
      * @tested 20111017
      */
     private function getErrorSubpart($field, $content) {
@@ -800,6 +879,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
     /**
      * This function checks every fields errors. Descriptions of found errors are put into $this->errorArray.
      * return boolean true if one or more errors are found
+     *
+     * @return    bool true if error was found
      */
     private function checkErrors() {
         $error = false;
@@ -808,14 +889,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->errorArray['error'][$field['name']] = ($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) ? true : $this->checkField($field);
             if (!$this->errorArray['error'][$field['name']]) $error = true;
         }
-        //debug($this->errorArray,'errors');
         return $error;
     }
 
     /**
      * This function fetches all evaluation from field
-     * @param string $name name of field to evaluate
-     * @return array evaluation array list
+     *
+     * @param    string        $name name of field to evaluate
+     * @return    array        evaluation array list
      */
     public function getEvaluationRulesList($name) {
         $field = $this->fieldsData[$name];
@@ -859,8 +940,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks evaluation field types. Then it calls a method (evaluateField).
-     * @param $field the field to check
-     * @return boolean false if the field contains errors
+     *
+     * @param    $field        the field to check
+     * @return    boolean        false if the field contains errors
      */
     private function checkField($field) {
         $evaluation = $this->getEvaluationRulesList($field['name']);
@@ -881,10 +963,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks if the field respects the evaluation rule passed.
-     * @param $value the value to check
-     * @param $evaluationRule the evaluation rule used to check the value
-     * @param $field array field configuration
-     * @return boolean true if the field respects the evaluation rule.
+     *
+     * @param    $value        the value to check
+     * @param    $evaluationRule        the evaluation rule used to check the value
+     * @param    $field        array field configuration
+     * @return    boolean        true if the field respects the evaluation rule.
      */
     protected function evaluateField($value, $evaluationRule, $field = array()) {
         switch ($evaluationRule) {
@@ -962,10 +1045,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks if the value inserted in the field by the user is unique.
-     * @param $value the value to check
-     * @param $field the field configuration
-     * @param $folder
-     * @return boolean true if the value is unique
+     *
+     * @param    $value        the value to check
+     * @param    $field        the field configuration
+     * @param    $folder    if set user is found inside the folder id
+     * @return    boolean        true if the value is unique
      */
     private function checkUniqueField($value, $field, $folder = 0) {
         if ($field['type'] === 'databaseField') {
@@ -995,9 +1079,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function control if string is greater than config.maxchars and less than config.minchars
-     * @param $value value to check
-     * @param $field field configuration array
-     * @return boolean true if rule is satisfied otherwise false
+     *
+     * @param    $value        value to check
+     * @param    $field        field configuration array
+     * @return    boolean        true if rule is satisfied otherwise false
      */
     private function checkLength($value, $field) {
         $error = true;
@@ -1014,11 +1099,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks if the uploaded file is an allowed file.
-     * @param $name complete name of the file
-     * @param $size size of the file
-     * @param $tmpFile
-     * @param $field the field configuration
-     * @return array the uploaded file features
+     *
+     * @param    $name        complete name of the file
+     * @param    $size        size of the file
+     * @param    $tmpFile
+     * @param    $field        the field configuration
+     * @return    array        the uploaded file features
      */
     private function checkFileUploaded($name, $size, $tmpFile, $field) {
         $tmpArray = explode('.', $name);
@@ -1042,7 +1128,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
     /**
      * This function prepares the email to send user for deleting and create the auth code for authenticate the confirmation
      * Extract the "T3REGISTRATION_DELETE_SENTEMAIL" marker subpart and create the email body
-     * @return string the registration final HTML template
+     *
+     * @param    array          user to overwrite data
+     * @return    string        the registration final HTML template
      */
     private function emailDeletionSent($user = array()) {
         $content = $this->getTemplate();
@@ -1080,8 +1168,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function prepares the user deletion email message.
-     * @param $user the target user of the email
-     * @return array the type and the HTML content of the message.
+     *
+     * @param    $user        the target user of the email
+     * @return    array        the type and the HTML content of the message.
      */
     private function deleteEmail($user) {
         $confirmationPage = ($this->conf['deletePage']) ? $this->conf['deletePage'] : $GLOBALS['TSFE']->id;
@@ -1109,8 +1198,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function prepares email message to advice the user about admin authorization.
-     * @param $user the target user of the email
-     * @return array the type and the HTML content of the message.
+     *
+     * @param    $user        the target user of the email
+     * @return    array        the type and the HTML content of the message.
      */
     private function sendAdviceAfterAuthorization($user) {
         $markerArray = array();
@@ -1134,8 +1224,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function prepares the user confirmation email message.
-     * @param $user the target user of the email
-     * @return array the type and the HTML content of the message.
+     *
+     * @param    $user        the target user of the email
+     * @return    array        the type and the HTML content of the message.
      */
     private function confirmationEmail($user) {
         $confirmationPage = ($this->conf['confirmationPage']) ? $this->conf['confirmationPage'] : $GLOBALS['TSFE']->id;
@@ -1176,8 +1267,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function prepares the administrator confirmation email message.
-     * @param $user the target user of the email
-     * @return array the type and the HTML content of the message.
+     *
+     * @param    $user        the target user of the email
+     * @return    array        the type and the HTML content of the message.
      */
     private function authorizationEmail($user) {
         $confirmationPage = ($this->conf['confirmationPage']) ? $this->conf['confirmationPage'] : $GLOBALS['TSFE']->id;
@@ -1211,10 +1303,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function prepare the email content based on value from flexform
-     * @param $subpartHTMLMarker string for HTML marker
-     * @param $subpartTextMarker string for Text marker
-     * @param $markers array of marker to substitute
-     * @return array with content HTML and text parts
+     *
+     * @param    $subpartHTMLMarker        string for HTML marker
+     * @param    $subpartTextMarker        string for Text marker
+     * @param    $markers        array of marker to substitute
+     * @return    array        with content HTML and text parts
      */
     private function prepareEmailContent($subpartHTMLMarker, $subpartTextMarker, $markers) {
         $content = $this->getTemplate();
@@ -1231,10 +1324,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
     /**
-     *This function prepares and sends the email. It can be sent to the user or to the administrator.
-     * @param $message the message content of the email
-     * @param $user the target user of the email
-     * @return void
+     * This function prepares and sends the email. It can be sent to the user or to the administrator.
+     *
+     * @param    $message        the message content of the email
+     * @param    $user        the target user of the email
+     * @param    $subject   subject for email
+     * @return    void
      */
     private function sendEmail($message, $user, $subject) {
         if (t3lib_div::int_from_ver(TYPO3_version) < t3lib_div::int_from_ver('4.5.0')) {
@@ -1346,7 +1441,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function is used by external hook or library to obtain the email format choise
-     * @return unknown_type
+     *
+     * @return    string email format
      */
     public function getMailFormat() {
         return $this->emailFormat;
@@ -1355,7 +1451,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function defines the emailFormat class variable and set it to 1,2 or 3 depends on the type of mail format user chose
-     * @return void
+     *
+     * @return    void
      */
     private function setEmailFormat() {
         $emailFormat = explode(',', $this->conf['contactEmailMode']);
@@ -1376,7 +1473,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * This function defines the action to do when the page is load. If the user loads the page, the user-confiramtion is done. If the administrator
      * loads the page, the admin-confirmation is done (it happens in double-optin confirmation mode). If the "action" parameter value in piVars array is
      * "delete", when the page is load the deletion is confirmed.
-     * @return void
+     *
+     * @return    void
      */
     private function argumentsFromUrlCheck() {
         $this->externalAction['active'] = false;
@@ -1413,9 +1511,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function calls the methods for preparing and for sending the email.
-     * @param $action the action to be performed. Possible values can be "deleteRequest", "confirmationRequest" or "authorizationRequest".
-     * @param $user the target user of the email
-     * @return void
+     *
+     * @param    $action        the action to be performed. Possible values can be "deleteRequest", "confirmationRequest" or "authorizationRequest".
+     * @param    $user        the target user of the email
+     * @return    void
      */
     private function prepareAndSendEmailSubpart($action, $user) {
         switch ($action) {
@@ -1434,7 +1533,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks if the user can be confirmed and it calls the method updateConfirmedUser for updating the user into database.
-     * @return boolean true if the user was been correctly confirmed, false otherwise
+     *
+     * @return    boolean        true if the user was been correctly confirmed, false otherwise
      */
     private function confirmUserDeletion() {
         $userAuthCode = $this->piVars['authcode'];
@@ -1452,8 +1552,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function creates the HTML code to show
-     * @param $user array user to delete
-     * @return string HTML content to show
+     *
+     * @param    $user        array user to delete
+     * @return    string        HTML content to show
      */
     protected function confirmUserDeletionTemplate($user) {
         $content = $this->getTemplate();
@@ -1468,7 +1569,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function delete user from database
-     * @return boolean true if the user was been correctly confirmed, false otherwise
+     *
+     * @param    array          user data to overwrite
+     * @return    boolean        true if the user was been correctly confirmed, false otherwise
      */
     private function deleteUser($user) {
         if (!$this->conf['enableTemplateTest']) {
@@ -1513,8 +1616,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
     /**
-     *This function manages the confirmation process with double optin or moderation control
-     * @return HTML code
+     * This function manages the confirmation process with double optin or moderation control
+     *
+     * @return    HTML        code
      */
     private function confirmationProcessControl() {
         switch ($this->externalAction['parameter']) {
@@ -1562,7 +1666,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks if the user can be confirmed and it calls the method updateConfirmedUser for updating the user into database.
-     * @return boolean true if the user was been correctly confirmed, false otherwise
+     *
+     * @param    [type]        $user: ...
+     * @return    boolean        true if the user was been correctly confirmed, false otherwise
      */
     private function confirmUser($user) {
         $user = $this->updateConfirmedUser($user);
@@ -1580,11 +1686,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function confirms the user by updating the user record into fe_users database table.
-     * @param $user
-     * @return void
+     *
+     * @param    $user
+     * @return    void
      */
     private function updateConfirmedUser($user) {
-        //put hook before
         $groupsBeforeConfirmation = explode(',', $this->conf['preUsergroup']);
         $groupsAfterConfirmation = explode(',', $this->conf['postUsergroup']);
         $usergroup = explode(',', $user['usergroup']);
@@ -1644,7 +1750,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks if the user can be authorized and it calls the method updateAdminAuthorizedUser for updating the user into database.
-     * @return boolean true if the user was been correctly confirmed, false otherwise
+     *
+     * @param    [type]        $user: ...
+     * @return    boolean        true if the user was been correctly confirmed, false otherwise
      */
     private function authorizedUser($user) {
         $this->updateAdminAuthorizedUser($user);
@@ -1659,9 +1767,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
     /**
-     *This function authorizes user by upadating the user record into fe_users database table.
-     * @param $user the user to be authorized
-     * @return void
+     * This function authorizes user by upadating the user record into fe_users database table.
+     *
+     * @param    $user        the user to be authorized
+     * @return    void
      */
     private function updateAdminAuthorizedUser($user) {
         $user['admin_auth_code'] = '';
@@ -1702,6 +1811,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     }
 
+    /**
+     * This method is used to trigger hook after user registration
+     *
+     * @param    string specify the name of the event (it could be authorization by admin or user registration)
+     * @param    string user data
+     * @return   void
+     */
     private function userIsRegistered($lastEvent, $user) {
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['confirmedProcessComplete'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['confirmedProcessComplete'] as $userFunction) {
@@ -1714,8 +1830,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function makes auto login form confirmed user
-     * @param $uid id of confirmed user
-     * @return void
+     *
+     * @param    $uid        id of confirmed user
+     * @return    void
      */
     private function autoLogin($uid) {
         $resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'uid=' . $uid);
@@ -1742,7 +1859,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function shows the delete link.
-     * @return string the link HTML code
+     *
+     * @return    string        the link HTML code
      */
     private function showDeleteLink() {
         $content = $this->getTemplate();
@@ -1767,10 +1885,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function transforms recursively the .add property of javascript into key additionalEval
-     * @param $arrayToTraverse array child array
-     * @param $parentArray array root array
-     * @param $parentKey string name of the parent key
-     * @return void
+     *
+     * @param    $arrayToTraverse        array child array
+     * @param    $parentArray        array root array
+     * @param    $parentKey        string name of the parent key
+     * @return    void
      */
     private function addFunctionReplace($arrayToTraverse, &$parentArray, $parentKey = '') {
         if (is_array($arrayToTraverse)) {
@@ -1794,8 +1913,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function allow to extract a specific key from private variable $fieldsData
-     * @param $name string key of array $fieldsData
-     * @return array value of $this->fieldsData[$name]
+     *
+     * @param    $name        string key of array $fieldsData
+     * @return    array        value of $this->fieldsData[$name]
      */
     public function getField($name) {
         return (key_exists($name, $this->fieldsData)) ? $this->fieldsData[$name] : array();
@@ -1804,7 +1924,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks if username contains required and unique, looking for it into alternative username fields
-     * @return string/boolean if true all ok, otherwise return error description
+     *
+     * @return    string/boolean        if true all ok, otherwise return error description
      */
     private function controlIfUsernameIsCorrect() {
         if (isset($this->conf['usernameField']) && strlen($this->conf['usernameField'])) {
@@ -1826,6 +1947,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
     }
 
+    /**
+     * Method to test the email data before show registration form
+     *
+     * @return    bool true if test is passed
+     */
     private function controlEmailAndMethod() {
         if ($this->conf['approvalProcess']) {
             if (!isset($this->fieldsData['email'])) {
@@ -1842,7 +1968,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function loads TCA fields array into $this->TCAField array
-     * @return void
+     *
+     * @return    void
      */
     private function loadTCAField() {
         $GLOBALS['TSFE']->includeTCA();
@@ -1853,6 +1980,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
     /**
      * This function merges TCA fields with configuration fields
      * return void
+     *
+     * @return   void
      */
     private function mergeTCAFieldWithConfiguration() {
         foreach ($this->fieldsData as $key => $item) {
@@ -1867,8 +1996,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function checks if upload folder key of config array of specified field is defined
-     * @param $field array field configuration array
-     * @return boolean false if not set, otherwise true
+     *
+     * @param    $field        array field configuration array
+     * @return    boolean        false if not set, otherwise true
      */
     private function testUploadFolderField($field) {
         if (isset($field['config']['internal_type']) && $field['config']['internal_type'] == 'file' && $field['config']['uploadfolder'] == 0) {
@@ -1879,7 +2009,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
     }
 
-
+    /**
+     * Text to insert for resending email with confirmation
+     *
+     * @return    string text
+     */
     private function getTextToResendConfirmationEmail() {
         $text = $this->pi_linkToPage($this->pi_getLL('toResendConfirmationEmailText'), $GLOBALS['TSFE']->id, '', array($this->prefixId . '[action]' => 'resendConfirmationCode'));
         $text = $this->cObj->stdWrap($text, $this->conf['form.']['resendConfirmationCode.']['stdWrap.']);
@@ -1888,7 +2022,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function returns the wright template to use. If no content is found, the function returns false.
-     * @return string the whole HTML template
+     *
+     * @return    string        the whole HTML template
      */
     private function getTemplate() {
         $content = $this->cObj->fileResource($this->cObj->stdWrap($this->conf['templateFile'], $this->conf['templateFile.']));
@@ -1901,8 +2036,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function convert a piVars field comma separated values into array
-     * @param $fieldName string field to transform
-     * @return void
+     *
+     * @param    $fieldName        string field to transform
+     * @return    void
      */
     private function fileFieldTransform2Array($fieldName) {
         $this->piVars[$fieldName] = explode(',', $this->piVars[$fieldName]);
@@ -1912,7 +2048,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
     /**
      * This method insert user in fe_users database table. If automatic password generation is set to true and no password is set by the user, a new
      * password is automatically generated. It also calls the methods for sending emails.
-     * @return void
+     *
+     * @return    void
      */
     private function insertUser() {
         if ($this->conf['passwordGeneration'] || !isset($this->piVars['password']) || strlen($this->piVars['password']) == 0) {
@@ -1988,7 +2125,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function resend the confirmation code and show the form to request it
-     * @return string HTML code to display
+     *
+     * @return    string        HTML code to display
      */
     private function sendAgainConfirmationEmail() {
         if ($this->piVars['posted'] == 1 && $this->piVars[$this->conf['usernameField']] && t3lib_div::inList($this->conf['approvalProcess'], 'doubleOptin')) {
@@ -2048,7 +2186,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
     /**
      * This method insert user in fe_users database table. If automatic password generation is set to true and no password is set by the user, a new
      * password is automatically generated. It also calls the methods for sending emails.
-     * @return void
+     *
+     * @return    void
      */
     private function updateUserProfile() {
         if ($GLOBALS['TSFE']->loginUser) {
@@ -2088,7 +2227,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function returns the username. If no one is specified by the user, it automatically generates a username.
-     * @return string username
+     *
+     * @return    string        username
      */
     private function getUsername() {
         if (isset($this->piVars[$this->conf['usernameField']])) {
@@ -2100,9 +2240,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
     /**
-     * This function...
-     * @param $user
-     * @return array user
+     * Set authcode
+     *
+     * @param    $user
+     * @return    array        user
      */
     private function setAuthCode() {
         $user = array();
@@ -2126,7 +2267,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function cheks if you're into change profile process
-     * @return boolean true if user is in profile, false otherwise
+     *
+     * @return    boolean        true if user is in profile, false otherwise
      */
     private function changeProfileCheck() {
         if ($GLOBALS['TSFE']->loginUser && !isset($this->piVars['submitted']) && !isset($this->piVars['sendConfirmation'])) {
@@ -2139,8 +2281,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
 
     /**
-     *
-     * @return unknown_type
+     * This function shows HTML after redirect for autologin
+     * @return    string HTML
      */
     private function showOnAutoLogin() {
         $sessionData = $GLOBALS['TSFE']->fe_user->getSessionData('autoLogin');
@@ -2163,8 +2305,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function remove dots from keys of the passed array.
-     * @param $sourceArray the array to be modified
-     * @return array
+     *
+     * @param    $sourceArray        the array to be modified
+     * @return    array
      */
     private function removeDotFromArray($sourceArray) {
         $finalArray = array();
@@ -2185,8 +2328,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * This function execute the replacing of html entities with UTF-8 encoding
-     * @param $string
-     * @return unknown_type
+     *
+     * @param    $string
+     * @return    unknown_type
      */
     private function htmlentities($string) {
         if ($GLOBALS['TSFE']->tmpl->setup['config.']['renderCharset']) {
@@ -2200,8 +2344,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
     /**
      * Function to removes all marker into the template after replace process
-     * @param string $content content to replace
-     * @return string content cleared
+     *
+     * @param    string        $content content to replace
+     * @return    string        content cleared
      */
     private function removeAllMarkers($content) {
         $markers = array();
@@ -2225,8 +2370,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
         return $content;
     }
 
-    /******************************************TEMPLATE TEST FUNCTIONS*****************/
+    /*****************************************TEMPLATE TEST FUNCTIONS*****************/
 
+
+    /**
+     * Function to show specific test of the template
+     * @return string template to show
+     */
     protected function testTemplateProcess() {
         $warning = tx_t3registration_checkstatus::getMessage($this->pi_getll('testWarningTitle'), $this->pi_getll('testWarningMessage'), 'warning');
         switch ($this->conf['stepToTest']) {
@@ -2342,6 +2492,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
     }
 
+    /**
+     * This function fetches user from xml data
+     * @param bool $correct if true fetches correct user, otherwise wrong user
+     * @return array user
+     * @throws t3lib_exception
+     */
     protected function testGetUser($correct = true) {
         if (!is_array($this->xmlTestUser)) {
             $xmlFile = (isset($this->conf['testXMLFile'])) ? $this->conf['testXMLFile'] : '';

@@ -23,9 +23,9 @@
             <label index="deleteDescriptionText">
                 <![CDATA[If you click in the above link, you can begin the deleting process for your account.<br />This operation is irreversible.]]></label>
             <label index="confirmationText">
-                <![CDATA[Dear ###NAME### your confirmation is complete, now you are a user.]]></label>
+                <![CDATA[Dear ###FIRST_NAME### your confirmation is complete, now you are a user.]]></label>
             <label index="ConfirmedOnRedirectText">
-                <![CDATA[Dear ###NAME### you're a memeber of our community.]]></label>
+                <![CDATA[Dear ###FIRST_NAME### you're a memeber of our community.]]></label>
             <label index="signature">Typo3 Dev Staff</label>
             <label index="submit_button_label">Click here to submit value</label>
             <label index="deleteImage">Click here to delete the image</label>
@@ -98,7 +98,7 @@
 
 
             <label index="finalRegistrationSignature">T3Registration Staff</label>
-            <label index="finalRegistrationText">Dear ###NAME### in a short time you will receive at your email address:
+            <label index="finalRegistrationText">Dear ###FIRST_NAME### in a short time you will receive at your email address:
                 ###EMAIL### a request to confirm your subscription.
             </label>
 
@@ -106,7 +106,7 @@
                 registration process you await confirmation of the administrator.
             </label>
             <label index="confirmationFinalText">
-                <![CDATA[Dear ###NAME### your confirmation is complete, now you are a user.]]></label>
+                <![CDATA[Dear ###FIRST_NAME### your confirmation is complete, now you are a user.]]></label>
             <label index="confirmationAuthorizationText">
                 <![CDATA[Dear Administrator confirmation for user ###FIRST_NAME### is complete.]]></label>
             <label index="confirmationAuthorizationEmailText">
