@@ -508,59 +508,65 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return string the field preview HTML code
      */
     public function getAndReplaceSubpartPreview($field, $content, $contentArray) {
-        $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : (($this->pi_getLL($field['name'] . 'Label')) ? $this->pi_getLL($field['name'] . 'Label') : ((isset($field['label'])) ? $this->languageObj->sL($field['label'], true) : ''));
-        switch ($field['config']['type']) {
-            case 'input':
-                $this->piVars[$field['name']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->piVars[$field['name']];
-                //call $this->htmlentities to remove xss scripting side
-                $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : (($field['noHTMLEntities']) ? $this->piVars[$field['name']] : $this->htmlentities($this->piVars[$field['name']]));
-                break;
-            case 'group':
-                if (isset($field['config']['internal_type']) && $field['config']['internal_type'] === 'file') {
-                    $images = explode(',', $this->piVars[$field['name']]);
-                    $imageList = array();
-                    foreach ($images as $image) {
-                        $fieldArray = (isset($this->conf[$field['name'] . '.']) && is_array($this->conf[$field['name'] . '.'])) ? $this->conf[$field['name'] . '.'] : array();
-                        $fieldArray['file'] = $field['config']['uploadfolder'] . '/' . $image;
-                        $imageList[] = $this->cObj->IMAGE($fieldArray);
+        if ($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) {
+            $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = '';
+            $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = '';
+        }
+        else {
+            $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : (($this->pi_getLL($field['name'] . 'Label')) ? $this->pi_getLL($field['name'] . 'Label') : ((isset($field['label'])) ? $this->languageObj->sL($field['label'], true) : ''));
+            switch ($field['config']['type']) {
+                case 'input':
+                    $this->piVars[$field['name']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->piVars[$field['name']];
+                    //call $this->htmlentities to remove xss scripting side
+                    $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : (($field['noHTMLEntities']) ? $this->piVars[$field['name']] : $this->htmlentities($this->piVars[$field['name']]));
+                    break;
+                case 'group':
+                    if (isset($field['config']['internal_type']) && $field['config']['internal_type'] === 'file') {
+                        $images = explode(',', $this->piVars[$field['name']]);
+                        $imageList = array();
+                        foreach ($images as $image) {
+                            $fieldArray = (isset($this->conf[$field['name'] . '.']) && is_array($this->conf[$field['name'] . '.'])) ? $this->conf[$field['name'] . '.'] : array();
+                            $fieldArray['file'] = $field['config']['uploadfolder'] . '/' . $image;
+                            $imageList[] = $this->cObj->IMAGE($fieldArray);
+                        }
+                        $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : implode('', $imageList);
                     }
-                    $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : implode('', $imageList);
-                }
-                break;
-            case 'select':
-            case 'radio':
-                foreach ($field['config']['items'] as $item) {
-                    $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
-                    $value = (isset($item[1])) ? $item[1] : '';
-                    if ($this->piVars[$field['name']] == $value) {
-                        $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : $text;
-                    }
-                }
-                break;
-            case 'check':
-                if (isset($field['config']['items']) && is_array($field['config']['items'])) {
-                    for ($counter = 0; $counter < count($field['config']['items']); $counter++) {
-                        if (isset($this->piVars[$field['name']][$counter]) && $this->piVars[$field['name']][$counter] == '1') {
-                            $values[] = (isset($field['config']['items'][$counter][0])) ? (preg_match('/LLL:EXT:/', $field['config']['items'][$counter][0]) ? $this->languageObj->sl($field['config']['items'][$counter][0]) : $field['config']['items'][$counter][0]) : '';
+                    break;
+                case 'select':
+                case 'radio':
+                    foreach ($field['config']['items'] as $item) {
+                        $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
+                        $value = (isset($item[1])) ? $item[1] : '';
+                        if ($this->piVars[$field['name']] == $value) {
+                            $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : $text;
                         }
                     }
-                    $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || count($this->piVars[$field['name']]) == 0) ? '' : implode(',', $values);
-                }
-                else {
-                    if (isset($this->piVars[$field['name']]) && $this->piVars[$field['name']] == '1') {
-                        $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (isset($field['config']['text'])) ? ((preg_match('/LLL:EXT:/', $field['config']['text']) ? $this->cObj->stdWrap($this->languageObj->sl($field['config']['text']), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']) : $this->cObj->stdWrap($field['config']['text'], $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']))) : '';
+                    break;
+                case 'check':
+                    if (isset($field['config']['items']) && is_array($field['config']['items'])) {
+                        for ($counter = 0; $counter < count($field['config']['items']); $counter++) {
+                            if (isset($this->piVars[$field['name']][$counter]) && $this->piVars[$field['name']][$counter] == '1') {
+                                $values[] = (isset($field['config']['items'][$counter][0])) ? (preg_match('/LLL:EXT:/', $field['config']['items'][$counter][0]) ? $this->languageObj->sl($field['config']['items'][$counter][0]) : $field['config']['items'][$counter][0]) : '';
+                            }
+                        }
+                        $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || count($this->piVars[$field['name']]) == 0) ? '' : implode(',', $values);
                     }
-                }
-                break;
-            case 'hook':
-                if (isset($field['config']['hook'])) {
-                    $params['field'] = $field;
-                    $params['row'] = $this->piVars;
-                    $params['preview'] = true;
-                    $params['contentArray'] = $contentArray;
-                    $contentArray = t3lib_div::callUserFunction($field['config']['hook'], $params, $this);
-                }
-                break;
+                    else {
+                        if (isset($this->piVars[$field['name']]) && $this->piVars[$field['name']] == '1') {
+                            $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (isset($field['config']['text'])) ? ((preg_match('/LLL:EXT:/', $field['config']['text']) ? $this->cObj->stdWrap($this->languageObj->sl($field['config']['text']), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']) : $this->cObj->stdWrap($field['config']['text'], $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']))) : '';
+                        }
+                    }
+                    break;
+                case 'hook':
+                    if (isset($field['config']['hook'])) {
+                        $params['field'] = $field;
+                        $params['row'] = $this->piVars;
+                        $params['preview'] = true;
+                        $params['contentArray'] = $contentArray;
+                        $contentArray = t3lib_div::callUserFunction($field['config']['hook'], $params, $this);
+                    }
+                    break;
+            }
         }
         return $contentArray;
     }
@@ -799,7 +805,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $error = false;
         foreach ($this->fieldsData as $field) {
             //call only fields if you can enable an error you have to user this code into your hook
-            $this->errorArray['error'][$field['name']] = $this->checkField($field);
+            $this->errorArray['error'][$field['name']] = ($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) ? true : $this->checkField($field);
             if (!$this->errorArray['error'][$field['name']]) $error = true;
         }
         //debug($this->errorArray,'errors');
@@ -1449,7 +1455,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param $user array user to delete
      * @return string HTML content to show
      */
-    protected function confirmUserDeletionTemplate($user){
+    protected function confirmUserDeletionTemplate($user) {
         $content = $this->getTemplate();
         $content = $this->cObj->getSubpart($content, '###T3REGISTRATION_DELETE_CONFIRMATION###');
         foreach ($user as $key => $value) {
@@ -1829,7 +1835,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 return true;
             }
         }
-        else{
+        else {
             return true;
         }
     }
@@ -2299,7 +2305,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
             case 'deleteConfirmationEmail':
                 $user = $this->testGetUser();
                 $user['user_auth_code'] = md5('deleteAuth' . time() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']);
-                $this->prepareAndSendEmailSubpart('deleteRequest', $user);;
+                $this->prepareAndSendEmailSubpart('deleteRequest', $user);
+                ;
                 return tx_t3registration_checkstatus::getMessage($this->pi_getll('testMailTitle'), sprintf($this->pi_getll('testConfirmationUserDeleteSent'), $user['email']), 'info');
                 break;
             case 'userConfirmationDeletePage':
