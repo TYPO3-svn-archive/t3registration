@@ -38,7 +38,7 @@
             <label index="usernameRequiredError">Unsername field is compulsory</label>
             <label index="usernameUniqueError">Unsername is not unique</label>
             <label index="emailEmailError">Email is not correct</label>
-            <label index="passwordtwiceError">Repeat password correctly</label>
+            <label index="passwordTwiceError">Repeat password correctly</label>
             <label index="first_nameRequiredError">First name is required</label>
 
 

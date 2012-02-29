@@ -1455,7 +1455,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return    void
      */
     private function setEmailFormat() {
-        $emailFormat = explode(',', $this->conf['contactEmailMode']);
+        $emailFormat = ($this->conf['contactEmailMode'])?$this->conf['contactEmailMode']:'';
+        $emailFormat = explode(',', $emailFormat);
         if (is_array($emailFormat)) {
             if (in_array('html', $emailFormat)) {
                 $this->emailFormat = $this->emailFormat | 1;
