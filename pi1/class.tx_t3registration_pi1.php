@@ -1678,8 +1678,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
         foreach ($user as $key => $value) {
             $markerArray['###' . strtoupper($key) . '###'] = $value;
         }
-        $confirmationTex = (strlen($user['admin_auth_code']) == 0) ? $this->pi_getLL('confirmationFinalText') : $this->pi_getLL('confirmationWaitingAuthText');
-        $markerArray['###DESCRIPTION_TEXT###'] = $this->cObj->substituteMarkerArrayCached($confirmationTex, $markerArray);
+        $confirmationText = (strlen($user['admin_auth_code']) == 0) ? $this->pi_getLL('confirmationFinalText') : $this->pi_getLL('confirmationWaitingAuthText');
+        $markerArray['###DESCRIPTION_TEXT###'] = $this->cObj->substituteMarkerArrayCached($confirmationText, $markerArray);
         $markerArray['###SIGNATURE###'] = $this->pi_getLL('signature');
         return $this->cObj->substituteMarkerArrayCached($content, $markerArray);
     }
