@@ -1832,7 +1832,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
     /**
      * This function makes auto login form confirmed user
      *
-     * @param    $uid        id of confirmed user
+     * @param    $uid        int id of confirmed user
      * @return    void
      */
     private function autoLogin($uid) {

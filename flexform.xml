@@ -470,6 +470,7 @@
             <el>
                 <enableTemplateTest>
                     <TCEforms>
+                        <onChange>reload</onChange>
                         <label>LLL:EXT:t3registration/locallang_db.xml:test_enableTemplateTest</label>
                         <config>
                             <type>check</type>
@@ -478,6 +479,7 @@
                 </enableTemplateTest>
                 <stepToTest>
                     <TCEforms>
+                        <displayCond>FIELD:enableTemplateTest:REQ:true</displayCond>
                         <label>LLL:EXT:t3registration/locallang_db.xml:test_stepToTest</label>
                         <config>
                             <type>select</type>
@@ -558,6 +560,7 @@
                 </stepToTest>
                 <testXMLFile>
                     <TCEforms>
+                        <displayCond>FIELD:enableTemplateTest:REQ:true</displayCond>
                         <label>LLL:EXT:t3registration/locallang_db.xml:test_testXMLFile</label>
                         <config>
                             <type>input</type>

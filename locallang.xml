@@ -13,5 +13,9 @@
 			<label index="pi1_title">Registrazione</label>
 			<label index="pi1_plus_wiz_description">Processo di registrazione</label>
 		</languageKey>
+        <languageKey index="de" type="array">
+        <label index="pi1_title">Registrierung</label>
+        <label index="pi1_plus_wiz_description">Formulare für Benutzer-Registrierung</label>
+    </languageKey>
 	</data>
 </T3locallang>

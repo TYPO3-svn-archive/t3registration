@@ -10,33 +10,60 @@ plugin.tx_t3registration_pi1{
     #save as disable the user before he confirm registration
     disabledBeforeConfirmation = {$plugin.tx_t3registration_pi1.disabledBeforeConfirmation}
     autoLoginAfterConfirmation = 0
+    #if user have already confirmed before admin (if enabled) email will be sent to user after admin authorization
     sendUserEmailAfterAuthorization = 0
 
     #resend auth code with result
     sendConfirmationObject.showNotFoundText = 0
 
+    #if set when user unsubscribe it was deleted from database
     delete.deleteRow = 0
 
+    #errors management
+    errors{
+        classError =
+        singleErrorEvaluate = 0
+        standardErrorStdWrap.wrap = |
+        confirmedErrorWrap.wrap = |
+    }
 
-    fieldConfiguration.password.noHTMLEntities = 0
+    #PASSWORD Control
+    fieldConfiguration.password{
+        noHTMLEntities = 1
+        singleErrorEvaluate = 0
+        config{
+            evalHook = EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->checkPasswordTwice
+            eval.add=hook
+        }
+    }
 
     #form
-    form.resendConfirmationCode = 0
+    form{
+        #show RESEND_CONFIRMATION_CODE_BLOCK marker
+        resendConfirmationCode = 0
+        id =
+        submitButton{
+            imageSubmit = 0
+            imagesrc =
+            params =
+            stdWrap.wrap = |
+        }
+        submitBack  < form.submitButton
+        submitConfirm < form.submitButton
+    }
 
 
+    #no approval process
     approvalProcess = 0
 
     #email
-    emailFormat = html
+    contactEmailMode = html
     emailFrom = {$plugin.tx_t3registration_pi1.emailFrom}
     emailFromName = {$plugin.tx_t3registration_pi1.emailFromName}
 
     usernameField = {$plugin.tx_t3registration_pi1.usernameField}
-    siteUrl = {$plugin.tx_t3registration_pi1.siteUrl}
 
-    #PASSWORD Control
-    fieldConfiguration.password.config.evalHook = EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->checkPasswordTwice
-    fieldConfiguration.password.config.eval.add=hook
+
 
     #password twice configuration
     extra.passwordTwice = 1
