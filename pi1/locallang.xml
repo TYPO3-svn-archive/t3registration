@@ -68,7 +68,7 @@
 
 
             <label index="preUserGroup">Groups assigned before confirmation: %s.</label>
-            <label index="postUserGroup">Groups assigned after confirmatio: %s.</label>
+            <label index="postUserGroup">Groups assigned after confirmation: %s.</label>
             <label index="autoLoginAfterConfirmation">User will be redirected and logged automatically after
                 confirmation
             </label>
