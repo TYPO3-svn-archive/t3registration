@@ -661,6 +661,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $value = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $htmlBlock = sprintf('<input type="%s" %s name="%s" value="%s" size="%s" %s />', $type, $id, $this->prefixId . '[' . $field['name'] . ']', $value, $size, $maxchar);
                 break;
+            case 'text':
+                $cols = ($field['config']['cols']) ? $field['config']['cols'] : '40';
+                $rows = ($field['config']['rows']) ? $field['config']['rows'] : '20';
+                $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : '';
+                $value = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
+                $htmlBlock = sprintf('<textarea %s name="%s" cols="%s"  rows="%s">%s</textarea>', $id, $this->prefixId . '[' . $field['name'] . ']', $cols,$rows,$value);
+                break;
             case 'group':
                 if (isset($field['config']['internal_type']) && $field['config']['internal_type'] === 'file') {
                     $wrappingData = ($this->conf[$field['name'] . '.']['allWrap.']) ? $this->conf[$field['name'] . '.']['allWrap.'] : array();
