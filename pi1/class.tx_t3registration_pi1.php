@@ -2200,7 +2200,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
     private function updateUserProfile() {
         if ($GLOBALS['TSFE']->loginUser) {
             foreach ($this->fieldsData as $field) {
-                if ($field['type'] == 'databaseField') {
+                if ($field['type'] == 'databaseField' && $field['hideInChangeProfile'] == 0) {
                     $user[$field['field']] = $this->htmlentities($this->piVars[$field['name']]);
                 }
             }
