@@ -1,3 +1,36 @@
-2011-06-17 Federico Bernardin  <federico@bernardin.it>
+2012-04-03 Federico Bernardin  <federico@bernardin.it>
+    * fixed bug when user chgange profile but field was hidden
+    * added text config type for textarea in autofield
 
-	* initial code generated with kickstarter
+2012-03-27 Federico Bernardin  <federico@bernardin.it>
+    * Fixed some bugs on manual
+
+2012-03-26 Federico Bernardin  <federico@bernardin.it>
+    * Added German translation (thanks to Sven Burkert)
+    * Updated and improved manual
+    * Updated and improved typoscript base template
+
+2012-02-02 Federico Bernardin  <federico@bernardin.it>
+    * Fixed bug in alternative template for updating profile
+    * Added old TYPO3 mail engine for TYPO3 version 4.4.X, Added dev log and log functionality added new typoscript configuration: debugLevel
+    * Added template test feature: you can test your template out of t3registration process
+    * Fixed bug in field evaluation when it is hidden in update profile
+    * Fixed bug on redirect, decode saved url with urldecode
+    * Changed to stable version
+
+2011-12-29 Federico Bernardin  <federico@bernardin.it>
+    * Fixed bug on delete email text language and confirmation of admin approval
+    * Added submit image button feature
+
+2011-12-24 Federico Bernardin  <federico@bernardin.it>
+    * update language file rename privacy and marketing profile fields to shorter name (see 32824 bug on forge)
+
+2011-12-12 Federico Bernardin  <federico@bernardin.it>
+    * Added new hook for redirect after registration
+    * Added multi checkboxes autofield
+    * fixed bugs on select and checkbox
+    * update manual
+
+2011-12-02 Federico Bernardin  <federico@bernardin.it>
+    * First beta release (RC1)
+
