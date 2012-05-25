@@ -657,16 +657,18 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $type = (isset($field['config']['eval']) && t3lib_div::inList($field['config']['eval'], 'password')) ? 'password' : 'text';
                 $size = ($field['config']['size']) ? $field['config']['size'] : '15';
                 $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : '';
+                $extra = ($field['config']['extra']) ? $field['config']['extra'] : '';
                 $maxchar = ($field['config']['maxchar']) ? ' maxchar="' . $field['config']['maxchar'] . '" ' : '';
                 $value = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
-                $htmlBlock = sprintf('<input type="%s" %s name="%s" value="%s" size="%s" %s />', $type, $id, $this->prefixId . '[' . $field['name'] . ']', $value, $size, $maxchar);
+                $htmlBlock = sprintf('<input type="%s" %s name="%s" value="%s" size="%s" %s %s/>', $type, $id, $this->prefixId . '[' . $field['name'] . ']', $value, $size, $maxchar, $extra);
                 break;
             case 'text':
                 $cols = ($field['config']['cols']) ? $field['config']['cols'] : '40';
                 $rows = ($field['config']['rows']) ? $field['config']['rows'] : '20';
                 $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : '';
+                $extra = ($field['config']['extra']) ? $field['config']['extra'] : '';
                 $value = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
-                $htmlBlock = sprintf('<textarea %s name="%s" cols="%s"  rows="%s">%s</textarea>', $id, $this->prefixId . '[' . $field['name'] . ']', $cols,$rows,$value);
+                $htmlBlock = sprintf('<textarea %s name="%s" cols="%s"  rows="%s" %s>%s</textarea>', $id, $this->prefixId . '[' . $field['name'] . ']', $cols,$rows,$extra,$value);
                 break;
             case 'group':
                 if (isset($field['config']['internal_type']) && $field['config']['internal_type'] === 'file') {
@@ -680,6 +682,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 break;
             case 'select':
                 $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : '';
+                $extra = ($field['config']['extra']) ? $field['config']['extra'] : '';
                 $this->piVars[$field['name']] = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $options = array();
                 foreach ($field['config']['items'] as $item) {
@@ -688,16 +691,17 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     $selected = ($this->piVars[$field['name']] == $value) ? 'selected' : '';
                     $options[] = sprintf('<option value="%s" %s>%s</option>', $value, $selected, $text);
                 }
-                $htmlBlock = sprintf('<select %s name="%s" >%s</select>', $id, $this->prefixId . '[' . $field['name'] . ']', implode(chr(10), $options));
+                $htmlBlock = sprintf('<select %s name="%s" %s>%s</select>', $id, $this->prefixId . '[' . $field['name'] . ']',$extra, implode(chr(10), $options));
                 break;
             case 'radio':
                 $this->piVars[$field['name']] = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $options = array();
+                $extra = ($field['config']['extra']) ? $field['config']['extra'] : '';
                 foreach ($field['config']['items'] as $item) {
                     $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
                     $value = (isset($item[1])) ? $item[1] : '';
                     $selected = ($this->piVars[$field['name']] == $value) ? 'checked' : '';
-                    $options[] = $this->cObj->stdWrap(sprintf('<input type="radio" name="%s" value="%s" %s>%s', $this->prefixId . '[' . $field['name'] . ']', $value, $selected, $text), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['stdWrap.']);
+                    $options[] = $this->cObj->stdWrap(sprintf('<input type="radio" name="%s" value="%s" %s %s>%s', $this->prefixId . '[' . $field['name'] . ']', $value, $selected, $extra, $text), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['stdWrap.']);
                 }
                 $htmlBlock = implode(chr(10), $options);
                 break;
@@ -720,11 +724,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
                         }
                     }
                     $options = array();
+                    $extra = ($field['config']['extra']) ? $field['config']['extra'] : '';
                     foreach ($field['config']['items'] as $key => $item) {
                         $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
                         $value = '1';
                         $selected = (isset($this->piVars[$field['name']][$key]) && $this->piVars[$field['name']][$key] == '1') ? 'checked="checked"' : '';
-                        $options[] = $this->cObj->stdWrap(sprintf('<input type="checkbox" name="%s" value="%s" %s>%s', $this->prefixId . '[' . $field['name'] . '][' . $key . ']', $value, $selected, $text), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['stdWrap.']);
+                        $options[] = $this->cObj->stdWrap(sprintf('<input type="checkbox" name="%s" value="%s" %s %s>%s', $this->prefixId . '[' . $field['name'] . '][' . $key . ']', $value, $selected, $extra, $text), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['stdWrap.']);
                     }
                     $htmlBlock = implode(chr(10), $options);
                 }
