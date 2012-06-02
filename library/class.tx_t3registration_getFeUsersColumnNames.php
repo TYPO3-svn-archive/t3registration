@@ -25,34 +25,36 @@
 
 class tx_t3registration_getFeUsersColumnNames {
 
-	/**
-	 * This function is used to get the "fe_users" field names into the flexform of the plugin.
-	 *
-	 * @param	array		$config: the fields selected
-	 * @return	array		$config
-	 */
-	function getFeUsersColumnNames($config) {
+    /**
+     * This function is used to get the "fe_users" field names into the flexform of the plugin.
+     *
+     * @param    array        $config: the fields selected
+     * @return    array        $config
+     */
+    function getFeUsersColumnNames($config) {
 
-		global $TCA;
+        global $TCA;
 
-		$extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['t3registration']);
+        $extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['t3registration']);
 
-		t3lib_div::loadTCA('fe_users');
+        t3lib_div::loadTCA('fe_users');
+        if ($extConf['disabledTranslation'] == 1) {
+            foreach ($TCA['fe_users']['columns'] as $key => $item) {
+                if (!t3lib_div::inList($extConf['disabledFieldsFromFlexform'],$key)) {
+                    $config['items'][] = array($key, $key);
+                }
+            }
+        } else {
+            foreach ($TCA['fe_users']['columns'] as $key => $item) {
+                if (!t3lib_div::inList($extConf['disabledFieldsFromFlexform'],$key)) {
+                    $config['items'][] = array($GLOBALS['LANG']->sL($item['label'], true), $key);
+                }
+            }
+        }
 
-		if($extConf['disabledTranslation'] == 1){
-			foreach ($TCA['fe_users']['columns'] as $key => $item){
-				$config['items'][] = array( $key, $key);
-			}
-		}
-		else{
-			foreach($TCA['fe_users']['columns'] as $key => $item){
-				$config['items'][] = array($GLOBALS['LANG']->sL($item['label'], true), $key);
-			}
-		}
 
-
-		return $config;
-	}
+        return $config;
+    }
 
 }
 

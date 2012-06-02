@@ -46,12 +46,12 @@
 class tx_t3registration_hooks {
 
     /**
- * This function manages marker for double password
- *
- * @param	$params		array parameters
- * @param	$pObj		object remote caller class
- * @return	[type]		...
- */
+     * This function manages marker for double password
+     *
+     * @param    $params        array parameters
+     * @param    $pObj        object remote caller class
+     * @return    [type]        ...
+     */
     public function addPasswordMarker(&$params, &$pObj) {
         if ($pObj->conf['extra.']['passwordTwice']) {
             if (!$params['preview']) {
@@ -59,8 +59,7 @@ class tx_t3registration_hooks {
                 $field['name'] = $pObj->conf['extra.']['passwordTwiceField'];
                 $field['label'] = ($pObj->conf['extra.']['passwordTwiceFieldLabel']) ? $pObj->pi_getLL($pObj->conf['extra.']['passwordTwiceFieldLabel']) : $field['label'];
                 $params['contentArray']['###' . strtoupper($field['name']) . '_FIELD###'] = $pObj->getAndReplaceSubpart($field, $params['content']);
-            }
-            else {
+            } else {
                 $field['name'] = $pObj->conf['extra.']['passwordTwiceField'];
                 $params['hiddenArray'][strtoupper($field['name'])] = sprintf('<input type="hidden" name="%s" value="%s" />', $pObj->prefixId . '[' . $field['name'] . ']', $pObj->piVars[$pObj->conf['extra.']['passwordTwiceField']]);
             }
@@ -68,35 +67,33 @@ class tx_t3registration_hooks {
     }
 
     /**
- * This function manages marker for double password in update profile prefills field
- *
- * @param	$params		array parameters
- * @param	$pObj		object remote caller class
- * @return	[type]		...
- */
+     * This function manages marker for double password in update profile prefills field
+     *
+     * @param    $params        array parameters
+     * @param    $pObj        object remote caller class
+     * @return    [type]        ...
+     */
     public function fillPasswordFieldForProfile(&$params, &$pObj) {
         $pObj->piVars[$pObj->conf['extra.']['passwordTwiceField']] = $params['user']['password'];
         return $pObj->piVars;
     }
 
     /**
- * This function evaluates double password
- *
- * @param	$params		array parameters
- * @param	$pObj		object remote caller class
- * @return	boolean		true if no errors found, otherwise return false
- */
+     * This function evaluates double password
+     *
+     * @param    $params        array parameters
+     * @param    $pObj        object remote caller class
+     * @return    boolean        true if no errors found, otherwise return false
+     */
     public function checkPasswordTwice($params, &$pObj) {
         if (!isset($pObj->conf['extra.']['passwordTwice']) || !$pObj->conf['extra.']['passwordTwice']) {
             $pObj->errorArray['error'][$pObj->conf['extra.']['passwordTwiceField']] = true;
             return true;
-        }
-        else {
+        } else {
             if ($pObj->piVars[$pObj->conf['extra.']['passwordTwiceField']] === $params['value']) {
                 $pObj->errorArray['error'][$pObj->conf['extra.']['passwordTwiceField']] = true;
                 return true;
-            }
-            else {
+            } else {
                 $pObj->errorArray['error'][$pObj->conf['extra.']['passwordTwiceField']] = false;
                 return false;
             }
@@ -104,20 +101,39 @@ class tx_t3registration_hooks {
     }
 
     /**
- * This function manages the redirect parameters passed from url use extra.saveParamsFromUrl=1 to enabled features
- * use extra.saveParamsFromUrl.list to define the list of parameters to allowed to be saved (stdWrap)
- *
- * @param	$params		array parameters
- * @param	$pObj		object remote caller class
- * @return	[type]		...
- */
+     * This function saves password field as saltedPassword only if it is enabled
+     * @param array  $params parameters to elaborate
+     * @param object $pObj t3registration class
+     */
+    public function saltedPassword(&$params, $pObj) {
+        if ($pObj->conf['extra.']['saltedPassword'] && $params['user']['password'] != '') {
+            $password = $params['user']['password']; // plain-text password
+            if (t3lib_extMgm::isLoaded('saltedpasswords')) {
+                if (tx_saltedpasswords_div::isUsageEnabled('FE')) {
+                    $objSalt = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL);
+                    if (is_object($objSalt)) {
+                        $params['user']['password'] = $objSalt->getHashedPassword($password);
+                    }
+                }
+            }
+        }
+    }
+
+
+    /**
+     * This function manages the redirect parameters passed from url use extra.saveParamsFromUrl=1 to enabled features
+     * use extra.saveParamsFromUrl.list to define the list of parameters to allowed to be saved (stdWrap)
+     *
+     * @param    $params        array parameters
+     * @param    $pObj        object remote caller class
+     * @return    [type]        ...
+     */
     public function addHiddenForParams(&$params, $pObj) {
         //Enable function
         if ($pObj->conf['extra.']['saveParamsFromUrl'] && $GLOBALS['TSFE']->loginUser == 0) {
             if (isset($pObj->piVars['paramsFromUrl'])) {
                 $params['hiddenArray']['paramsFromUrl'] = '<input type="hidden" name="tx_t3registration_pi1[paramsFromUrl]" value="' . $pObj->piVars['paramsFromUrl'] . '" />';
-            }
-            else {
+            } else {
                 $paramsWhitelist = (isset($pObj->conf['extra.']['saveParamsFromUrl.']['list']) || isset($pObj->conf['extra.']['saveParamsFromUrl.']['list.'])) ? $pObj->cObj->stdWrap($pObj->conf['extra.']['saveParamsFromUrl.']['list'], $pObj->conf['extra.']['saveParamsFromUrl.']['list.']) : '';
                 $paramsList = explode('&', urldecode(t3lib_div::getIndpEnv('QUERY_STRING')));
                 $paramToSave = array();
@@ -137,33 +153,33 @@ class tx_t3registration_hooks {
     }
 
     /**
- * This function manages the redirect parameters passed from url use extra.saveParamsFromUrl=1 to enabled features
- * this part of hook save params in cache_md5params before saving user
- *
- * @param	$params		array parameters
- * @param	$pObj		object remote caller class
- * @return	[type]		...
- */
+     * This function manages the redirect parameters passed from url use extra.saveParamsFromUrl=1 to enabled features
+     * this part of hook save params in cache_md5params before saving user
+     *
+     * @param    $params        array parameters
+     * @param    $pObj        object remote caller class
+     * @return    [type]        ...
+     */
     public function saveParams(&$params, $pObj) {
         if ($pObj->conf['extra.']['saveParamsFromUrl'] && $GLOBALS['TSFE']->loginUser == 0) {
             $values = array(
                 'md5hash' => substr(md5($params['user']['uid'] . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 20),
-                'tstamp' => time(),
-                'type' => 'fe',
-                'params' => serialize($params['piVars']['paramsFromUrl'])
+                'tstamp'  => time(),
+                'type'    => 'fe',
+                'params'  => serialize($params['piVars']['paramsFromUrl'])
             );
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('cache_md5params', $values);
         }
     }
 
     /**
- * This function manages the redirect parameters passed from url use extra.saveParamsFromUrl=1 to enabled features
- * this part of hook fetch data from cache to redirect user
- *
- * @param	$params		array parameters
- * @param	$pObj		object remote caller class
- * @return	[type]		...
- */
+     * This function manages the redirect parameters passed from url use extra.saveParamsFromUrl=1 to enabled features
+     * this part of hook fetch data from cache to redirect user
+     *
+     * @param    $params        array parameters
+     * @param    $pObj        object remote caller class
+     * @return    [type]        ...
+     */
     public function redirectWithParams(&$params, $pObj) {
         if ($pObj->conf['extra.']['saveParamsFromUrl'] && $GLOBALS['TSFE']->loginUser == 0) {
             if ($params['lastEvent'] == 'userAuth') {
@@ -181,8 +197,7 @@ class tx_t3registration_hooks {
                     if (isset($pObj->conf['extra.']['saveParamsFromUrl.']['pageParameter'])) {
                         $redirectId = $urlParameters[$pObj->conf['extra.']['saveParamsFromUrl.']['pageParameter']];
                         unset($urlParameters[$pObj->conf['extra.']['saveParamsFromUrl.']['pageParameter']]);
-                    }
-                    else {
+                    } else {
                         $redirectId = (isset($pObj->conf['extra.']['saveParamsFromUrl.']['redirectPage'])) ? $pObj->conf['extra.']['saveParamsFromUrl.']['redirectPage'] : $GLOBALS['TSFE']->id;
                     }
                     $GLOBALS['TYPO3_DB']->exec_DELETEquery('cache_md5params', 'md5hash=' . $GLOBALS['TYPO3_DB']->fullQuoteStr(substr(md5($params['user']['uid'] . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 20), 'cache_md5params'));

@@ -9,4 +9,6 @@ $TYPO3_CONF_VARS['EXTCONF']['t3registration']['profileFetchData'][] = 'EXT:t3reg
 $TYPO3_CONF_VARS['EXTCONF']['t3registration']['extraMarkersRegistration'][] = 'EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->addHiddenForParams';
 $TYPO3_CONF_VARS['EXTCONF']['t3registration']['confirmedProcessComplete'][] = 'EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->redirectWithParams';
 $TYPO3_CONF_VARS['EXTCONF']['t3registration']['afterInsertUser'][] = 'EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->saveParams';
+$TYPO3_CONF_VARS['EXTCONF']['t3registration']['beforeInsertUser'][] = 'EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->saltedPassword';
+$TYPO3_CONF_VARS['EXTCONF']['t3registration']['beforeUpdateUser'][] = 'EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->saltedPassword';
 ?>

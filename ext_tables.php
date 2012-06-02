@@ -69,12 +69,12 @@ if (TYPO3_MODE == 'BE') {
   $TBE_MODULES_EXT['xMOD_db_new_content_el']['addElClasses']['tx_t3registration_pi1_wizicon'] = t3lib_extMgm::extPath($_EXTKEY).'pi1/class.tx_t3registration_pi1_wizicon.php';
 }
 
-
-/*if (TYPO3_MODE == 'BE') {
-  t3lib_extMgm::addModulePath('web_txt3registrationM1', t3lib_extMgm::extPath($_EXTKEY) . 'userManagement/');
-
-  t3lib_extMgm::addModule('web', 'txt3registrationM1', '', t3lib_extMgm::extPath($_EXTKEY) . 'userManagement/');
-}*/
+t3lib_extMgm::addPageTSConfig('
+#disabled t3registration special fields from TCEFORMS visualization
+TCEFORM.fe_users.admin_auth_code.disabled=1
+TCEFORM.fe_users.admin_disable.disabled=1
+TCEFORM.fe_users.user_auth_code.disabled=1
+');
 
 t3lib_extMgm::addStaticFile($_EXTKEY,'static/t3registration_settings/', 't3registration settings');
 ?>

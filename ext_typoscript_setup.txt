@@ -63,7 +63,8 @@ plugin.tx_t3registration_pi1{
 
     usernameField = {$plugin.tx_t3registration_pi1.usernameField}
 
-
+    #test template
+    testXMLFile = EXT:t3registration/user.xml
 
     #password twice configuration
     extra.passwordTwice = 1

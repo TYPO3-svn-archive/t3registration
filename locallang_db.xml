@@ -6,6 +6,9 @@
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
+            <label index="fe_users.adminAuthCode">Moderation confirmation code</label>
+            <label index="fe_users.adminDisable">Moderation approval</label>
+            <label index="fe_users.userAuthCode">User confirmation code</label>
             <label index="fe_users.tx_t3registration_privacy">Privacy</label>
             <label index="fe_users.tx_t3registration_marketing_permission">Marketing permission</label>
             <label index="tt_content.list_type_pi1">Registration</label>
@@ -84,6 +87,7 @@
             <label index="test_deleteConfirmationEmail">send cancellation confirmation email</label>
             <label index="test_userConfirmationDeletePage">User confirmation deleting page</label>
             <label index="test_testXMLFile">Choose file with user data (xml format)</label>
+            <label index="disabledFieldsFromFlexform">list of fields to exclude from flexform: fields listed above will be not visible in the list of fields you can show in your form</label>
 
             <label index="disabledTranslation">Translation disabled: if you check this box the translation of fields in flexform will be only in english, otherwise it will be showed in backend language</label>
         </languageKey>
