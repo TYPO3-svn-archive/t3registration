@@ -50,6 +50,11 @@ plugin.tx_t3registration_pi1{
         }
         submitBack  < form.submitButton
         submitConfirm < form.submitButton
+
+        standardFieldId =
+        standardFieldId.pre =
+        standardFieldExtra =
+        standardLabelWrap.wrap = |
     }
 
 
