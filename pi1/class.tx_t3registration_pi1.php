@@ -133,7 +133,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * contains fields will be override from ts
      * @var array
      */
-    private $flexformOverrideTs = array('useAnotherTemplateInChangeProfileMode', 'contactEmailMode', 'approvalProcess', 'userFolder', 'templateFile', 'autoLoginAfterConfirmation', 'emailFrom', 'emailFromName', 'emailAdmin');
+    private $flexformOverrideTs = array('testXMLFile','useAnotherTemplateInChangeProfileMode', 'contactEmailMode', 'approvalProcess', 'userFolder', 'templateFile', 'autoLoginAfterConfirmation', 'emailFrom', 'emailFromName', 'emailAdmin');
 
     /**
      * Contains fields with its configuration to rendering form fields
@@ -376,7 +376,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                             $this->conf[$key] = $flexformValue;
                         }
                         else {
-                            if (!key_exists($key, $this->conf) || !$flexformValue) {
+                            if (!array_key_exists($key, $this->conf) || !$flexformValue) {
                                 $lConf[$key] = $flexformValue;
                             }
                         }
