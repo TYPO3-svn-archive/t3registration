@@ -2105,6 +2105,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 }
             }
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('fe_users', $user);
+            $user['uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
+
             if ($this->debugLevel && TYPO3_DLOG) {
                 t3lib_div::devLog('user ' . $user['username'] . ' was created', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO, $user);
                 t3lib_div::sysLog('user ' . $user['username'] . ' was created', $this->extKey, t3lib_div::SYSLOG_SEVERITY_INFO);
@@ -2113,7 +2115,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 }
             }
 
-            $user['uid'] = $GLOBALS['TYPO3_DB']->sql_insert_id();
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterInsertUser'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['afterInsertUser'] as $userFunction) {
                     $params['user'] = $user;
