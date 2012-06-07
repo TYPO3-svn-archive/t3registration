@@ -79,4 +79,6 @@ plugin.tx_t3registration_pi1{
 
     #password twice label locallang name
     extra.passwordTwiceFieldLabel = passwordtwiceLabel
+
+    extra.disabledSaltedPassword = 0
 }

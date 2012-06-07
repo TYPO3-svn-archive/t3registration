@@ -106,13 +106,22 @@ class tx_t3registration_hooks {
      * @param object $pObj t3registration class
      */
     public function saltedPassword(&$params, $pObj) {
-        if ($pObj->conf['extra.']['saltedPassword'] && $params['user']['password'] != '') {
+
+        if (!$pObj->conf['extra.']['disabledSaltedPassword']) {
             $password = $params['user']['password']; // plain-text password
             if (t3lib_extMgm::isLoaded('saltedpasswords')) {
                 if (tx_saltedpasswords_div::isUsageEnabled('FE')) {
                     $objSalt = tx_saltedpasswords_salts_factory::getSaltingInstance(NULL);
                     if (is_object($objSalt)) {
-                        $params['user']['password'] = $objSalt->getHashedPassword($password);
+                        $isMD5 = preg_match('/[0-9abcdef]{32,32}/', $password);
+                        $isSaltedHash = t3lib_div::inList('$1$,$2$,$2a,$P$', substr($password, 0, 3));
+
+                        if ($isMD5) {
+                            $password = 'M' . $objSalt->getHashedPassword($password);
+                        } elseif (!$isSaltedHash) {
+                            $password = $objSalt->getHashedPassword($password);
+                        }
+                        $params['user']['password'] = $password;
                     }
                 }
             }
