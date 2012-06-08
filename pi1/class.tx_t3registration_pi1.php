@@ -566,7 +566,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
         $fieldArray['markers']['###FIELD_LABEL###'] = ($this->pi_getLL($field['name'] . 'Label')) ? $this->pi_getLL($field['name'] . 'Label') : ((isset($field['label'])) ? $this->languageObj->sL($field['label'], true) : '');
         $fieldArray['markers']['###FIELD_LABEL###'] = $this->cObj->stdWrap($fieldArray['markers']['###FIELD_LABEL###'],$this->conf['form.']['standardLabelWrap.']);
-        $fieldArray['markers']['###FIELD_VALUE###'] = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
+        $fieldArray['markers']['###FIELD_VALUE###'] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
         $fieldArray['markers']['###FIELD_NAME###'] = $this->prefixId . '[' . $field['name'] . ']';
         $fieldArray['markers']['###FIELD_NAME_ID###'] = $field['name'];
         //the first call is used to substitute subpart, the second one substitute error class markers on all template
@@ -662,7 +662,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : (($this->conf['form.']['standardFieldId'])?' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '"':'');
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra'])?$this->conf['form.']['standardFieldExtra']:'');
                 $maxchar = ($field['config']['maxchar']) ? ' maxchar="' . $field['config']['maxchar'] . '" ' : '';
-                $value = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
+                $value = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $htmlBlock = sprintf('<input type="%s" %s name="%s" value="%s" size="%s" %s %s/>', $type, $id, $this->prefixId . '[' . $field['name'] . ']', $value, $size, $maxchar, $extra);
                 break;
             case 'text':
@@ -670,7 +670,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $rows = ($field['config']['rows']) ? $field['config']['rows'] : '20';
                 $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : (($this->conf['form.']['standardFieldId'])?' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '"':'');
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra'])?$this->conf['form.']['standardFieldExtra']:'');
-                $value = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
+                $value = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $htmlBlock = sprintf('<textarea %s name="%s" cols="%s"  rows="%s" %s>%s</textarea>', $id, $this->prefixId . '[' . $field['name'] . ']', $cols,$rows,$extra,$value);
                 break;
             case 'group':
@@ -686,7 +686,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             case 'select':
                 $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : (($this->conf['form.']['standardFieldId'])?' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '"':'');
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra'])?$this->conf['form.']['standardFieldExtra']:'');
-                $this->piVars[$field['name']] = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
+                $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $options = array();
                 foreach ($field['config']['items'] as $item) {
                     $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
@@ -697,7 +697,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $htmlBlock = sprintf('<select %s name="%s" %s>%s</select>', $id, $this->prefixId . '[' . $field['name'] . ']',$extra, implode(chr(10), $options));
                 break;
             case 'radio':
-                $this->piVars[$field['name']] = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
+                $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $options = array();
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra'])?$this->conf['form.']['standardFieldExtra']:'');
                 foreach ($field['config']['items'] as $item) {
@@ -738,7 +738,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     $htmlBlock = implode(chr(10), $options);
                 }
                 else {
-                    $this->piVars[$field['name']] = ($this->piVars[$field['name']]) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
+                    $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                     $text = (preg_match('/LLL:EXT:/', $field['config']['text']) ? $this->cObj->stdWrap($this->languageObj->sl($field['config']['text']), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']) : $this->cObj->stdWrap($field['config']['text'], $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']));
                     $value = '1';
                     $selected = ($this->piVars[$field['name']] == $value) ? 'checked="checked"' : '';
@@ -2327,7 +2327,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param    $sourceArray        the array to be modified
      * @return    array
      */
-    protected function removeDotFromArray($sourceArray) {
+    public function removeDotFromArray($sourceArray) {
         $finalArray = array();
         foreach ($sourceArray as $key => $item) {
             if (is_array($item)) {
