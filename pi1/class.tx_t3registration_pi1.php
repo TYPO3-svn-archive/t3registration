@@ -245,7 +245,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->argumentsFromUrlCheck();
             //debug($this->fieldsData);
             $this->setEmailFormat();
-
+            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeActionInit'])) {
+                foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeActionInit'] as $fieldFunction) {
+                    $params = array('fields' => $this->fieldsData, 'conf' => $this->conf, 'data' => $this->piVars);
+                    t3lib_div::callUserFunction($fieldFunction, $params, $this);
+                    $this->conf = $params['conf'];
+                    $this->piVars = $params['data'];
+                }
+            }
             //call test environment if enabled
             if ($this->conf['enableTemplateTest']) {
                 $content = $this->testTemplateProcess();
@@ -407,6 +414,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
     protected function getForm() {
         $content = $this->getTemplate();
         $preview = false;
+
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeFormElaboration'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeFormElaboration'] as $fieldFunction) {
+                $params = array('fields' => $this->fieldsData, 'content' => $content, 'data' => $this->piVars);
+                $this->piVars = t3lib_div::callUserFunction($fieldFunction, $params, $this);
+            }
+        }
         if ($this->piVars['submitted'] == 1 || ($this->piVars['sendConfirmation'] == 1 && isset($this->piVars['confirmPreview']))) {
             $error = $this->checkErrors();
             $preview = ($error) ? false : true;
