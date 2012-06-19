@@ -55,15 +55,23 @@ class tx_t3registration_hooks {
     public function addPasswordMarker(&$params, &$pObj) {
         if ($pObj->conf['extra.']['passwordTwice']) {
             if (!$params['preview']) {
-                $field = $pObj->getField('password');
-                $field['name'] = $pObj->conf['extra.']['passwordTwiceField'];
-                $field['label'] = ($pObj->conf['extra.']['passwordTwiceFieldLabel']) ? $pObj->pi_getLL($pObj->conf['extra.']['passwordTwiceFieldLabel']) : $field['label'];
+                $field= $this->getPasswordTwiceField($pObj);
                 $params['contentArray']['###' . strtoupper($field['name']) . '_FIELD###'] = $pObj->getAndReplaceSubpart($field, $params['content']);
             } else {
-                $field['name'] = $pObj->conf['extra.']['passwordTwiceField'];
+                $field= $this->getPasswordTwiceField($pObj);
                 $params['hiddenArray'][strtoupper($field['name'])] = sprintf('<input type="hidden" name="%s" value="%s" />', $pObj->prefixId . '[' . $field['name'] . ']', $pObj->piVars[$pObj->conf['extra.']['passwordTwiceField']]);
             }
         }
+    }
+
+    protected function getPasswordTwiceField($pObj){
+        $field = $pObj->getField('password');
+        $field['name'] = $pObj->conf['extra.']['passwordTwiceField'];
+        $field['label'] = ($pObj->conf['extra.']['passwordTwiceFieldLabel']) ? $pObj->pi_getLL($pObj->conf['extra.']['passwordTwiceFieldLabel']) : $field['label'];
+        if(is_array($pObj->conf['extra.']['passwordTwice.']['field.'])) {
+            $field = t3lib_div::array_merge_recursive_overrule($field,$pObj->removeDotFromArray($pObj->conf['extra.']['passwordTwice.']['field.']));
+        }
+        return $field;
     }
 
     /**
