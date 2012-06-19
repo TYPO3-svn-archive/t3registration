@@ -245,11 +245,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->argumentsFromUrlCheck();
             //debug($this->fieldsData);
             $this->setEmailFormat();
+
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeActionInit'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeActionInit'] as $fieldFunction) {
-                    $params = array('fields' => $this->fieldsData, 'conf' => $this->conf, 'data' => $this->piVars);
+                    $params = array('fields' => $this->fieldsData, 'data' => $this->piVars);
                     t3lib_div::callUserFunction($fieldFunction, $params, $this);
-                    $this->conf = $params['conf'];
                     $this->piVars = $params['data'];
                 }
             }
@@ -1009,7 +1009,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 return $this->checkUniqueField($value, $field, $this->conf['userFolder']);
                 break;
             case 'file':
-                $files = array();
                 $fileFields[$field['name']] = $this->piVars[$field['name']];
                 $noError = true;
                 foreach ($_FILES[$this->prefixId]['name'][$field['name']] as $key => $item) {
