@@ -113,6 +113,7 @@
                 <![CDATA[Dear Administrator please confirm user request.<br />Click this link: ]]></label>
             <label index="deletionConfirmedText">Dear user you have been deleted from our site.</label>
             <label index="confirmationTextHtml">Dear user, this email was sent to confirm your registration.</label>
+            <label index="confirmationTextText">Dear user, this email was sent to confirm your registration.</label>
             <label index="confirmationAfterAuthorizationTextHmtl">Dear user we send this email to confirm your
                 subscription.
             </label>
