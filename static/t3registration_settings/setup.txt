@@ -1,6 +1,6 @@
 #setup
 plugin.tx_t3registration_pi1{
-    passwordTwice = 1
+    passwordTwice = {$plugin.tx_t3registration_pi1.passwordTwice}
     passwordTwiceField = passwordtwice
     fieldConfiguration.password.config.noHtmlEntities = 1
 }

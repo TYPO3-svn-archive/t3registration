@@ -1,1 +1,3 @@
 #contants
+
+plugin.tx_t3registration_pi1.passwordTwice = 1
