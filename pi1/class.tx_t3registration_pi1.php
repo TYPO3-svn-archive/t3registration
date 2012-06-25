@@ -571,7 +571,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $fieldArray['markers']['###FIELD_LABEL###'] = $this->cObj->stdWrap($fieldArray['markers']['###FIELD_LABEL###'], $this->conf['form.']['standardLabelWrap.']);
         $fieldArray['markers']['###FIELD_VALUE###'] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
         $fieldArray['markers']['###FIELD_NAME###'] = $this->prefixId . '[' . $field['name'] . ']';
-        $fieldArray['markers']['###FIELD_NAME_ID###'] = $field['name'];
+        $fieldArray['markers']['###FIELD_NAME_ID###'] = $this->getIdForField($field,true);
         //the first call is used to substitute subpart, the second one substitute error class markers on all template
         $fieldContent = $this->cObj->substituteMarkerArrayCached($fieldContent, $fieldArray['markers'], $fieldArray['subparts']);
         return $this->cObj->substituteMarkerArrayCached($fieldContent, $fieldArray['markers'], $fieldArray['subparts']);
@@ -661,8 +661,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $type = (isset($field['config']['eval']) && t3lib_div::inList($field['config']['eval'], 'password')) ? 'password' : 'text';
                 $size = ($field['config']['size']) ? $field['config']['size'] : '15';
                 //@todo adds id and class into manual
-                $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : (($this->conf['form.']['standardFieldId']) ? ' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '"' : '');
-                $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
+                $id = $this->getIdForField($field);
+                $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : $autoId);
                 $maxchar = ($field['config']['maxchar']) ? ' maxchar="' . $field['config']['maxchar'] . '" ' : '';
                 $value = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $htmlBlock = sprintf('<input type="%s" %s name="%s" value="%s" size="%s" %s %s/>', $type, $id, $this->prefixId . '[' . $field['name'] . ']', $value, $size, $maxchar, $extra);
@@ -670,7 +670,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             case 'text':
                 $cols = ($field['config']['cols']) ? $field['config']['cols'] : '40';
                 $rows = ($field['config']['rows']) ? $field['config']['rows'] : '20';
-                $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : (($this->conf['form.']['standardFieldId']) ? ' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '"' : '');
+                $id = $this->getIdForField($field);
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
                 $value = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $htmlBlock = sprintf('<textarea %s name="%s" cols="%s"  rows="%s" %s>%s</textarea>', $id, $this->prefixId . '[' . $field['name'] . ']', $cols, $rows, $extra, $value);
@@ -686,7 +686,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 }
                 break;
             case 'select':
-                $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '" ' : (($this->conf['form.']['standardFieldId']) ? ' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '"' : '');
+                $id = $this->getIdForField($field);
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
                 $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $options = array();
@@ -754,6 +754,24 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 break;
         }
         return $htmlBlock;
+    }
+
+
+    /**
+     * This function elaborates configuration to create an Id for Field
+     * @param array $field field configuration
+     * @param bool $onlyIdValue
+     * @return string id
+     */
+    protected function getIdForField($field,$onlyIdValue = false) {
+        if (!(isset($this->conf['fieldConfiguration.'][$field['name'] . '.']['disableAutoId']) && $this->conf['fieldConfiguration.'][$field['name'] . '.']['disableAutoId'] == 1) && !$this->conf['form.']['disableAllAutoId']) {
+            $idWrapper = ($this->conf['fieldConfiguration.'][$field['name'] . '.']['idFieldWrap.']) ? $this->conf['fieldConfiguration.'][$field['name'] . '.']['idFieldWrap.'] : (($this->conf['form.']['idFormWrap.']) ? $this->conf['form.']['idFormWrap.'] : array());
+            $autoId = $this->cObj->stdWrap($field['name'], $idWrapper);
+            $id = ($field['config']['id']) ?$field['config']['id'] : (($this->conf['form.']['standardFieldId']) ?  $this->conf['form.']['standardFieldId.']['pre'] . $field['name']  :  $autoId);
+            return (!$onlyIdValue)? ' id="' . $id . '"': $id;
+        } else {
+            return '';
+        }
     }
 
     /**

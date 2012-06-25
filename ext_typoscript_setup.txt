@@ -42,6 +42,7 @@ plugin.tx_t3registration_pi1{
         #show RESEND_CONFIRMATION_CODE_BLOCK marker
         resendConfirmationCode = 0
         id =
+        disableAllAutoId = 0
         submitButton{
             imageSubmit = 0
             imagesrc =

@@ -12,10 +12,12 @@ This template shows one possible visualization using css
 <div >registration</div>
 ###DELETE_BLOCK###
 <!--###FIRST_NAME_FIELD### Start-->
+  <div id="first_name_field">
     <!--###ERROR_FIELD### Start-->
-     <div  class="###CLASS_ERROR###">###ERROR_LABEL###</div>
+     <div class="###CLASS_ERROR###">###ERROR_LABEL###</div>
     <!--###ERROR_FIELD### Stop-->
-    ###FIELD_LABEL### ###AUTO_FIELD###
+    <label for="###FIELD_NAME_ID###">###FIELD_LABEL###</label> ###AUTO_FIELD###
+  </div>
 <!--###FIRST_NAME_FIELD### Stop-->
 
 <!--###LAST_NAME_FIELD### Start-->
