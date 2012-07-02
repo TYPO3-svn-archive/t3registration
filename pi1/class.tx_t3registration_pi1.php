@@ -248,9 +248,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeActionInit'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeActionInit'] as $fieldFunction) {
-                    $params = array('fields' => $this->fieldsData, 'data' => $this->piVars);
-                    t3lib_div::callUserFunction($fieldFunction, $params, $this);
+                    $params = array('fields' => $this->fieldsData, 'data' => $this->piVars, 'content' => $content);
+                    $exitFromPlugin = t3lib_div::callUserFunction($fieldFunction, $params, $this);
                     $this->piVars = $params['data'];
+                    if($exitFromPlugin === true && isset($this->conf['exitBeforeActionInitHook']) && $this->conf['exitBeforeActionInitHook'] == $fieldFunction){
+                        $content = $params['content'];
+                        return (isset($this->conf['noWrapPlugin']) && $this->conf['noWrapPlugin'] == 1)?$this->pi_wrapInBaseClass($content):$content;
+                    }
                 }
             }
             //call test environment if enabled
