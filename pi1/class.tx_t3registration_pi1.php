@@ -1265,8 +1265,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->prefixId . '[' . 'action' . ']'   => 'userAuth',
             $this->prefixId . '[' . 'authcode' . ']' => $user['user_auth_code']
         );
+        $deletingArray = array(
+            $this->prefixId . '[' . 'action' . ']'   => 'userDelRequest',
+            $this->prefixId . '[' . 'authcode' . ']' => $user['user_auth_code']
+        );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
+        $deleteLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $deletingArray));
         $authLink = sprintf('<a href="%s">%s</a>', $this->htmlentities($authLink), $this->htmlentities($this->pi_getLL('confirmLinkConfirmationText')));
+        $deleteLink = sprintf('<a href="%s">%s</a>', $this->htmlentities($deleteLink), $this->htmlentities($this->pi_getLL('deletingLinkConfirmationText')));
         if (is_array($this->fieldsData) && count($this->fieldsData)) {
             foreach ($this->fieldsData as $field) {
                 $markerArray['###' . strtoupper($field['name']) . '###'] = $this->piVars[$field['name']];
@@ -1277,10 +1283,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
         }
         $markerArray['###CONFIRMATION_LINK###'] = $authLink;
+        $markerArray['###DELETING_LINK###'] = $deleteLink;
         foreach ($user as $key => $value) {
             $valueArray['###' . strtoupper($key) . '###'] = $value;
         }
         $valueArray['###CONFIRMATION_LINK###'] = $authLink;
+        $valueArray['###DELETING_LINK###'] = $deleteLink;
         $markerArray['###DESCRIPTION_HTML_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationTextHtml'), $valueArray);
         $markerArray['###DESCRIPTION_TEXT_TEXT###'] = $this->cObj->substituteMarkerArrayCached($this->pi_getLL('confirmationTextText'), $valueArray);
         $markerArray['###SIGNATURE###'] = $this->pi_getLL('signature');
@@ -1512,6 +1520,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             switch ($this->piVars['action']) {
                 case 'userAuth':
                 case 'adminAuth':
+                case 'userDelRequest':
                     //call confirmation
                     $this->externalAction['type'] = 'confirmationProcessControl';
                     $this->externalAction['parameter'] = $this->piVars['action'];
@@ -1693,6 +1702,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 } else {
                     return $this->cObj->stdWrap($this->pi_getLL('confirmationLinkNotFound'), $this->conf['error.']['confirmedErrorWrap.']);
                 }
+                break;
+            case 'userDelRequest':
+                return $this->confirmUserDeletion();
                 break;
         }
         return $content;

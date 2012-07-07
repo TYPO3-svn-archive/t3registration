@@ -112,7 +112,8 @@
             <label index="confirmationAuthorizationEmailText">
                 <![CDATA[Dear Administrator please confirm user request.<br />Click this link: ]]></label>
             <label index="deletionConfirmedText">Dear user you have been deleted from our site.</label>
-            <label index="confirmationTextHtml">Dear user, this email was sent to confirm your registration.</label>
+            <label index="confirmationTextHtml">
+                <![CDATA[Dear user, this email was sent to confirm your registration.<br /> if you wish to confirm please click in the next link. ###CONFIRMATION_LINK###<br /><br />If you receive this email for an error please remove your data clicking in the next link ###DELETING_LINK### ]]></label>
             <label index="confirmationTextText">Dear user, this email was sent to confirm your registration.</label>
             <label index="confirmationAfterAuthorizationTextHmtl">Dear user we send this email to confirm your
                 subscription.
@@ -136,6 +137,7 @@
             <label index="mailToUserAfterAuthorizationSubject">Registration confirmation</label>
             <label index="mailToUserDeleteSubject">Request for cancellation</label>
             <label index="confirmLinkConfirmationText">Confirm your registration</label>
+            <label index="deletingLinkConfirmationText">Click here to delete yor request.</label>
             <label index="authorizationLinkConfirmationText">Confirm your registration</label>
             <label index="deleteLinkConfirmationText">Confirm your cancellation</label>
 
