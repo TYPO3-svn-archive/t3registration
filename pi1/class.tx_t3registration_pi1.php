@@ -301,7 +301,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     default:
                         if ($this->externalAction['active']) {
                             //operation from url
-                            $content = $this->{$this->externalAction['type']}();
+                            if($this->externalAction['location'] == 'local'){
+                                $content = $this->{$this->externalAction['type']}();
+                            }
+                            else {
+                                $params = array('data' => $this->piVars);
+                                $content = t3lib_div::callUserFunction($this->externalAction['type'], $params, $this);
+                            }
                         } elseif ($this->changeProfileCheck()) {
                             $this->changeProfilePath = true;
                             $content = $this->showProfile();
