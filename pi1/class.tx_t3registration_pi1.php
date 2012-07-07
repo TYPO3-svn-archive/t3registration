@@ -1500,6 +1500,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
     protected function argumentsFromUrlCheck() {
         $this->externalAction['active'] = false;
         $this->externalAction['type'] = '';
+        $this->externalAction['location'] = 'local';
         if (isset($this->piVars['action'])) {
             //ci sono parametri che possono definire
             switch ($this->piVars['action']) {
@@ -1526,6 +1527,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     $this->externalAction['type'] = 'sendAgainConfirmationEmail';
                     $this->externalAction['active'] = true;
                     break;
+                default:
+                    if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['externalAction'])) {
+                        foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['externalAction'] as $fieldFunction) {
+                            $params = array('externalAction' => $this->externalAction, 'data' => $this->piVars);
+                            t3lib_div::callUserFunction($fieldFunction, $params, $this);
+                            $this->externalAction = $params['externalAction'];
+                        }
+                    }
             }
         }
     }
