@@ -25,6 +25,9 @@ plugin.tx_t3registration_pi1{
         singleErrorEvaluate = 0
         standardErrorStdWrap.wrap = |
         confirmedErrorWrap.wrap = |
+        showFullList = 0
+        fullErrorWrap.singleErrorWrap.wrap = <li>|</li>
+        fullErrorWrap.allWrap.wrap = <ul>|</ul>
     }
 
     #PASSWORD Control

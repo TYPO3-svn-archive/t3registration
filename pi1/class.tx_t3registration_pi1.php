@@ -198,6 +198,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
     public $markerTitle = '';
 
     /**
+     * @var array contains all error description
+     */
+    protected $fullErrorsList = array();
+
+    /**
      * This constant contains the maximum code number of exception self managed by extension
      */
     const MAXIMUM_ERROR_NUMBER = 1000;
@@ -518,7 +523,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
 
 
         if ($preview) {
-            $contentArray['###DELETE_BLOCK###'] = '';
+            $markerArray['###DELETE_BLOCK###'] = '';
             $hiddenArray['action'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->prefixId . '[sendConfirmation]', '1');
             $content = $this->cObj->substituteMarkerArrayCached($content, $contentArray);
             $confirmText = ($this->conf['form.']['submitConfirm.']['imageSubmit']) ? '<input type="image" %s src="' . $this->conf['form.']['submitConfirm.']['imagesrc'] . '" name="' . $this->prefixId . '[confirmPreview]" value="%s" />' : '<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />';
@@ -539,6 +544,21 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $markerArray['###RESEND_CONFIRMATION_CODE_BLOCK###'] = '';
             }
             $markerArray['###DELETE_BLOCK###'] = ($GLOBALS['TSFE']->loginUser) ? $this->showDeleteLink() : '';
+            if(count($this->fullErrorsList) && $this->conf['errors.']['showFullList']){
+                $contentErrorsListTemplate = $this->cObj->getSubpart($content, 'ERROR_DESCRIPTION_FULL_BLOCK');
+                $contentErrorsList = '';
+                foreach($this->fullErrorsList as $key => $item){
+                    $fullErrorsMarkerArray['###NAME###'] = ($this->pi_getLL($key . 'Label')) ? $this->pi_getLL($key . 'Label') : ((isset($this->fieldsData[$key]['label'])) ? $this->languageObj->sL($this->fieldsData[$key]['label'], true) : '');
+                    $fullErrorsMarkerArray['###ERRORS###'] = implode('',$item);
+                    $fullErrorsMarkerArray['###DESCRIPTION###'] = $this->cObj->substituteMarkerArray($this->pi_getLL('fullErrorBlockDescriptionString'), $fullErrorsMarkerArray);
+                    $contentErrorsList .= $this->cObj->substituteMarkerArrayCached($contentErrorsListTemplate, $fullErrorsMarkerArray);
+                }
+
+                $contentArray['###ERROR_DESCRIPTION_FULL_BLOCK###'] = $this->cObj->stdWrap($contentErrorsList,$this->conf['errors.']['fullErrorWrap.']['allWrap.']);
+            }
+            else{
+                $contentArray['###ERROR_DESCRIPTION_FULL_BLOCK###'] = '';
+            }
             $hiddenArray['action'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->prefixId . '[submitted]', '1');
             $confirmText = ($this->conf['form.']['submitButton.']['imageSubmit']) ? '<input type="image" %s src="' . $this->conf['form.']['submitButton.']['imagesrc'] . '" name="' . $this->prefixId . '[confirmPreview]" value="%s" />' : '<input type="submit" %s name="' . $this->prefixId . '[confirmPreview]" value="%s" />';
             $submitButton = sprintf($confirmText, $this->cObj->stdWrap($this->conf['form.']['submitButton.']['params'], $this->conf['form.']['submitButton.']['params.']), $this->pi_getLL($buttons['insert']));
@@ -908,9 +928,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $errorDescriptionArray = array();
             foreach ($this->errorArray['errorDescription'][$field['name']] as $singleErrorDescription) {
                 $errorDescriptionArray[] = $this->cObj->stdWrap($this->pi_getLL($field['name'] . ucfirst($singleErrorDescription) . 'Error'), $field['errorWrap.']);
+                $this->fullErrorsList[$field['name']][] = $this->cObj->stdWrap($this->pi_getLL($field['name'] . ucfirst($singleErrorDescription) . 'Error'), $this->conf['errors.']['fullErrorWrap.']['singleErrorWrap.']);
             }
             return preg_replace('/###ERROR_LABEL###/', implode('', $errorDescriptionArray), $errorContent);
         } else {
+            $this->fullErrorsList[$field['name']][] = $this->cObj->stdWrap($this->pi_getLL($field['name'] . 'Error'), $this->conf['errors.']['fullErrorWrap.']['singleErrorWrap.']);
             return preg_replace('/###ERROR_LABEL###/', $this->cObj->stdWrap($this->pi_getLL($field['name'] . 'Error'), $field['errorWrap.']), $errorContent);
         }
     }

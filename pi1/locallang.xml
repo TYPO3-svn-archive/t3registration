@@ -41,6 +41,8 @@
             <label index="passwordTwiceError">Repeat password correctly</label>
             <label index="first_nameRequiredError">First name is required</label>
 
+            <label index="fullErrorBlockDescriptionString">Field ###NAME### has errors:</label>
+
 
             <label index="templateFoundTitle">Template verifications</label>
             <label index="templateSubpartFoundTitle"><![CDATA[Searching for subpart <i>%s</i> of the template]]></label>
