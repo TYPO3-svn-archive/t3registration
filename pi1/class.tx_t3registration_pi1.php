@@ -114,6 +114,7 @@ define('TEXT', 2);
 
 require_once(PATH_tslib . 'class.tslib_pibase.php');
 require_once(t3lib_extMgm::extPath('t3registration') . 'library/class.tx_t3registration_checkstatus.php');
+require_once(t3lib_extMgm::extPath('t3registration') . 'library/class.tx_t3registration_tcaexternalfunctions.php');
 
 
 /**
@@ -642,7 +643,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     break;
                 case 'select':
                 case 'radio':
-                    foreach ($field['config']['items'] as $item) {
+                    $tca = new tx_t3registration_tcaexternalfunctions();
+                    $items = $tca->getForeignTableData($field);
+                    foreach ($items as $item) {
                         $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
                         $value = (isset($item[1])) ? $item[1] : '';
                         if ($this->piVars[$field['name']] == $value) {
@@ -716,11 +719,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 }
                 break;
             case 'select':
+                $tca = new tx_t3registration_tcaexternalfunctions();
+                $items = $tca->getForeignTableData($field);
                 $id = $this->getIdForField($field);
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
                 $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
-                $options = array();
-                foreach ($field['config']['items'] as $item) {
+                foreach ($items as $item) {
                     $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
                     $value = (isset($item[1])) ? $item[1] : '';
                     $selected = ($this->piVars[$field['name']] == $value) ? 'selected' : '';
@@ -785,6 +789,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
         return $htmlBlock;
     }
+
+
 
 
     /**
