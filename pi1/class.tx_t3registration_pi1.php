@@ -621,7 +621,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = '';
             $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = '';
         } else {
-            $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : (($this->pi_getLL($field['name'] . 'Label')) ? $this->pi_getLL($field['name'] . 'Label') : ((isset($field['label'])) ? $this->languageObj->sL($field['label'], true) : ''));
+            $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || (strlen($this->piVars[$field['name']]) == 0) && (isset($this->conf['form.']['hideInPreviewIfEmpty']) && $this->conf['form.']['hideInPreviewIfEmpty'] == 1)) ? '' : (($this->pi_getLL($field['name'] . 'Label')) ? $this->pi_getLL($field['name'] . 'Label') : ((isset($field['label'])) ? $this->languageObj->sL($field['label'], true) : ''));
             switch ($field['config']['type']) {
                 case 'input':
                 case 'text':
@@ -689,7 +689,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     protected function getAutoField($field) {
         $htmlBlock = '';
-        switch ($field['config']['type']) {
+         switch ($field['config']['type']) {
             case 'input':
                 $type = (isset($field['config']['eval']) && t3lib_div::inList($field['config']['eval'], 'password')) ? 'password' : 'text';
                 $size = ($field['config']['size']) ? $field['config']['size'] : '15';

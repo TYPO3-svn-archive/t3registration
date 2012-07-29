@@ -42,6 +42,8 @@ plugin.tx_t3registration_pi1{
 
     #form
     form{
+        #if enable, the label for empty field value will be hidden
+        hideInPreviewIfEmpty = 1
         #show RESEND_CONFIRMATION_CODE_BLOCK marker
         resendConfirmationCode = 0
         id =

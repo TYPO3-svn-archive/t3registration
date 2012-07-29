@@ -11,7 +11,8 @@ class tx_t3registration_tcaexternalfunctions{
     public function getForeignTableData($field,$items = array()){
         $items = array();
         if ($field['config']['foreign_table']) {
-            $items = $this->foreignTable($items, $field, array(), $field['name']);
+            //to be implemented: error on BE_USER Object
+            //$items = $this->foreignTable($items, $field, array(), $field['name']);
             if ($field['config']['neg_foreign_table']) {
                 $items = $this->foreignTable($items, $field, array(), $field['name'], 1);
             }
