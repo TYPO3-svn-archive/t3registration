@@ -244,7 +244,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
             //adds evaluation additional data
             $this->addFunctionReplace($this->conf['fieldConfiguration.'], $this->conf['fieldConfiguration.'], '');
             //merges data from flexform with ones from ts (after removing dots)
-            $this->fieldsData = t3lib_div::array_merge_recursive_overrule($this->fieldsData, $this->removeDotFromArray($this->conf['fieldConfiguration.']));
+            $fieldsFromTS = $this->removeDotFromArray($this->conf['fieldConfiguration.']);
+            $this->fieldsData = t3lib_div::array_merge_recursive_overrule($this->fieldsData, $this->removeUnusedFields($fieldsFromTS));
             //update TCA config fields with fieldsData
             $this->mergeTCAFieldWithConfiguration();
             //Test action from url
@@ -356,6 +357,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
         }
     }
+
 
     /**
      * This function initializes the system
@@ -2382,6 +2384,21 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $finalArray[$finalArrayKey] = $finalArrayItem;
         }
         return $finalArray;
+    }
+
+    /**
+     * This function remove all TS configuration for fields not in plugin.
+     *
+     * @param    $arrayToElaborate        the array to be modified
+     * @return    array
+     */
+    protected function removeUnusedFields($arrayToElaborate){
+        foreach($arrayToElaborate as $key => $value){
+            if(!isset($this->fieldsData[$key])){
+                unset($arrayToElaborate[$key]);
+            }
+        }
+        return $arrayToElaborate;
     }
 
 
