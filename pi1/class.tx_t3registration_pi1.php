@@ -1248,7 +1248,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->prefixId . '[' . 'authcode' . ']' => $user['user_auth_code']
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
-        $authLink = sprintf('<a href="%s">%s</a>', $this->htmlentities($authLink), $this->htmlentities($this->pi_getLL('deleteLinkConfirmationText')));
+        $deleteLinkParams = ($this->conf['email.']['delete.']['linkParams'])?$this->conf['email.']['delete.']['linkParams']:'';
+        $authLink = sprintf('<a href="%s" %s>%s</a>', urlencode($authLink), $deleteLinkParams, $this->htmlentities($this->pi_getLL('deleteLinkConfirmationText')));
         foreach ($this->fieldsData as $field) {
             $markerArray['###' . strtoupper($field['name']) . '###'] = $this->piVars[$field['name']];
         }
@@ -1309,8 +1310,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
         $deleteLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $deletingArray));
-        $authLink = sprintf('<a href="%s">%s</a>', $this->htmlentities($authLink), $this->htmlentities($this->pi_getLL('confirmLinkConfirmationText')));
-        $deleteLink = sprintf('<a href="%s">%s</a>', $this->htmlentities($deleteLink), $this->htmlentities($this->pi_getLL('deletingLinkConfirmationText')));
+        $confirmationLinkParams = ($this->conf['email.']['confirmation.']['linkParams'])?$this->conf['email.']['confirmation.']['linkParams']:'';
+        $deleteLinkParams = ($this->conf['email.']['confirmationDelete.']['linkParams'])?$this->conf['email.']['confirmationDelete.']['linkParams']:'';
+        $authLink = sprintf('<a href="%s" %s>%s</a>', urlencode($authLink), $confirmationLinkParams,$this->htmlentities($this->pi_getLL('confirmLinkConfirmationText')));
+        $deleteLink = sprintf('<a href="%s" %s>%s</a>', urlencode($deleteLink), $deleteLinkParams, $this->htmlentities($this->pi_getLL('deletingLinkConfirmationText')));
         if (is_array($this->fieldsData) && count($this->fieldsData)) {
             foreach ($this->fieldsData as $field) {
                 $markerArray['###' . strtoupper($field['name']) . '###'] = $this->piVars[$field['name']];
@@ -1354,7 +1357,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->prefixId . '[' . 'authcode' . ']' => $user['admin_auth_code']
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
-        $authLink = sprintf('<a href="%s">%s</a>', $this->htmlentities($authLink), $this->htmlentities($this->pi_getLL('authorizationLinkConfirmationText')));
+        $confirmationLinkParams = ($this->conf['email.']['confirmationModerator.']['linkParams'])?$this->conf['email.']['confirmationModerator.']['linkParams']:'';
+        $authLink = sprintf('<a href="%s" %s>%s</a>', urlencode($authLink), $confirmationLinkParams, $this->htmlentities($this->pi_getLL('authorizationLinkConfirmationText')));
         foreach ($this->fieldsData as $field) {
             $markerArray['###' . strtoupper($field['name']) . '###'] = $this->piVars[$field['name']];
         }
