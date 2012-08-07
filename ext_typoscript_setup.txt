@@ -1,14 +1,18 @@
 plugin.tx_t3registration_pi1{
     #Template
     templateFile = {$plugin.tx_t3registration_pi1.templateFile}
+    #if you set t3registration use another subpart for change profile (###T3REGISTRATION_FORM_UPDATEPROFILE### and ###T3REGISTRATION_PREVIEW_UPDATEPROFILE###)
     useAnotherTemplateInChangeProfileMode = 0
-
+    #preview screen will be shown after user registration and before confirmation
     enablePreview = {$plugin.tx_t3registration_pi1.enablePreview}
+    #t3registration generates password for user
     passwordGeneration = 0
+    #folder where users will be saved
     userFolder = 0
 
     #save as disable the user before he confirm registration
     disabledBeforeConfirmation = {$plugin.tx_t3registration_pi1.disabledBeforeConfirmation}
+    #after user confirmation he will be autologged (it works if salted password is not loaded
     autoLoginAfterConfirmation = 0
     #if user have already confirmed before admin (if enabled) email will be sent to user after admin authorization
     sendUserEmailAfterAuthorization = 0
@@ -21,12 +25,19 @@ plugin.tx_t3registration_pi1{
 
     #errors management
     errors{
+        #string used in case of error for marker ###CLASS_ERROR### (ex: class="formError")
         classError =
+        #if it is set each field of form will show the specific error description for each evaluation rule
         singleErrorEvaluate = 0
+        #used as wrap for error description when specific error wrap (fieldConfiguration.fieldname.errorWrap) is not defined
         standardErrorStdWrap.wrap = |
+        #if a user click in confirmation link but link doesn't work error description will be wrapped with this
         confirmedErrorWrap.wrap = |
+        #if error will be found and you want show them into a global error list and not in single field position you can set to 1 (use marker ERROR_DESCRIPTION_FULL_BLOCK)
         showFullList = 0
+        #wrapper for each single field
         fullErrorWrap.singleErrorWrap.wrap = <li>|</li>
+        #wrapper for the full list
         fullErrorWrap.allWrap.wrap = <ul>|</ul>
     }
 
@@ -40,6 +51,7 @@ plugin.tx_t3registration_pi1{
         }
     }
 
+    #if you set to 0 t3registration will not include jQuery (if it was not loaded) or javascript to remove image from profile
     javascriptsInclusion{
         jquery = 1
         imageRemove = 1
@@ -51,38 +63,63 @@ plugin.tx_t3registration_pi1{
         hideInPreviewIfEmpty = 1
         #show RESEND_CONFIRMATION_CODE_BLOCK marker
         resendConfirmationCode = 0
+        #if of form
         id =
+
+        #if you set it all ids of html tag of field will be removed
         disableAllAutoId = 0
+
+        #define submit button (in registration) properties
         submitButton{
             imageSubmit = 0
             imagesrc =
             params =
             stdWrap.wrap = |
         }
+        #define back button (in preview) properties
         submitBack  < form.submitButton
+        #define submit button (in preview) properties
         submitConfirm < form.submitButton
 
-        standardFieldId =
+        #if it's set t3registration create the id for radio in teh form of: (form.standardFieldId.pre) + fieldname + '_' + valueofitem
+        standardFieldId = 0
+        #name to prepend
         standardFieldId.pre =
+        #params for input (check, sleect, radio, etc...) (ex: class="thisClass" id="thisId")
         standardFieldExtra =
+        #standard wrap for field
         standardLabelWrap.wrap = |
+    }
+
+    email{
+        #link params for confirmation moderator link (ex: class="thisClass" id="thisId")
+        confirmationModerator.linkParams =
+        #link params for delete link (ex: class="thisClass" id="thisId")
+        delete.linkParams =
+        #link params for confirmation link (ex: class="thisClass" id="thisId")
+        confirmation.linkParams =
+        #link params for confirmation deleting link (ex: class="thisClass" id="thisId")
+        confirmationDelete.linkParams =
     }
 
 
     #no approval process
     approvalProcess = 0
 
-    #email
+    #format of email, it can be: html or text or both comma separated
     contactEmailMode = html
+    #email of sender
     emailFrom = {$plugin.tx_t3registration_pi1.emailFrom}
+    #Name of sender
     emailFromName = {$plugin.tx_t3registration_pi1.emailFromName}
 
+    #field uses as username (default is username)
     usernameField = {$plugin.tx_t3registration_pi1.usernameField}
 
-    #test template
+    #test template with user data to test and wrong data
     testXMLFile = EXT:t3registration/user.xml
 
-    #password twice configuration
+    #password twice configuration (if you set to 0 t3registration will not use twice password)
     extra.passwordTwice = 1
 
     #Password Twice field name
@@ -91,5 +128,6 @@ plugin.tx_t3registration_pi1{
     #password twice label locallang name
     extra.passwordTwiceFieldLabel = passwordtwiceLabel
 
+    #if you set to 1 salted password will not be used (not recommended)
     extra.disabledSaltedPassword = 0
 }
