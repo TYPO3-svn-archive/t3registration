@@ -26,7 +26,9 @@ class tx_t3registration_tcaexternalfunctions{
     }
 
     public function getItemsProcFunc($field,$items = array()){
-        $items = $this->procItems($items,array(),$field['config'],'fe_users',array(),$field['name']);
+        if (isset($field['config']['itemsProcFunc'])) {
+            $items = $this->procItems($items,array(),$field['config'],'fe_users',array(),$field['name']);
+        }
         return $items;
     }
 

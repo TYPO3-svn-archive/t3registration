@@ -227,7 +227,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     public function main($content, $conf) {
         try {
-            $GLOBALS['TSFE']->additionalHeaderData['t3registrationJQuery'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/initialize.js"></script>';
+            if($this->conf['javascriptsInclusion.']['jquery']){
+                $GLOBALS['TSFE']->additionalHeaderData['t3registrationJQuery'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/initialize.js"></script>';
+            }
             $this->conf = $conf;
 
             //set errorLevel
@@ -832,7 +834,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
         if ($value) {
             $hiddenValue = 'value="' . $value . '"';
             $classRef = 'class="t3registration_pi1_ref_' . $field['name'] . '_' . $counter . '"';
-            $GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/registration.js"></script>';
+            if($this->conf['javascriptsInclusion.']['imageRemove']){
+                $GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/registration.js"></script>';
+            }
             $fieldArray = (isset($this->conf[$field['name'] . '.']) && is_array($this->conf[$field['name'] . '.'])) ? $this->conf[$field['name'] . '.'] : array();
             $fieldArray['file'] = $field['config']['uploadfolder'] . '/' . $value;
             $fieldArray['params'] = $classRef;

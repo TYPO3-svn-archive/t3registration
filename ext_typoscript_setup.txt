@@ -40,6 +40,11 @@ plugin.tx_t3registration_pi1{
         }
     }
 
+    javascriptsInclusion{
+        jquery = 1
+        imageRemove = 1
+    }
+
     #form
     form{
         #if enable, the label for empty field value will be hidden
