@@ -115,7 +115,7 @@ class tx_t3registration_hooks {
      */
     public function saltedPassword(&$params, $pObj) {
 
-        if (!$pObj->conf['extra.']['disabledSaltedPassword']) {
+        if (!$pObj->conf['extra.']['disabledSaltedPassword'] && isset($params['user']['password']) && strlen($params['user']['password'])) {
             $password = $params['user']['password']; // plain-text password
             if (t3lib_extMgm::isLoaded('saltedpasswords')) {
                 if (tx_saltedpasswords_div::isUsageEnabled('FE')) {

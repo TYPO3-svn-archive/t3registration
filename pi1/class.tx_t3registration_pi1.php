@@ -722,7 +722,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 break;
             case 'select':
                 $tca = new tx_t3registration_tcaexternalfunctions();
-                $items = $tca->getForeignTableData($field);
+                $items = $tca->getForeignTableData($field,$field['config']['items']);
+                $items = $tca->getItemsProcFunc($field,$items);
                 $id = $this->getIdForField($field);
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
                 $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
@@ -735,10 +736,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $htmlBlock = sprintf('<select %s name="%s" %s>%s</select>', $id, $this->prefixId . '[' . $field['name'] . ']', $extra, implode(chr(10), $options));
                 break;
             case 'radio':
+                $tca = new tx_t3registration_tcaexternalfunctions();
+                $items = $tca->getForeignTableData($field,$field['config']['items']);
+                $items = $tca->getItemsProcFunc($field,$items);
                 $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $options = array();
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
-                foreach ($field['config']['items'] as $item) {
+                foreach ($items as $item) {
                     $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
                     $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '_' . $item[1] . '" ' : (($this->conf['form.']['standardFieldId']) ? ' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '_' . $item[1] . '" ' : '');
                     $value = (isset($item[1])) ? $item[1] : '';
