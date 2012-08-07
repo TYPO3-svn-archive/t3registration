@@ -1065,7 +1065,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 return $this->checkLength($value, $field);
                 break;
             case 'unique':
-                return $this->checkUniqueField($value, $field);
+                if($value){
+                    return $this->checkUniqueField($value, $field);
+                }
+                else{
+                    return true;
+                }
                 break;
             case 'required':
                 if (strlen($this->piVars[$field['name']]) > 0 || (is_array($this->piVars[$field['name']]) && count($this->piVars[$field['name']]) > 0)) {
@@ -1075,7 +1080,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 }
                 break;
             case 'uniqueInPid':
-                return $this->checkUniqueField($value, $field, $this->conf['userFolder']);
+                if($value){
+                    return $this->checkUniqueField($value, $field, $this->conf['userFolder']);
+                }
+                else{
+                    return true;
+                }
                 break;
             case 'file':
                 $fileFields[$field['name']] = $this->piVars[$field['name']];
