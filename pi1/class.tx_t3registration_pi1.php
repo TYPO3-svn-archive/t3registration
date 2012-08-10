@@ -134,7 +134,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * contains fields will be override from ts
      * @var array
      */
-    private $flexformOverrideTs = array('testXMLFile', 'useAnotherTemplateInChangeProfileMode', 'contactEmailMode', 'approvalProcess', 'userFolder', 'templateFile', 'autoLoginAfterConfirmation', 'emailFrom', 'emailFromName', 'emailAdmin');
+    private $flexformOverrideTs = array('testXMLFile', 'useAnotherTemplateInChangeProfileMode', 'contactEmailMode', 'approvalProcess', 'userFolder', 'templateFile', 'autoLoginAfterConfirmation', 'emailFrom', 'emailFromName', 'emailAdmin', 'stepToTest', 'enableTemplateTest', 'confirmationPage', 'preUsergroup', 'postUsergroup', 'passwordGeneration');
 
     /**
      * Contains fields with its configuration to rendering form fields
@@ -227,7 +227,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     public function main($content, $conf) {
         try {
-            if($this->conf['javascriptsInclusion.']['jquery']){
+            if ($this->conf['javascriptsInclusion.']['jquery']) {
                 $GLOBALS['TSFE']->additionalHeaderData['t3registrationJQuery'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/initialize.js"></script>';
             }
             $this->conf = $conf;
@@ -260,9 +260,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     $params = array('fields' => $this->fieldsData, 'data' => $this->piVars, 'content' => $content);
                     $exitFromPlugin = t3lib_div::callUserFunction($fieldFunction, $params, $this);
                     $this->piVars = $params['data'];
-                    if($exitFromPlugin === true && isset($this->conf['exitBeforeActionInitHook']) && $this->conf['exitBeforeActionInitHook'] == $fieldFunction){
+                    if ($exitFromPlugin === true && isset($this->conf['exitBeforeActionInitHook']) && $this->conf['exitBeforeActionInitHook'] == $fieldFunction) {
                         $content = $params['content'];
-                        return (isset($this->conf['noWrapPlugin']) && $this->conf['noWrapPlugin'] == 1)?$this->pi_wrapInBaseClass($content):$content;
+                        return (isset($this->conf['noWrapPlugin']) && $this->conf['noWrapPlugin'] == 1) ? $this->pi_wrapInBaseClass($content) : $content;
                     }
                 }
             }
@@ -310,10 +310,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     default:
                         if ($this->externalAction['active']) {
                             //operation from url
-                            if($this->externalAction['location'] == 'local'){
+                            if ($this->externalAction['location'] == 'local') {
                                 $content = $this->{$this->externalAction['type']}();
-                            }
-                            else {
+                            } else {
                                 $params = array('data' => $this->piVars);
                                 $content = t3lib_div::callUserFunction($this->externalAction['type'], $params, $this);
                             }
@@ -549,19 +548,18 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $markerArray['###RESEND_CONFIRMATION_CODE_BLOCK###'] = '';
             }
             $markerArray['###DELETE_BLOCK###'] = ($GLOBALS['TSFE']->loginUser) ? $this->showDeleteLink() : '';
-            if(count($this->fullErrorsList) && $this->conf['errors.']['showFullList']){
+            if (count($this->fullErrorsList) && $this->conf['errors.']['showFullList']) {
                 $contentErrorsListTemplate = $this->cObj->getSubpart($content, 'ERROR_DESCRIPTION_FULL_BLOCK');
                 $contentErrorsList = '';
-                foreach($this->fullErrorsList as $key => $item){
+                foreach ($this->fullErrorsList as $key => $item) {
                     $fullErrorsMarkerArray['###NAME###'] = ($this->pi_getLL($key . 'Label')) ? $this->pi_getLL($key . 'Label') : ((isset($this->fieldsData[$key]['label'])) ? $this->languageObj->sL($this->fieldsData[$key]['label'], true) : '');
-                    $fullErrorsMarkerArray['###ERRORS###'] = implode('',$item);
+                    $fullErrorsMarkerArray['###ERRORS###'] = implode('', $item);
                     $fullErrorsMarkerArray['###DESCRIPTION###'] = $this->cObj->substituteMarkerArray($this->pi_getLL('fullErrorBlockDescriptionString'), $fullErrorsMarkerArray);
                     $contentErrorsList .= $this->cObj->substituteMarkerArrayCached($contentErrorsListTemplate, $fullErrorsMarkerArray);
                 }
 
-                $contentArray['###ERROR_DESCRIPTION_FULL_BLOCK###'] = $this->cObj->stdWrap($contentErrorsList,$this->conf['errors.']['fullErrorWrap.']['allWrap.']);
-            }
-            else{
+                $contentArray['###ERROR_DESCRIPTION_FULL_BLOCK###'] = $this->cObj->stdWrap($contentErrorsList, $this->conf['errors.']['fullErrorWrap.']['allWrap.']);
+            } else {
                 $contentArray['###ERROR_DESCRIPTION_FULL_BLOCK###'] = '';
             }
             $hiddenArray['action'] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->prefixId . '[submitted]', '1');
@@ -590,7 +588,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return    string        the html code
      */
     public function getAndReplaceSubpart($field, $content) {
-        $fieldMarkerArray = array();
         $fieldContent = $this->cObj->getSubpart($content, '###' . strtoupper($field['name']) . '_FIELD###');
         if (($this->piVars['submitted'] || ($this->piVars['sendConfirmation'] && isset($this->piVars['confirmPreview']))) && !$this->errorArray['error'][$field['name']]) {
             $fieldArray['subparts']['###ERROR_FIELD###'] = $this->getErrorSubpart($field, $fieldContent);
@@ -599,14 +596,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $fieldArray['subparts']['###ERROR_FIELD###'] = '';
             $fieldArray['markers']['###CLASS_ERROR###'] = '';
         }
-        if ($field['type'] == 'databaseField') {
+        if ($field['type'] == 'databaseField' || ($field['type'] == 'freeField' && isset($field['config']['type']))) {
             $fieldArray['markers']['###AUTO_FIELD###'] = $this->getAutoField($field);
         }
         $fieldArray['markers']['###FIELD_LABEL###'] = ($this->pi_getLL($field['name'] . 'Label')) ? $this->pi_getLL($field['name'] . 'Label') : ((isset($field['label'])) ? $this->languageObj->sL($field['label'], true) : '');
         $fieldArray['markers']['###FIELD_LABEL###'] = $this->cObj->stdWrap($fieldArray['markers']['###FIELD_LABEL###'], $this->conf['form.']['standardLabelWrap.']);
         $fieldArray['markers']['###FIELD_VALUE###'] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
         $fieldArray['markers']['###FIELD_NAME###'] = $this->prefixId . '[' . $field['name'] . ']';
-        $fieldArray['markers']['###FIELD_NAME_ID###'] = $this->getIdForField($field,true);
+        $fieldArray['markers']['###FIELD_NAME_ID###'] = $this->getIdForField($field, true);
         //the first call is used to substitute subpart, the second one substitute error class markers on all template
         $fieldContent = $this->cObj->substituteMarkerArrayCached($fieldContent, $fieldArray['markers'], $fieldArray['subparts']);
         return $this->cObj->substituteMarkerArrayCached($fieldContent, $fieldArray['markers'], $fieldArray['subparts']);
@@ -625,13 +622,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = '';
             $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = '';
         } else {
-            $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || (strlen($this->piVars[$field['name']]) == 0) && (isset($this->conf['form.']['hideInPreviewIfEmpty']) && $this->conf['form.']['hideInPreviewIfEmpty'] == 1)) ? '' : (($this->pi_getLL($field['name'] . 'Label')) ? $this->pi_getLL($field['name'] . 'Label') : ((isset($field['label'])) ? $this->languageObj->sL($field['label'], true) : ''));
+            $contentArray['###' . strtoupper($field['name']) . '_LABEL###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || (strlen($this->piVars[$field['name']]) == 0) && (isset($this->conf['form.']['hideInPreviewIfEmpty']) && $this->conf['form.']['hideInPreviewIfEmpty'] == 1)) ? '' : (($this->pi_getLL($field['name'] . 'Label')) ? $this->cObj->stdWrap($this->$this->pi_getLL($field['name'] . 'Label'), $this->conf['form.']['standardPreviewLabelWrap.']) : ((isset($field['label'])) ? $this->cObj->stdWrap($this->languageObj->sL($field['label'], true), $this->conf['form.']['standardPreviewLabelWrap.']) : ''));
             switch ($field['config']['type']) {
                 case 'input':
                 case 'text':
                     $this->piVars[$field['name']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->piVars[$field['name']];
                     //call $this->htmlentities to remove xss scripting side
-                    $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : (($field['noHTMLEntities']) ? $this->piVars[$field['name']] : $this->htmlentities($this->piVars[$field['name']]));
+                    $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : (($field['noHTMLEntities']) ? $this->cObj->stdWrap($this->piVars[$field['name']], $this->conf['form.']['standardPreviewFieldWrap.']) : $this->cObj->stdWrap($this->htmlentities($this->piVars[$field['name']]), $this->conf['form.']['standardPreviewFieldWrap.']));
                     break;
                 case 'group':
                     if (isset($field['config']['internal_type']) && $field['config']['internal_type'] === 'file') {
@@ -653,7 +650,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                         $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
                         $value = (isset($item[1])) ? $item[1] : '';
                         if ($this->piVars[$field['name']] == $value) {
-                            $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : $text;
+                            $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || strlen($this->piVars[$field['name']]) == 0) ? '' : $this->cObj->stdWrap($text, $this->conf['form.']['standardPreviewFieldWrap.']);
                         }
                     }
                     break;
@@ -664,9 +661,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
                                 $values[] = (isset($field['config']['items'][$counter][0])) ? (preg_match('/LLL:EXT:/', $field['config']['items'][$counter][0]) ? $this->languageObj->sl($field['config']['items'][$counter][0]) : $field['config']['items'][$counter][0]) : '';
                             }
                         }
-                        $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || count($this->piVars[$field['name']]) == 0) ? '' : implode(',', $values);
+                        $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (($field['hideInChangeProfile'] == 1 && $GLOBALS['TSFE']->loginUser) || count($this->piVars[$field['name']]) == 0) ? '' : $this->cObj->stdWrap(implode(',', $values), $this->conf['form.']['standardPreviewFieldWrap.']);
                     } else {
                         if (isset($this->piVars[$field['name']]) && $this->piVars[$field['name']] == '1') {
+                            //todo to explain in the manual
                             $contentArray['###' . strtoupper($field['name']) . '_VALUE###'] = (isset($field['config']['text'])) ? ((preg_match('/LLL:EXT:/', $field['config']['text']) ? $this->cObj->stdWrap($this->languageObj->sl($field['config']['text']), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']) : $this->cObj->stdWrap($field['config']['text'], $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']))) : '';
                         }
                     }
@@ -693,16 +691,17 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     protected function getAutoField($field) {
         $htmlBlock = '';
-         switch ($field['config']['type']) {
+        switch ($field['config']['type']) {
             case 'input':
                 $type = (isset($field['config']['eval']) && t3lib_div::inList($field['config']['eval'], 'password')) ? 'password' : 'text';
                 $size = ($field['config']['size']) ? $field['config']['size'] : '15';
                 //@todo adds id and class into manual
                 $id = $this->getIdForField($field);
-                $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : $autoId);
+                $title = $this->pi_getLL($field['name'] . 'Title') ? 'title="' . $this->pi_getLL($field['name'] . 'Title') . '"' : '';
+                $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
                 $maxchar = ($field['config']['maxchar']) ? ' maxchar="' . $field['config']['maxchar'] . '" ' : '';
                 $value = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
-                $htmlBlock = sprintf('<input type="%s" %s name="%s" value="%s" size="%s" %s %s/>', $type, $id, $this->prefixId . '[' . $field['name'] . ']', $value, $size, $maxchar, $extra);
+                $htmlBlock = $this->cObj->stdWrap(sprintf('<input type="%s" %s name="%s" value="%s" size="%s" %s %s %s/>', $type, $id, $this->prefixId . '[' . $field['name'] . ']', $value, $size, $maxchar, $extra, $title), $this->conf['form.']['standardFieldWrap.']);
                 break;
             case 'text':
                 $cols = ($field['config']['cols']) ? $field['config']['cols'] : '40';
@@ -710,7 +709,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $id = $this->getIdForField($field);
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
                 $value = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
-                $htmlBlock = sprintf('<textarea %s name="%s" cols="%s"  rows="%s" %s>%s</textarea>', $id, $this->prefixId . '[' . $field['name'] . ']', $cols, $rows, $extra, $value);
+                $htmlBlock = $this->cObj->stdWrap(sprintf('<textarea %s name="%s" cols="%s"  rows="%s" %s>%s</textarea>', $id, $this->prefixId . '[' . $field['name'] . ']', $cols, $rows, $extra, $value), $this->conf['form.']['standardFieldWrap.']);
                 break;
             case 'group':
                 if (isset($field['config']['internal_type']) && $field['config']['internal_type'] === 'file') {
@@ -724,8 +723,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 break;
             case 'select':
                 $tca = new tx_t3registration_tcaexternalfunctions();
-                $items = $tca->getForeignTableData($field,$field['config']['items']);
-                $items = $tca->getItemsProcFunc($field,$items);
+                $items = $tca->getForeignTableData($field, $field['config']['items']);
+                $items = $tca->getItemsProcFunc($field, $items);
                 $id = $this->getIdForField($field);
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
                 $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
@@ -735,23 +734,26 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     $selected = ($this->piVars[$field['name']] == $value) ? 'selected' : '';
                     $options[] = sprintf('<option value="%s" %s>%s</option>', $value, $selected, $text);
                 }
-                $htmlBlock = sprintf('<select %s name="%s" %s>%s</select>', $id, $this->prefixId . '[' . $field['name'] . ']', $extra, implode(chr(10), $options));
+                $htmlBlock = $this->cObj->stdWrap(sprintf('<select %s name="%s" %s>%s</select>', $id, $this->prefixId . '[' . $field['name'] . ']', $extra, implode(chr(10), $options)), $this->conf['form.']['standardFieldWrap.']);
                 break;
             case 'radio':
                 $tca = new tx_t3registration_tcaexternalfunctions();
-                $items = $tca->getForeignTableData($field,$field['config']['items']);
-                $items = $tca->getItemsProcFunc($field,$items);
+                $items = $tca->getForeignTableData($field, $field['config']['items']);
+                $items = $tca->getItemsProcFunc($field, $items);
                 $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                 $options = array();
                 $extra = ($field['config']['extra']) ? $field['config']['extra'] : (($this->conf['form.']['standardFieldExtra']) ? $this->conf['form.']['standardFieldExtra'] : '');
+                $counter = 0;
                 foreach ($items as $item) {
+                    $counter++;
                     $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
-                    $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '_' . $item[1] . '" ' : (($this->conf['form.']['standardFieldId']) ? ' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '_' . $item[1] . '" ' : '');
+                    $reference = ($field['usingCounterAsId'] || $this->conf['form.']['usingCounterAsIdAll']) ? $counter : str_replace(' ', '_', (($item[1]) ? $item[1] : 'empty'));
+                    $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '_' . $reference . '" ' : (($this->conf['form.']['standardFieldId']) ? ' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '_' . $reference . '" ' : '');
                     $value = (isset($item[1])) ? $item[1] : '';
                     $selected = ($this->piVars[$field['name']] == $value) ? 'checked' : '';
                     $options[] = $this->cObj->stdWrap(sprintf('<input type="radio" name="%s" value="%s" %s %s %s>%s', $this->prefixId . '[' . $field['name'] . ']', $value, $id, $selected, $extra, $text), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['stdWrap.']);
                 }
-                $htmlBlock = implode(chr(10), $options);
+                $htmlBlock = $this->cObj->stdWrap(implode(chr(10), $options), $this->conf['form.']['standardFieldWrap.']);
                 break;
             case 'check':
                 if (isset($field['config']['items']) && is_array($field['config']['items'])) {
@@ -778,7 +780,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                         $selected = (isset($this->piVars[$field['name']][$key]) && $this->piVars[$field['name']][$key] == '1') ? 'checked="checked"' : '';
                         $options[] = $this->cObj->stdWrap(sprintf('<input type="checkbox" name="%s" value="%s" %s %s>%s', $this->prefixId . '[' . $field['name'] . '][' . $key . ']', $value, $selected, $extra, $text), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['stdWrap.']);
                     }
-                    $htmlBlock = implode(chr(10), $options);
+                    $htmlBlock = $this->cObj->stdWrap(implode(chr(10), $options), $this->conf['form.']['standardFieldWrap.']);
                 } else {
                     $this->piVars[$field['name']] = (isset($this->piVars[$field['name']])) ? $this->piVars[$field['name']] : (($field['config']['default']) ? $field['config']['default'] : '');
                     $text = (preg_match('/LLL:EXT:/', $field['config']['text']) ? $this->cObj->stdWrap($this->languageObj->sl($field['config']['text']), $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']) : $this->cObj->stdWrap($field['config']['text'], $this->conf['fieldConfiguration.'][$field['name'] . '.']['config.']['text.']['stdWrap.']));
@@ -799,20 +801,18 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
 
-
-
     /**
      * This function elaborates configuration to create an Id for Field
      * @param array $field field configuration
-     * @param bool $onlyIdValue
+     * @param bool  $onlyIdValue
      * @return string id
      */
-    protected function getIdForField($field,$onlyIdValue = false) {
+    protected function getIdForField($field, $onlyIdValue = false) {
         if (!(isset($this->conf['fieldConfiguration.'][$field['name'] . '.']['disableAutoId']) && $this->conf['fieldConfiguration.'][$field['name'] . '.']['disableAutoId'] == 1) && !$this->conf['form.']['disableAllAutoId']) {
             $idWrapper = ($this->conf['fieldConfiguration.'][$field['name'] . '.']['idFieldWrap.']) ? $this->conf['fieldConfiguration.'][$field['name'] . '.']['idFieldWrap.'] : (($this->conf['form.']['idFormWrap.']) ? $this->conf['form.']['idFormWrap.'] : array());
             $autoId = $this->cObj->stdWrap($field['name'], $idWrapper);
-            $id = ($field['config']['id']) ?$field['config']['id'] : (($this->conf['form.']['standardFieldId']) ?  $this->conf['form.']['standardFieldId.']['pre'] . $field['name']  :  $autoId);
-            return (!$onlyIdValue)? ' id="' . $id . '"': $id;
+            $id = ($field['config']['id']) ? $field['config']['id'] : (($this->conf['form.']['standardFieldId']) ? $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] : $autoId);
+            return (!$onlyIdValue) ? ' id="' . $id . '"' : $id;
         } else {
             return '';
         }
@@ -834,7 +834,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         if ($value) {
             $hiddenValue = 'value="' . $value . '"';
             $classRef = 'class="t3registration_pi1_ref_' . $field['name'] . '_' . $counter . '"';
-            if($this->conf['javascriptsInclusion.']['imageRemove']){
+            if ($this->conf['javascriptsInclusion.']['imageRemove']) {
                 $GLOBALS['TSFE']->additionalHeaderData[$this->extKey] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/registration.js"></script>';
             }
             $fieldArray = (isset($this->conf[$field['name'] . '.']) && is_array($this->conf[$field['name'] . '.'])) ? $this->conf[$field['name'] . '.'] : array();
@@ -1065,10 +1065,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 return $this->checkLength($value, $field);
                 break;
             case 'unique':
-                if($value){
+                if ($value) {
                     return $this->checkUniqueField($value, $field);
-                }
-                else{
+                } else {
                     return true;
                 }
                 break;
@@ -1080,10 +1079,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 }
                 break;
             case 'uniqueInPid':
-                if($value){
+                if ($value) {
                     return $this->checkUniqueField($value, $field, $this->conf['userFolder']);
-                }
-                else{
+                } else {
                     return true;
                 }
                 break;
@@ -1258,7 +1256,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->prefixId . '[' . 'authcode' . ']' => $user['user_auth_code']
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
-        $deleteLinkParams = ($this->conf['email.']['delete.']['linkParams'])?$this->conf['email.']['delete.']['linkParams']:'';
+        $deleteLinkParams = ($this->conf['email.']['delete.']['linkParams']) ? $this->conf['email.']['delete.']['linkParams'] : '';
         $authLink = sprintf('<a href="%s" %s>%s</a>', urlencode($authLink), $deleteLinkParams, $this->htmlentities($this->pi_getLL('deleteLinkConfirmationText')));
         foreach ($this->fieldsData as $field) {
             $markerArray['###' . strtoupper($field['name']) . '###'] = $this->piVars[$field['name']];
@@ -1320,9 +1318,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
         $deleteLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $deletingArray));
-        $confirmationLinkParams = ($this->conf['email.']['confirmation.']['linkParams'])?$this->conf['email.']['confirmation.']['linkParams']:'';
-        $deleteLinkParams = ($this->conf['email.']['confirmationDelete.']['linkParams'])?$this->conf['email.']['confirmationDelete.']['linkParams']:'';
-        $authLink = sprintf('<a href="%s" %s>%s</a>', urlencode($authLink), $confirmationLinkParams,$this->htmlentities($this->pi_getLL('confirmLinkConfirmationText')));
+        $confirmationLinkParams = ($this->conf['email.']['confirmation.']['linkParams']) ? $this->conf['email.']['confirmation.']['linkParams'] : '';
+        $deleteLinkParams = ($this->conf['email.']['confirmationDelete.']['linkParams']) ? $this->conf['email.']['confirmationDelete.']['linkParams'] : '';
+        $authLink = sprintf('<a href="%s" %s>%s</a>', urlencode($authLink), $confirmationLinkParams, $this->htmlentities($this->pi_getLL('confirmLinkConfirmationText')));
         $deleteLink = sprintf('<a href="%s" %s>%s</a>', urlencode($deleteLink), $deleteLinkParams, $this->htmlentities($this->pi_getLL('deletingLinkConfirmationText')));
         if (is_array($this->fieldsData) && count($this->fieldsData)) {
             foreach ($this->fieldsData as $field) {
@@ -1367,7 +1365,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->prefixId . '[' . 'authcode' . ']' => $user['admin_auth_code']
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
-        $confirmationLinkParams = ($this->conf['email.']['confirmationModerator.']['linkParams'])?$this->conf['email.']['confirmationModerator.']['linkParams']:'';
+        $confirmationLinkParams = ($this->conf['email.']['confirmationModerator.']['linkParams']) ? $this->conf['email.']['confirmationModerator.']['linkParams'] : '';
         $authLink = sprintf('<a href="%s" %s>%s</a>', urlencode($authLink), $confirmationLinkParams, $this->htmlentities($this->pi_getLL('authorizationLinkConfirmationText')));
         foreach ($this->fieldsData as $field) {
             $markerArray['###' . strtoupper($field['name']) . '###'] = $this->piVars[$field['name']];
@@ -2149,10 +2147,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $user = $this->setAuthCode();
         $user['usergroup'] = ($this->userAuth || $this->adminAuth) ? $this->conf['preUsergroup'] : $this->conf['postUsergroup'];
         foreach ($this->fieldsData as $field) {
-            if ($field['type'] == 'databaseField' && (!isset($field['noHTMLEntities']) || (isset($field['noHTMLEntities']) && $field['noHTMLEntities'] == 1))) {
-                $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
-            } else {
-                $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->piVars[$field['name']];
+            if ($field['type'] == 'databaseField') {
+                if (!isset($field['noHTMLEntities']) || (isset($field['noHTMLEntities']) && $field['noHTMLEntities'] == 1)) {
+                    $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
+                } else {
+                    $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->piVars[$field['name']];
+                }
             }
         }
         $user['username'] = $this->getUsername();
@@ -2414,9 +2414,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @param    $arrayToElaborate        the array to be modified
      * @return    array
      */
-    protected function removeUnusedFields($arrayToElaborate){
-        foreach($arrayToElaborate as $key => $value){
-            if(!isset($this->fieldsData[$key])){
+    protected function removeUnusedFields($arrayToElaborate) {
+        foreach ($arrayToElaborate as $key => $value) {
+            if (!isset($this->fieldsData[$key])) {
                 unset($arrayToElaborate[$key]);
             }
         }
