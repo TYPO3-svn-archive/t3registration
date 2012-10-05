@@ -2766,6 +2766,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
         return ($correct) ? $this->xmlTestUser['correctUser'] : $this->xmlTestUser['wrongUser'];
     }
 
+    /**
+     * Function to implement getter method for user logged data
+     * @return array user logged data
+     */
+    public function getLoggedUserData(){
+        return $this->feLoggedInUser;
+    }
+
 
 }
 
