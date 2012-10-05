@@ -133,7 +133,7 @@ class tx_t3registration_checkstatus {
         $fields = array_keys($this->fieldsData);
         $subpart = $this->cObj->getSubpart($this->content, 'T3REGISTRATION_FORM');
         if ($subpart) {
-            preg_match_all('/<!--[\t]*###([A-Z_]*)_FIELD###/U', $subpart, $matches, PREG_PATTERN_ORDER);
+            preg_match_all('/<!--[\t]*###([0-9A-Z_]*)_FIELD###/U', $subpart, $matches, PREG_PATTERN_ORDER);
             foreach ($matches[1] as $item) {
                 if (strpos($item, 'ERROR') === false) {
                     if (!in_array($item, $markers)) {
