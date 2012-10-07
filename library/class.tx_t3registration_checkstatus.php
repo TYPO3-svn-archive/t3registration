@@ -153,7 +153,7 @@ class tx_t3registration_checkstatus {
             $diffFields = array_diff(array_keys($this->fieldsData), $markers);
             $diffFieldsText = (count($diffFields)) ? implode('<br />', $diffFields) : $this->parentObject->pi_getLL('noDiff');
             $type = (count($diffFields)) ? 'warning' : 'ok';
-            $this->setMessage($this->parentObject->pi_getLL('markersDiffTitle'), sprintf($this->parentObject->pi_getLL('markersDiffBody'), $diffFieldsText), $type);
+            $this->setMessage($this->parentObject->pi_getLL('fieldsDiffTitle'), sprintf($this->parentObject->pi_getLL('fieldsDiffBody'), $diffFieldsText), $type);
         }
     }
 
