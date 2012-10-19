@@ -6,9 +6,6 @@
     </meta>
     <data type="array">
         <languageKey index="default" type="array">
-            <label index="list_mode_1">Mode 1</label>
-            <label index="list_mode_2">Mode 2</label>
-            <label index="list_mode_3">Mode 3</label>
             <label index="back">Back</label>
             <label index="confirmRegistrationButton">Confirm</label>
             <label index="modifyRegistrationButton">Back</label>
@@ -23,23 +20,30 @@
             <label index="deleteDescriptionText">
                 <![CDATA[If you click in the above link, you can begin the deleting process for your account.<br />This operation is irreversible.]]></label>
             <label index="confirmationText">
-                <![CDATA[Dear ###FIRST_NAME### your confirmation is complete, now you are a user.]]></label>
+                <![CDATA[Dear ###FIRST_NAME### ###LAST_NAME### your confirmation is complete, now you are a user.]]></label>
             <label index="ConfirmedOnRedirectText">
-                <![CDATA[Dear ###FIRST_NAME### you're a memeber of our community.]]></label>
+                <![CDATA[Dear ###FIRST_NAME### ###LAST_NAME### you're a memeber of our community.]]></label>
             <label index="signature">Typo3 Dev Staff</label>
-            <label index="submit_button_label">Click here to submit value</label>
             <label index="deleteImage">Click here to delete the image</label>
             <label index="deleteImageConfirmation">Are you sure to delete the image?</label>
 
 
             <label index="passwordError">Password is not correct</label>
             <label index="passwordPasswordError">Password is not correct</label>
-            <label index="passwordRequiredError">Password is not correct</label>
-            <label index="usernameRequiredError">Unsername field is compulsory</label>
-            <label index="usernameUniqueError">Unsername is not unique</label>
+            <label index="passwordRequiredError">Password is required</label>
+            <label index="usernameRequiredError">Username field is compulsory</label>
+            <label index="usernameUniqueError">Username is not unique</label>
+            <label index="emailError">Email is not correct</label>
             <label index="emailEmailError">Email is not correct</label>
+            <label index="emailRequiredError">Email is required</label>
+            <label index="emailUniqueError">Email is not unique</label>
+            <label index="emailUniqueInPidError">Email is not unique</label>
             <label index="passwordTwiceError">Repeat password correctly</label>
+            <label index="first_nameError">First name is not correct</label>
             <label index="first_nameRequiredError">First name is required</label>
+            <label index="last_nameError">Surname is not correct</label>
+            <label index="last_nameRequiredError">Surname is required</label>
+
 
             <label index="fullErrorBlockDescriptionString">Field ###NAME### has errors:</label>
 
@@ -100,7 +104,7 @@
 
 
             <label index="finalRegistrationSignature">T3Registration Staff</label>
-            <label index="finalRegistrationText">Dear ###FIRST_NAME### in a short time you will receive at your email address:
+            <label index="finalRegistrationText">Dear ###FIRST_NAME### ###LAST_NAME### in a short time you will receive at your email address:
                 ###EMAIL### a request to confirm your subscription.
             </label>
 
@@ -152,7 +156,7 @@
 
             <!-- username error -->
             <label index="usernameIsNotCorrect">Username is not correctly configured. You have to defined in eval field:
-                required and unique
+                required and unique (or uniqueInPid)
             </label>
             <label index="usernameConfigurationError">Username not properly configured</label>
             <label index="usernameIsNotDefined">Username is not defined or usernameField is empty</label>
@@ -187,8 +191,8 @@
             <label index="passwordtwiceLabel">Passwort wiederholen:</label>
             <label index="deleteLinkText">Profil löschen</label>
             <label index="deleteDescriptionText"><![CDATA[Wenn Sie den Link oben anklicken, löschen Sie Ihr Profil.<br />Die Löschung kann nicht rückgängig gemacht werden.]]></label>
-            <label index="confirmationText"><![CDATA[Lieber ###FIRST_NAME###,<br /><br />Ihre Registrierung ist nun abgeschlossen.]]></label>
-            <label index="ConfirmedOnRedirectText"><![CDATA[Lieber ###FIRST_NAME###,<br /><br />Sie sind nun registriert.]]></label>
+            <label index="confirmationText"><![CDATA[Lieber ###FIRST_NAME### ###LAST_NAME###,<br /><br />Ihre Registrierung ist nun abgeschlossen.]]></label>
+            <label index="ConfirmedOnRedirectText"><![CDATA[Lieber ###FIRST_NAME### ###LAST_NAME###,<br /><br />Sie sind nun registriert.]]></label>
             <label index="signature">TYPO3 Dev Staff</label>
             <label index="deleteImage">Bild löschen</label>
             <label index="deleteImageConfirmation">Möchten Sie Ihr Profil-Bild  wirklich löschen?</label>
@@ -285,6 +289,157 @@
             <label index="testWarningTitle">Template Test Design</label>
             <label index="testWarningMessage">Warnung: Der Abschnitt unten ist nur eine Vorschau und hat keine Funktionalität.</label>
             <label index="testMailTitle">Test E-Mail gesendet</label>
+        </languageKey>
+        <languageKey index="it" type="array">
+            <label index="back">Indietro</label>
+            <label index="confirmRegistrationButton">Confirma</label>
+            <label index="modifyRegistrationButton">Indietro</label>
+            <label index="insertRegistrationButton">Invia</label>
+            <label index="confirmModificationProfileButton">Aggiorna</label>
+            <label index="modifyModificationProfileButton">Indietro</label>
+            <label index="insertModificationProfileButton">Aggiorna i dati</label>
+
+            <label index="passwordtwiceLabel">Ripeti la password</label>
+
+            <label index="deleteLinkText">Cancella il tuo profilo</label>
+            <label index="deleteDescriptionText">
+                <![CDATA[Gentile utente se clicchi sul link procedi alla cancellazione del tuo profilo.<br />Questa operazione è irreversibile.]]></label>
+            <label index="confirmationText">
+                <![CDATA[Gentile ###FIRST_NAME### ###LAST_NAME### hai completato la procedura di registrazione. Benvenuto]]></label>
+            <label index="ConfirmedOnRedirectText">
+                <![CDATA[Gentile ###FIRST_NAME### ###LAST_NAME### benvenuto nella nostra community.]]></label>
+            <label index="signature">Typo3 Dev Staff</label>
+            <label index="deleteImage">Cancella l'immagine</label>
+            <label index="deleteImageConfirmation">Sei sicuro di voler procedere?</label>
+
+
+            <label index="passwordError">La password non è corretta</label>
+            <label index="passwordPasswordError">La password non è corretta</label>
+            <label index="passwordRequiredError">La password è obbligatoria</label>
+            <label index="usernameRequiredError">La username è obbligatoria</label>
+            <label index="usernameUniqueError">Esiste già una username con questi dati</label>
+            <label index="emailError">L'email non è corretta</label>
+            <label index="emailEmailError">L'email non è corretta</label>
+            <label index="emailRequiredError">L'email è obbligatoria</label>
+            <label index="emailUniqueError">L'email non è unica</label>
+            <label index="emailUniqueInPidError">L'email non è unica</label>
+            <label index="passwordTwiceError">Ripetere la password correttamente</label>
+            <label index="first_nameError">Il nome non è corretto</label>
+            <label index="first_nameRequiredError">Il nome è obbligatorio</label>
+            <label index="last_nameError">Il cognome non è corretto</label>
+            <label index="last_nameRequiredError">Il cognome è obbligatorio</label>
+
+
+            <label index="fullErrorBlockDescriptionString">Il campo ###NAME### non è corretto:</label>
+
+
+            <label index="templateFoundTitle">Verifiche sul template</label>
+            <label index="templateSubpartFoundTitle"><![CDATA[Ricerca della sottoparte <i>%s</i> nel template]]></label>
+            <label index="templateFound"><![CDATA[Il template <i>%s</i> è stato trovato]]></label>
+            <label index="templateNotFound"><![CDATA[Il template <i>%s</i> non è stato trovato]]></label>
+            <label index="templateSubpartFound">Sottoparte trovata</label>
+            <label index="templateSubpartNotFound">Sottoparte non trovata</label>
+
+
+            <label index="fieldsTitle">Campi di backend</label>
+            <label index="fieldsBody">%s</label>
+            <label index="markersTitle">Marcatori nel template</label>
+            <label index="markersBody">%s</label>
+            <label index="markersDiffTitle">Questi campi sono presenti nel template ma mancano nella configurazione</label>
+            <label index="markersDiffBody">%s</label>
+            <label index="fieldsDiffTitle">Questi campi sono presenti nella configurazione (typoscript o flexform) ma mancano nel template</label>
+            <label index="fieldsDiffBody">%s</label>
+            <label index="noDiff">Nessuna differenza.</label>
+
+            <label index="fieldsEvaluationTitle">Regole di validazione</label>
+            <label index="fieldsEvaluation">%s: %s.</label>
+            <label index="fieldsEvaluationBody">%s</label>
+
+
+            <label index="preUserGroup">Gruppi a cui l'utente è assegnato prima della conferma: %s.</label>
+            <label index="postUserGroup">Gruppi a cui l'utente è assegnato dopo la conferma: %s.</label>
+            <label index="autoLoginAfterConfirmation">L'utente viene rediretto automaticamente dopo la conferma</label>
+            <label index="authMethod">Metodi di conferma: %s</label>
+            <label index="adminApproval">Metodi di autorizzazione</label>
+            <label index="doubleOptin">L'utente deve confermare la propria registrazione (double opt-in).</label>
+            <label index="changeProfile">Il template dell'aggiornamento del profilo è separato dalla registrazione</label>
+            <label index="siteUrl">URL del sito: %s</label>
+            <label index="userFolder">Gli utenti saranno salvati nella cartella: %s</label>
+            <label index="generalConfigurationTitle">Configurazione generale</label>
+            <label index="generalConfigurationBody">%s</label>
+            <label index="noGroup">Nessun gruppo</label>
+            <label index="emailAddressCheckTitle">Indirizzo del moderatore</label>
+            <label index="emailAddressCheckBody">L'indirizzo del moderatore sembra corretto</label>
+            <label index="emailAddressCheckErrorBody">L'indirizzo del moderatore è non corretto</label>
+            <label index="emailFromPresentTitle">Indirizzo del mittente</label>
+            <label index="emailFromPresentBody">Indirizzo del mittente trovato</label>
+            <label index="emailFromPresentErrorBody">Indirizzo del mittente non trovato</label>
+            <label index="emailFromNamePresentTitle">Nome del mittente</label>
+            <label index="emailFromNamePresentBody">Nome del mittente trovato</label>
+            <label index="emailFromNamePresentErrorBody">Nome del mittente non trovato</label>
+
+            <label index="textAfterDeleteRequest">gentile utente questa mail è stata inviata al tuo indirizzo ###EMAIL### per confermare la tua cancellazione</label>
+
+
+            <label index="finalRegistrationSignature">T3Registration Staff</label>
+            <label index="finalRegistrationText">Gentile ###FIRST_NAME### ###LAST_NAME### a breve riceverai nella tua email: ###EMAIL### la richiesta per confermare la tua registrazione.</label>
+
+            <label index="confirmationWaitingAuthText">Gentile utente, hai confermato la tua registrazione, attendi ora la conferma dell'amministratore.</label>
+            <label index="confirmationFinalText">
+                <![CDATA[Gentile ###FIRST_NAME### la tua registrazione è ora completa, benvenuto nella nostra community.]]></label>
+            <label index="confirmationAuthorizationText">
+                <![CDATA[Gentile amministratore hai confermato correttamente la registrazione di ###FIRST_NAME### ###LAST_NAME###.]]></label>
+            <label index="confirmationAuthorizationEmailText">
+                <![CDATA[Gentile amministratore conferma la registrazione dell'utenre.<br />Clicca sul seguente link: ]]></label>
+            <label index="deletionConfirmedText">Gentile utente tutti i tuoi dati sono stati rimossi.</label>
+            <label index="confirmationTextHtml">
+                <![CDATA[Gentile utente questa mail ti è stata inviata per confermare la tua registrazione.<br />Se desideri completare il processo clicca sul seguente link. ###CONFIRMATION_LINK###<br /><br />Se hai ricevuto questa mail per errore, clicca sul seguente link per rimuovere i tuoi dati ###DELETING_LINK### ]]></label>
+            <label index="confirmationTextText">Gentile utente questa mail ti è stata inviata per confermare la tua registrazione.</label>
+            <label index="confirmationAfterAuthorizationTextHmtl">Gentile utente sei stato autorizzato ad entrare nella nostra community</label>
+            <label index="confirmationAuthorizationEmailTextHtml">Gentile amministratore questa mail ti è stata inviata per confermare la registrazione di ###FIRST_NAME### ###LAST_NAME###.</label>
+
+            <label index="sendConfirmationCode">Invia nuovamente la mail di conferma</label>
+            <label index="sendConfirmationCodeTextUserNotFound">La tua richiesta non è stata trovata, ti invitiamo a registrarti.</label>
+            <label index="sendConfirmationCodeTextUserFound">Gentile utente ti abbiamo inviato nuovamente la mail di conferma.</label>
+
+
+            <!--MAIL-->
+            <label index="mailToUserSubject">Iscrizione alla community</label>
+            <label index="mailToAdminSubject">Richiesta di autorizzazione per la registrazione.</label>
+            <label index="mailToUserAfterAuthorizationSubject">Conferma di registrazione</label>
+            <label index="mailToUserDeleteSubject">Richiesta di cancellazione</label>
+            <label index="confirmLinkConfirmationText">Conferma la tua registrazione</label>
+            <label index="deletingLinkConfirmationText">Rimuovi la mia richiesta</label>
+            <label index="authorizationLinkConfirmationText">Conferma la tua registrazione</label>
+            <label index="deleteLinkConfirmationText">Conferma la tua cancellazione</label>
+
+            <label index="userMustBeLogged">L'utente deve essere loggato</label>
+            <label index="userNotFound">Utente non trovato</label>
+            <label index="confirmationLinkNotFound">Il link non è valido, controlla di aver copiato correttamente il link.</label>
+
+
+            <!-- username error -->
+            <label index="usernameIsNotCorrect">La username non è configurata correttamente. Ci devono essere le seguenti regole di validazione: required e unique (o uniqueInPid)
+            </label>
+            <label index="usernameConfigurationError">La username non è corretamente configurata</label>
+            <label index="usernameIsNotDefined">La username non è stata definita o il valore usernameField è vuoto</label>
+
+
+            <!-- username error -->
+            <label index="approvalProcessConfigurationError">Il processo di apprivazione non è correttamente configurator</label>
+            <label index="approvalProcessIsNotDefined">L'email non è definita</label>
+
+            <label index="toResendConfirmationEmailText">Clicca per reinviare alla tua casella email la richiesta di conferma</label>
+
+            <label index="testXMLFileNotFoundOrWrong">Il file xml con i dati dell'utente per i test non è stato trovato o non è nel formato corretto</label>
+            <label index="exceptionalError">T3Registration Exception Error</label>
+            <label index="testConfirmationUserEmailSent">L'email di conferma di test è stata inviata a %s</label>
+            <label index="testConfirmationAdminEmailSent">L'email di autorizzazione di test è stata inviata.</label>
+            <label index="testConfirmationUserDeleteSent">L'email di conferma per la cancellazione di test è stata inviata a %s</label>
+            <label index="testWarningTitle">Test del template</label>
+            <label index="testWarningMessage">Attenzione: la pagina sottostante è solo per test  e non funziona in modalità standard.</label>
+            <label index="testMailTitle">Email di test inviata</label>
+
         </languageKey>
     </data>
 </T3locallang>

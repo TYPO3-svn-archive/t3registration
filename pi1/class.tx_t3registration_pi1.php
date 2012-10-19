@@ -2290,6 +2290,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return    void
      */
     protected function insertUser() {
+        $this->postElaborateData();
         if ($this->conf['passwordGeneration'] || !isset($this->piVars['password']) || strlen($this->piVars['password']) == 0) {
             $this->piVars['password'] = substr(md5(time() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 8);
         }
@@ -2431,7 +2432,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->postElaborateData();
             foreach ($this->fieldsData as $field) {
                 if ($field['type'] == 'databaseField' && $field['hideInChangeProfile'] == 0) {
-                    $user[$field['field']] = $this->htmlentities($this->piVars[$field['name']]);
+                    if (!isset($field['noHTMLEntities']) || (isset($field['noHTMLEntities']) && $field['noHTMLEntities'] == 1)) {
+                        $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
+                    } else {
+                        $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->piVars[$field['name']];
+                    }
                 }
             }
             //Inserire hook per aggiornare i campi

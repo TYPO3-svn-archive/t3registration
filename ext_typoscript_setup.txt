@@ -47,7 +47,7 @@ plugin.tx_t3registration_pi1{
         singleErrorEvaluate = 0
         config{
             evalHook = EXT:t3registration/hooks/class.tx_t3registration_hooks.php:tx_t3registration_hooks->checkPasswordTwice
-            eval.add=hook
+            eval.add = hook
         }
     }
 
