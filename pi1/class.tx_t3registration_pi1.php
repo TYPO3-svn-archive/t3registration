@@ -2299,10 +2299,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $user['usergroup'] = ($this->userAuth || $this->adminAuth) ? $this->conf['preUsergroup'] : $this->conf['postUsergroup'];
         foreach ($this->fieldsData as $field) {
             if ($field['type'] == 'databaseField') {
-                if (!isset($field['noHTMLEntities']) || (isset($field['noHTMLEntities']) && $field['noHTMLEntities'] == 1)) {
-                    $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
-                } else {
+                if (!isset($field['dbHTMLEntities']) || (isset($field['dbHTMLEntities']) && $field['dbHTMLEntities'] == 0)) {
                     $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->piVars[$field['name']];
+                } else {
+                    $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
                 }
             }
         }
@@ -2432,10 +2432,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
             $this->postElaborateData();
             foreach ($this->fieldsData as $field) {
                 if ($field['type'] == 'databaseField' && $field['hideInChangeProfile'] == 0) {
-                    if (!isset($field['noHTMLEntities']) || (isset($field['noHTMLEntities']) && $field['noHTMLEntities'] == 1)) {
-                        $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
-                    } else {
+                    if (!isset($field['dbHTMLEntities']) || (isset($field['dbHTMLEntities']) && $field['dbHTMLEntities'] == 0)) {
                         $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->piVars[$field['name']];
+                    } else {
+                        $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
                     }
                 }
             }
