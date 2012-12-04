@@ -84,6 +84,7 @@
                             <selectedListStyle>width:250px</selectedListStyle>
                             <itemListStyle>width:250px</itemListStyle>
                             <foreign_table>fe_groups</foreign_table>
+                            <foreign_table_where>AND fe_groups.deleted=0 AND fe_groups.hidden=0</foreign_table_where>
                             <allowNonIdValues>1</allowNonIdValues>
                         </config>
                     </TCEforms>
@@ -101,6 +102,7 @@
                             <selectedListStyle>width:250px</selectedListStyle>
                             <itemListStyle>width:250px</itemListStyle>
                             <foreign_table>fe_groups</foreign_table>
+                            <foreign_table_where>AND fe_groups.deleted=0 AND fe_groups.hidden=0</foreign_table_where>
                             <allowNonIdValues>1</allowNonIdValues>
                         </config>
                     </TCEforms>

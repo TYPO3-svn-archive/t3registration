@@ -202,7 +202,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @var array contains all error description
      */
     protected $fullErrorsList = array();
-    
+
     /**
      * @var array contains data of logged-in user
      */
@@ -237,33 +237,14 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     public function main($content, $conf) {
         try {
-            if ($this->conf['javascriptsInclusion.']['jquery']) {
+            $this->conf = $conf;
+            if (isset($this->conf['javascriptsInclusion.']) && $this->conf['javascriptsInclusion.']['jquery']) {
                 $GLOBALS['TSFE']->additionalHeaderData['t3registrationJQuery'] = '<script type="text/javascript" src="' . t3lib_extMgm::siteRelPath('t3registration') . 'res/javascript/initialize.js"></script>';
             }
-            $this->conf = $conf;
 
-            //set errorLevel
-            $this->debugLevel = (isset($this->conf['debugLevel'])) ? $this->conf['debugLevel'] : $this->debugLevel;
-            //debug($this->conf);
-            $this->pi_setPiVarDefaults();
-            $this->pi_loadLL();
             //initialize language object used in label translation from TCA
             $this->init();
-            //extract data from flexform
-            $this->initFlexform();
-            //extract TCA columns from fe_users table
-            $this->loadTCAField();
-            //adds evaluation additional data
-            $this->addFunctionReplace($this->conf['fieldConfiguration.'], $this->conf['fieldConfiguration.'], '');
-            //merges data from flexform with ones from ts (after removing dots)
-            $fieldsFromTS = $this->removeDotFromArray($this->conf['fieldConfiguration.']);
-            $this->fieldsData = t3lib_div::array_merge_recursive_overrule($this->fieldsData, $this->removeUnusedFields($fieldsFromTS));
-            //update TCA config fields with fieldsData
-            $this->mergeTCAFieldWithConfiguration();
-            //Test action from url
-            $this->argumentsFromUrlCheck();
-            //debug($this->fieldsData);
-            $this->setEmailFormat();
+
 
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeActionInit'])) {
                 foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeActionInit'] as $fieldFunction) {
@@ -329,8 +310,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                         } elseif ($this->changeProfileCheck()) {
                             $this->changeProfilePath = true;
                             $content = $this->showProfile();
-                        }
-                        else {
+                        } else {
                             $content = $this->getForm();
                         }
                         break;
@@ -376,28 +356,48 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return    void
      */
     protected function init() {
+
+        //set errorLevel
+        $this->debugLevel = (isset($this->conf['debugLevel'])) ? $this->conf['debugLevel'] : $this->debugLevel;
+        //debug($this->conf);
+        $this->pi_setPiVarDefaults();
+        $this->pi_loadLL();
+
         //initialize the language class to extract translation for label outside the actual plugin (example cms fe_users label)
         $this->languageObj = t3lib_div::makeInstance('language');
         //sets the correct language index
         $this->languageObj->init($this->LLkey);
         // Initialize the feLoggedIn data array
         if ($GLOBALS['TSFE']->loginUser) {
-        	$this->feLoggedInUser = $GLOBALS['TSFE']->fe_user->user;
+            $this->feLoggedInUser = $GLOBALS['TSFE']->fe_user->user;
             $this->userLogged = true;
         }
         /*This hook could be called to update user data*/
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['userLogged'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['userLogged'] as $fieldFunction) {
-                $params = array('user' => $this->feLoggedInUser, 'piVars' => $this->piVars, 'userLogged' => $this->userLogged);
+                $params = array('user' => &$this->feLoggedInUser, 'piVars' => &$this->piVars, 'userLogged' => &$this->userLogged);
                 t3lib_div::callUserFunction($fieldFunction, $params, $this);
-                $this->feLoggedInUser = $params['user'];
-                $this->userLogged = $params['userLogged'];
-                $this->piVars = $params['piVars'];
             }
         }
+
+        //extract data from flexform
+        $this->initFlexform();
+        //extract TCA columns from fe_users table
+        $this->loadTCAField();
+        //adds evaluation additional data
+        $this->addFunctionReplace($this->conf['fieldConfiguration.'], $this->conf['fieldConfiguration.'], '');
+        //merges data from flexform with ones from ts (after removing dots)
+        $fieldsFromTS = $this->removeDotFromArray($this->conf['fieldConfiguration.']);
+        $this->fieldsData = t3lib_div::array_merge_recursive_overrule($this->fieldsData, $this->removeUnusedFields($fieldsFromTS));
+        //update TCA config fields with fieldsData
+        $this->mergeTCAFieldWithConfiguration();
+        //Test action from url
+        $this->argumentsFromUrlCheck();
+        //debug($this->fieldsData);
+        $this->setEmailFormat();
     }
 
-    protected function preElaborateData($user){
+    protected function preElaborateData($user) {
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['profileFetchData'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['profileFetchData'] as $fieldFunction) {
@@ -406,10 +406,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
         }
         foreach ($this->fieldsData as $field) {
-            if(!isset($this->conf['fieldConfiguration.'][$field['name'] . '.']['preElaborateDateDisable']) || !$this->conf['fieldConfiguration.'][$field['name'] . '.']['preElaborateDateDisable']){
+            if (!isset($this->conf['fieldConfiguration.'][$field['name'] . '.']['preElaborateDateDisable']) || !$this->conf['fieldConfiguration.'][$field['name'] . '.']['preElaborateDateDisable']) {
                 $evaluationRulesList = $this->getEvaluationRulesList($field['name']);
-                if(in_array('date',$evaluationRulesList) && $user[$field['field']] && (!version_compare(phpversion(), '5.3', '<'))){
-                    if(($date = $this->getDateFromTimestamp($user[$field['field']],$field['name'])) !== false){
+                if (in_array('date', $evaluationRulesList) && $user[$field['field']] && (!version_compare(phpversion(), '5.3', '<'))) {
+                    if (($date = $this->getDateFromTimestamp($user[$field['field']], $field['name'])) !== false) {
                         $this->piVars[$field['field']] = $date;
                     }
 
@@ -418,41 +418,37 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
     }
 
-    protected function getDateFromTimestamp($timestamp,$fieldname){
-        $timezone = ($this->fieldsData[$fieldname]['config']['date']['timezone'])?:'UTC';
+    protected function getDateFromTimestamp($timestamp, $fieldname) {
+        $timezone = (isset($field['config']['date']['timezone']) && $field['config']['date']['timezone']) ? $field['config']['date']['timezone'] : 'UTC';
         date_default_timezone_set($timezone);
-        if(isset($this->fieldsData[$fieldname]['config']['date']['strftime']) && $this->fieldsData[$fieldname]['config']['date']['strftime']){
-            return date($this->fieldsData[$fieldname]['config']['date']['strftime'],$timestamp);
-        }
-        else{
+        if (isset($this->fieldsData[$fieldname]['config']['date']['strftime']) && $this->fieldsData[$fieldname]['config']['date']['strftime']) {
+            return date($this->fieldsData[$fieldname]['config']['date']['strftime'], $timestamp);
+        } else {
             return false;
         }
     }
 
-    protected function getTimestampFromDate($date,$field){
-        $timezone = ($field['config']['date']['timezone'])?:'UTC';
+    protected function getTimestampFromDate($date, $field) {
+        $timezone = (isset($field['config']['date']['timezone']) && $field['config']['date']['timezone']) ? $field['config']['date']['timezone'] : 'UTC';
         date_default_timezone_set($timezone);
-        if(isset($field['config']['date']['strftime'])){
+        if (isset($field['config']['date']['strftime'])) {
             $parsedArray = date_parse_from_format($field['config']['date']['strftime'], $date);
-            if($parsedArray['error_count'] == 0){
-                if($parsedArray['warning_count'] >0){
+            if ($parsedArray['error_count'] == 0) {
+                if ($parsedArray['warning_count'] > 0) {
                     return false;
-                }
-                else{
-                    $timestamp = mktime(0,0,0,$parsedArray['month'],$parsedArray['day'],$parsedArray['year']);
+                } else {
+                    $timestamp = mktime(0, 0, 0, $parsedArray['month'], $parsedArray['day'], $parsedArray['year']);
                     return $timestamp;
                 }
-            }
-            else{
+            } else {
                 return false;
             }
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    protected function postElaborateData(){
+    protected function postElaborateData() {
 
         if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['postElaborateData'])) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['postElaborateData'] as $fieldFunction) {
@@ -461,10 +457,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
         }
         foreach ($this->fieldsData as $field) {
-            if(!isset($this->conf['fieldConfiguration.'][$field['name'] . '.']['preElaborateDateDisable']) || !$this->conf['fieldConfiguration.'][$field['name'] . '.']['preElaborateDateDisable']){
+            if (!isset($this->conf['fieldConfiguration.'][$field['name'] . '.']['preElaborateDateDisable']) || !$this->conf['fieldConfiguration.'][$field['name'] . '.']['preElaborateDateDisable']) {
                 $evaluationRulesList = $this->getEvaluationRulesList($field['name']);
-                if(in_array('date',$evaluationRulesList) && $this->piVars[$field['field']]){
-                    if(($date = $this->getTimestampFromDate($this->piVars[$field['field']],$field)) !== false){
+                if (in_array('date', $evaluationRulesList) && $this->piVars[$field['field']]) {
+                    if (($date = $this->getTimestampFromDate($this->piVars[$field['field']], $field)) !== false) {
                         $this->piVars[$field['field']] = $date;
                     }
 
@@ -522,6 +518,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
             //merge lconf (flexform array data) with this->conf (typoscript data and flexformoverridets key)
             $this->conf = t3lib_div::array_merge_recursive_overrule($lConf, $this->conf);
         }
+        //hook for initialization
+        if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['init'])) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['init'] as $fieldFunction) {
+                $params = array('fields' => &$this->fieldsData, 'data' => &$this->piVars, 'conf' => &$this->conf);
+                t3lib_div::callUserFunction($fieldFunction, $params, $this);
+            }
+        }
     }
 
     /***************************************************FORM AND FIELDS MANAGEMENT********************/
@@ -551,8 +554,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
         if ($this->userLogged) {
             $buttons = array(
                 'confirm' => 'confirmModificationProfileButton',
-                'back'    => 'modifyModificationProfileButton',
-                'insert'  => 'insertModificationProfileButton'
+                'back' => 'modifyModificationProfileButton',
+                'insert' => 'insertModificationProfileButton'
             );
             if ($this->conf['useAnotherTemplateInChangeProfileMode'] == 1) {
                 if (!$preview) {
@@ -579,8 +582,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
             }
             $buttons = array(
                 'confirm' => 'confirmRegistrationButton',
-                'back'    => 'modifyRegistrationButton',
-                'insert'  => 'insertRegistrationButton'
+                'back' => 'modifyRegistrationButton',
+                'insert' => 'insertRegistrationButton'
             );
         }
         //if preview is disabled calls directly endRegistration and save user without showing a user preview
@@ -613,7 +616,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 }
 
             } else {
-                $contentArray['###' . strtoupper($field['name']) . '_FIELD###'] = ($field['hideInChangeProfile'] == 1 && $this->userLogged) ? '' : $this->getAndReplaceSubpart($field, $content);
+                if ($field['config']['type'] == 'hidden') {
+                    $hiddenArray[strtoupper($field['name'])] = sprintf('<input type="hidden" name="%s" value="%s" />', $this->prefixId . '[' . $field['name'] . ']', $field['config']['default']);
+                } else {
+                    $contentArray['###' . strtoupper($field['name']) . '_FIELD###'] = ($field['hideInChangeProfile'] == 1 && $this->userLogged) ? '' : $this->getAndReplaceSubpart($field, $content);
+                }
             }
         }
 
@@ -848,7 +855,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 foreach ($items as $item) {
                     $counter++;
                     $text = (isset($item[0])) ? (preg_match('/LLL:EXT:/', $item[0]) ? $this->languageObj->sl($item[0]) : $item[0]) : '';
-                    $reference = ($field['usingCounterAsId'] || $this->conf['form.']['usingCounterAsIdAll']) ? $counter : str_replace(' ', '_', (((isset($item[1]) || strlen($item[1] >0))) ? $item[1] : 'empty'));
+                    $reference = ($field['usingCounterAsId'] || $this->conf['form.']['usingCounterAsIdAll']) ? $counter : str_replace(' ', '_', (((isset($item[1]) || strlen($item[1] > 0))) ? $item[1] : 'empty'));
                     $id = ($field['config']['id']) ? ' id="' . $field['config']['id'] . '_' . $reference . '" ' : (($this->conf['form.']['standardFieldId']) ? ' id="' . $this->conf['form.']['standardFieldId.']['pre'] . $field['name'] . '_' . $reference . '" ' : '');
                     $value = (isset($item[1])) ? $item[1] : '';
                     $selected = ($this->piVars[$field['name']] == $value) ? 'checked' : '';
@@ -1077,15 +1084,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $field = $this->fieldsData[$name];
         $evaluation = array();
         $field['config']['eval'] = $field['config']['eval'] ? $field['config']['eval'] : '';
-        if (isset($field['regexp']) && strlen($field['regexp']) > 0) {
-            if (strlen($field['config']['eval']) > 0) {
-                $evalArray = explode(',', $field['config']['eval']);
-            } else {
-                $evalArray = array();
-            }
-            $evalArray[] = 'regexp';
-            $field['config']['eval'] = implode(',', $evalArray);
-        }
         if (isset($field['config']['internal_type']) && $field['config']['internal_type'] === 'file') {
             if (strlen($field['config']['eval']) > 0) {
                 $evalArray = explode(',', $field['config']['eval']);
@@ -1145,11 +1143,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
     protected function evaluateField($value, $evaluationRule, $field = array()) {
         switch ($evaluationRule) {
             case 'int':
-                return t3lib_div::testInt($value);
+                return is_numeric($value);
                 break;
             case 'alpha':
             case 'string':
-                return preg_match('/^[a-zA-Z]+$/', $value);
+                return preg_match('/\D/', $value);
                 break;
             case 'email':
                 return t3lib_div::validEmail($value);
@@ -1199,8 +1197,8 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 return $noError;
                 break;
             case 'date':
-                return $this->evaluateDate($this->piVars[$field['name']],$field);
-            break;
+                return $this->evaluateDate($value, $field);
+                break;
             case 'hook':
                 if (isset($field['config']['evalHook'])) {
                     $params['field'] = $field;
@@ -1224,38 +1222,33 @@ class tx_t3registration_pi1 extends tslib_pibase {
         return true;
     }
 
-    protected function checkDateRange($timestamp,$field){
-
-        if(isset($field['config']['date']['maxDate'])){
-            if(($maxDate = $this->getTimestampFromDate($field['config']['date']['maxDate'],$field)) !== false){
-                if($timestamp>$maxDate){
+    protected function checkDateRange($timestamp, $field) {
+        if (isset($field['config']['date']['maxDate'])) {
+            if (($maxDate = $this->getTimestampFromDate($field['config']['date']['maxDate'], $field)) !== false) {
+                if ($timestamp > $maxDate) {
                     return false;
                 }
-            }
-            else{
+            } else {
                 return false;
             }
         }
-        if(isset($field['config']['date']['minDate'])){
-            if(($minDate = $this->getTimestampFromDate($field['config']['date']['minDate'],$field)) !== false){
-                if($timestamp<$minDate){
+        if (isset($field['config']['date']['minDate'])) {
+            if (($minDate = $this->getTimestampFromDate($field['config']['date']['minDate'], $field)) !== false) {
+                if ($timestamp < $minDate) {
                     return false;
                 }
-            }
-            else{
+            } else {
                 return false;
             }
         }
-        if(isset($field['config']['date']['dateHasToBeIn'])){
-            if(($now = $this->getTimestampFromDate(date($field['config']['date']['strftime']),$field)) !== false){
-                if($field['config']['date']['dateHasToBeIn'] == 'future' && $timestamp<$now){
+        if (isset($field['config']['date']['dateHasToBeIn'])) {
+            if (($now = $this->getTimestampFromDate(date($field['config']['date']['strftime']), $field)) !== false) {
+                if ($field['config']['date']['dateHasToBeIn'] == 'future' && $timestamp < $now) {
+                    return false;
+                } elseif ($field['config']['date']['dateHasToBeIn'] == 'past' && $timestamp > $now) {
                     return false;
                 }
-                elseif($field['config']['date']['dateHasToBeIn'] == 'past' && $timestamp>$now){
-                    return false;
-                }
-            }
-            else{
+            } else {
                 return false;
             }
         }
@@ -1263,11 +1256,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
 
-    protected function evaluateDate($date,$field){
-        if(($timestamp = $this->getTimestampFromDate($date,$field)) !== false){
-            return $this->checkDateRange($timestamp,$field);
-        }
-        else{
+    protected function evaluateDate($date, $field) {
+        if (($timestamp = $this->getTimestampFromDate($date, $field)) !== false) {
+            return $this->checkDateRange($timestamp, $field);
+        } else {
             return false;
         }
     }
@@ -1313,11 +1305,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     protected function checkLength($value, $field) {
         $error = true;
-        if (t3lib_div::testInt($field['config']['maxchars']) && $field['config']['maxchars'] > 0) {
+        if (is_numeric($field['config']['maxchars']) && $field['config']['maxchars'] > 0) {
             if (strlen($value) > $field['config']['maxchars'])
                 $error = false;
         }
-        if (t3lib_div::testInt($field['config']['minchars']) && $field['config']['minchars'] > 0) {
+        if (is_numeric($field['config']['minchars']) && $field['config']['minchars'] > 0) {
             if (strlen($value) < $field['config']['minchars'])
                 $error = false;
         }
@@ -1399,7 +1391,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
     protected function deleteEmail($user) {
         $confirmationPage = ($this->conf['deletePage']) ? $this->conf['deletePage'] : $GLOBALS['TSFE']->id;
         $confirmationArray = array(
-            $this->prefixId . '[' . 'action' . ']'   => 'userDeleteConfirmation',
+            $this->prefixId . '[' . 'action' . ']' => 'userDeleteConfirmation',
             $this->prefixId . '[' . 'authcode' . ']' => $user['user_auth_code']
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
@@ -1456,11 +1448,11 @@ class tx_t3registration_pi1 extends tslib_pibase {
     protected function confirmationEmail($user) {
         $confirmationPage = ($this->conf['confirmationPage']) ? $this->conf['confirmationPage'] : $GLOBALS['TSFE']->id;
         $confirmationArray = array(
-            $this->prefixId . '[' . 'action' . ']'   => 'userAuth',
+            $this->prefixId . '[' . 'action' . ']' => 'userAuth',
             $this->prefixId . '[' . 'authcode' . ']' => $user['user_auth_code']
         );
         $deletingArray = array(
-            $this->prefixId . '[' . 'action' . ']'   => 'userDelRequest',
+            $this->prefixId . '[' . 'action' . ']' => 'userDelRequest',
             $this->prefixId . '[' . 'authcode' . ']' => $user['user_auth_code']
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
@@ -1508,7 +1500,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
     protected function authorizationEmail($user) {
         $confirmationPage = ($this->conf['confirmationPage']) ? $this->conf['confirmationPage'] : $GLOBALS['TSFE']->id;
         $confirmationArray = array(
-            $this->prefixId . '[' . 'action' . ']'   => 'adminAuth',
+            $this->prefixId . '[' . 'action' . ']' => 'adminAuth',
             $this->prefixId . '[' . 'authcode' . ']' => $user['admin_auth_code']
         );
         $authLink = t3lib_div::locationHeaderUrl($this->pi_getpageLink($confirmationPage, '', $confirmationArray));
@@ -1926,6 +1918,34 @@ class tx_t3registration_pi1 extends tslib_pibase {
         return $this->cObj->substituteMarkerArrayCached($content, $markerArray);
     }
 
+    /**
+     * This function return the correct group list based on approval process
+     * @param $user user data
+     * @return array groups
+     */
+    protected function updateUserGroup($user) {
+        if (strlen($user['admin_auth_code']) == 0 && strlen($user['user_auth_code']) == 0) {
+            $groupsBeforeConfirmation = (strpos($this->conf['preUsergroup'], ',')) ? explode(',', $this->conf['preUsergroup']) : array();
+            $groupsAfterConfirmation = (strpos($this->conf['postUsergroup'], ',')) ? explode(',', $this->conf['postUsergroup']) : array();
+            $usergroup = explode(',', $user['usergroup']);
+            $newUserGroup = array();
+            foreach ($usergroup as $group) {
+                if (!in_array($group, $groupsBeforeConfirmation)) {
+                    $newUserGroup[] = $group;
+                }
+            }
+            foreach ($groupsAfterConfirmation as $group) {
+                if (!in_array($group, $newUserGroup)) {
+                    $newUserGroup[] = $group;
+                }
+            }
+            return $newUserGroup;
+        } else {
+            return explode(',', $user['usergroup']);
+        }
+
+    }
+
 
     /**
      * This function confirms the user by updating the user record into fe_users database table.
@@ -1934,26 +1954,13 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return    void
      */
     protected function updateConfirmedUser($user) {
-        $groupsBeforeConfirmation = (strpos($this->conf['preUsergroup'],','))?explode(',', $this->conf['preUsergroup']):array();
-        $groupsAfterConfirmation = (strpos($this->conf['postUsergroup'],','))?explode(',', $this->conf['postUsergroup']):array();
-        $usergroup = explode(',', $user['usergroup']);
-        $newUserGroup = array();
-        foreach ($usergroup as $group) {
-            if (!in_array($group, $groupsBeforeConfirmation)) {
-                $newUserGroup[] = $group;
-            }
-        }
-        foreach ($groupsAfterConfirmation as $group) {
-            if (!in_array($group, $newUserGroup)) {
-                $newUserGroup[] = $group;
-            }
-        }
-        $user['user_auth_code'] = '';
-        $user['usergroup'] = implode(',', $newUserGroup);
-        $user['tstamp'] = time();
         if (strlen($user['admin_auth_code']) == 0) {
             $user['disable'] = 0;
         }
+
+        $user['tstamp'] = time();
+        $user['user_auth_code'] = '';
+        $user['usergroup'] = implode(',', $this->updateUserGroup($user));
 
         if (!$this->conf['enableTemplateTest']) {
             if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['t3registration']['beforeUpdateConfirmedUser'])) {
@@ -2010,7 +2017,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
     }
 
     /**
-     * This function authorizes user by upadating the user record into fe_users database table.
+     * This function authorizes user by updating the user record into fe_users database table.
      *
      * @param    array $user        the user to be authorized
      * @return    void
@@ -2018,7 +2025,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
     protected function updateAdminAuthorizedUser($user) {
         $user['admin_auth_code'] = '';
         $user['admin_disable'] = 0;
-        $user['uid'] = $user['uid'];
+        $user['usergroup'] = implode(',', $this->updateUserGroup($user));
         if (strlen($user['user_auth_code']) == 0) {
             $user['disable'] = 0;
         }
@@ -2081,7 +2088,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
         $resource = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'fe_users', 'uid=' . $uid);
         if (($feUser = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($resource)) !== FALSE) {
             $loginData = array(
-                'uname'  => $feUser['username'], //username
+                'uname' => $feUser['username'], //username
                 'uident' => $feUser['password'], //password
                 'status' => 'login'
             );
@@ -2107,9 +2114,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return    string        the link HTML code
      */
     protected function showDeleteLink() {
-        if ($this->conf['disableDeleteLink']==1)
-        	return '';
-    	$content = $this->getTemplate();
+        if ($this->conf['disableDeleteLink'] == 1)
+            return '';
+        $content = $this->getTemplate();
         $content = $this->cObj->getSubpart($content, '###T3REGISTRATION_DELETE###');
         foreach ($this->feLoggedInUser as $key => $value) {
             $valueArray['###' . strtoupper($key) . '###'] = $value;
@@ -2264,7 +2271,9 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * @return    string        the whole HTML template
      */
     protected function getTemplate() {
-        $content = $this->cObj->fileResource($this->cObj->stdWrap($this->conf['templateFile'], $this->conf['templateFile.']));
+        //$content = $this->cObj->fileResource($this->cObj->stdWrap($this->conf['templateFile'], $this->conf['templateFile.']));
+        $fileName = $GLOBALS['TSFE']->tmpl->getFileName($this->cObj->stdWrap($this->conf['templateFile'], $this->conf['templateFile.']));
+        $content = @file_get_contents(PATH_site . $fileName);
         if ($content) {
             return $content;
         }
@@ -2296,7 +2305,6 @@ class tx_t3registration_pi1 extends tslib_pibase {
         }
         //call function to verify the type of verification
         $user = $this->setAuthCode();
-        $user['usergroup'] = ($this->userAuth || $this->adminAuth) ? $this->conf['preUsergroup'] : $this->conf['postUsergroup'];
         foreach ($this->fieldsData as $field) {
             if ($field['type'] == 'databaseField') {
                 if (!isset($field['dbHTMLEntities']) || (isset($field['dbHTMLEntities']) && $field['dbHTMLEntities'] == 0)) {
@@ -2305,6 +2313,24 @@ class tx_t3registration_pi1 extends tslib_pibase {
                     $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
                 }
             }
+        }
+        if(isset($user['usergroup']) && $user['usergroup'] != ''){
+            if($this->userAuth || $this->adminAuth){
+                $flexformUserGroup = (isset($this->conf['preUsergroup']))?explode(',',$this->conf['preUsergroup']):array();
+            }
+            else{
+                $flexformUserGroup = (isset($this->conf['postUsergroup']))?explode(',',$this->conf['postUsergroup']):array();
+            }
+            $usergroup = explode(',', $user['usergroup']);
+            foreach ($flexformUserGroup as $group) {
+                if (!in_array($group, $usergroup)) {
+                    $usergroup[] = $group;
+                }
+            }
+            $user['usergroup'] = implode(',',$usergroup);
+        }
+        else{
+            $user['usergroup'] = ($this->userAuth || $this->adminAuth) ? $this->conf['preUsergroup'] : $this->conf['postUsergroup'];
         }
         $user['username'] = $this->getUsername();
 
@@ -2400,12 +2426,12 @@ class tx_t3registration_pi1 extends tslib_pibase {
                 $requestInput = sprintf('<input type="text" %s name="%s" />', $id, $this->prefixId . '[' . $this->conf['usernameField'] . ']');
                 $markerArray['###REQUEST###'] = $this->cObj->stdWrap($requestInput, $this->conf['sendConfirmationObject.']['stdWrap.']);
                 $formId = ($this->conf['form.']['id']) ? $this->conf['form.']['id'] : 't3Registration-' . substr(md5(time() . $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey']), 0, 8);
-                $action = $this->pi_getPageLink($GLOBALS['TSFE']->id);
                 $submitButton = sprintf('<input type="submit" %s name="' . $this->prefixId . '[submit]" value="%s" />', $this->cObj->stdWrap($this->conf['form.']['submitButton.']['params'], $this->conf['form.']['submitButton.']['params.']), $this->pi_getLL('sendConfirmationCode'));
                 $submitButton = $this->cObj->stdWrap($submitButton, $this->conf['form.']['submitButton.']['stdWrap.']);
                 $markerArray['###DESCRIPTION_TEXT###'] = $this->cObj->stdWrap($this->pi_getLL('sendConfirmationCodeText'), $this->conf['sendConfirmationObject.']['text.']['stdWrap.']);
                 $markerArray['###LABEL###'] = ($this->pi_getLL($this->conf['usernameField'] . 'Label')) ? $this->pi_getLL($this->conf['usernameField'] . 'Label') : ((isset($this->fieldsData[$this->conf['usernameField']]['label'])) ? $this->languageObj->sL($this->fieldsData[$this->conf['usernameField']]['label'], true) : '');
                 $hiddenArray[] = '<input type="hidden" name="' . $this->prefixId . '[posted]" value="1" />';
+                $hiddenArray[] = '<input type="hidden" name="' . $this->prefixId . '[action]" value="sendConfirmationCode" />';
                 if ($this->conf['form.']['markerButtons']) {
                     $markerArray['###FORM_BUTTONS###'] = sprintf('%s' . chr(10) . $submitButton, implode(chr(10), $hiddenArray));
                     $endForm = '';
@@ -2429,6 +2455,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      */
     protected function updateUserProfile() {
         if ($this->userLogged) {
+            $usernameField = $this->conf['usernameField'];
             $this->postElaborateData();
             foreach ($this->fieldsData as $field) {
                 if ($field['type'] == 'databaseField' && $field['hideInChangeProfile'] == 0) {
@@ -2438,6 +2465,10 @@ class tx_t3registration_pi1 extends tslib_pibase {
                         $user[$field['field']] = (is_array($this->piVars[$field['name']])) ? implode(',', $this->piVars[$field['name']]) : $this->htmlentities($this->piVars[$field['name']]);
                     }
                 }
+            }
+            // field "username" gets updated with data of custom "username"-field
+            if(isset($this->conf['usernameUpdateWhenChangeUsernameField']) && ($this->conf['usernameUpdateWhenChangeUsernameField'] == 1) && isset($usernameField) && strlen($usernameField) && isset($this->piVars[$usernameField])){
+                $user['username'] = $user[$usernameField];
             }
             //Inserire hook per aggiornare i campi
             $user['tstamp'] = time();
@@ -2775,7 +2806,7 @@ class tx_t3registration_pi1 extends tslib_pibase {
      * Function to implement getter method for user logged data
      * @return array user logged data
      */
-    public function getLoggedUserData(){
+    public function getLoggedUserData() {
         return $this->feLoggedInUser;
     }
 
